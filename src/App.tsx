@@ -1,0 +1,1181 @@
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ICONS, TRANSLATIONS, PROGRAM_DATA, Language, SOCIAL_LINKS, LOGO_URL, PARTNERS_LOGOS } from './constants';
+
+export default function App() {
+  const [lang, setLang] = useState<Language>('pt');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'day1' | 'day2'>('day1');
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [selectedTier, setSelectedTier] = useState<string | null>(null);
+  const [isCarouselPaused, setIsCarouselPaused] = useState(false);
+  const t = TRANSLATIONS[lang];
+
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setActiveDropdown(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    if (isCarouselPaused) return;
+
+    const interval = setInterval(() => {
+      if (carouselRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
+        const maxScroll = scrollWidth - clientWidth;
+        
+        if (scrollLeft >= maxScroll - 5) {
+          carouselRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          carouselRef.current.scrollBy({ left: 340, behavior: 'smooth' });
+        }
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [isCarouselPaused, activeTab]);
+
+  const scrollCarousel = (direction: 'left' | 'right') => {
+    if (carouselRef.current) {
+      const scrollAmount = 340;
+      carouselRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  const NavItem = ({ label, subItems, id }: { label: string, subItems?: any[], id: string }) => {
+    const [nestedOpen, setNestedOpen] = useState<string | null>(null);
+
+    return (
+      <div className="relative group">
+        <button 
+          onClick={() => setActiveDropdown(activeDropdown === id ? null : id)}
+          className={`flex items-center gap-1 text-xs font-bold uppercase tracking-wider transition-all py-2 px-3 rounded-lg ${
+            activeDropdown === id ? 'bg-white text-menu-green shadow-lg' : 'text-white hover:bg-white/10'
+          }`}
+        >
+          {label}
+          {subItems && <ICONS.ChevronRight size={12} className={`transition-transform ${activeDropdown === id ? 'rotate-90' : ''}`} />}
+        </button>
+        
+        <AnimatePresence>
+          {activeDropdown === id && subItems && (
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.95 }}
+              className="absolute top-full left-0 mt-2 w-72 bg-white rounded-2xl overflow-visible dropdown-shadow z-50 p-2 border border-innovation-purple/10"
+            >
+              {subItems.map((item, idx) => (
+                <div key={idx} className="relative group/nested">
+                  {item.isNested ? (
+                    <div className="relative">
+                      <button 
+                        onMouseEnter={() => setNestedOpen(item.label)}
+                        onMouseLeave={() => setNestedOpen(null)}
+                        className="w-full flex items-center justify-between px-4 py-3 text-sm text-innovation-purple hover:bg-innovation-purple hover:text-white rounded-xl transition-all font-bold"
+                      >
+                        {item.label}
+                        <ICONS.ChevronRight size={14} />
+                      </button>
+                      
+                      <AnimatePresence>
+                        {nestedOpen === item.label && (
+                          <motion.div
+                            initial={{ opacity: 0, x: 10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: 10 }}
+                            className="absolute left-full top-0 ml-2 w-64 bg-white rounded-2xl dropdown-shadow p-2 border border-innovation-purple/10"
+                            onMouseEnter={() => setNestedOpen(item.label)}
+                            onMouseLeave={() => setNestedOpen(null)}
+                          >
+                            {item.items.map((sub, sIdx) => (
+                              <a 
+                                key={sIdx}
+                                href={sub.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block px-4 py-3 text-sm text-innovation-purple hover:bg-innovation-purple hover:text-white rounded-xl transition-all font-bold"
+                                onClick={() => {
+                                  setActiveDropdown(null);
+                                  setNestedOpen(null);
+                                }}
+                              >
+                                {sub.label}
+                              </a>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <a 
+                      href={item.href}
+                      target={item.href.startsWith('http') ? '_blank' : '_self'}
+                      rel="noopener noreferrer"
+                      className="block px-4 py-3 text-sm text-innovation-purple hover:bg-innovation-purple hover:text-white rounded-xl transition-all font-bold"
+                      onClick={() => setActiveDropdown(null)}
+                    >
+                      {item.label}
+                    </a>
+                  )}
+                </div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    );
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      {/* Navbar */}
+      <nav ref={navRef} className="fixed top-0 w-full z-50 bg-menu-green border-b border-white/10 shadow-lg">
+        <div className="max-w-[1200px] mx-auto px-6 md:px-20 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <img src={LOGO_URL} alt="FIEB Logo" className="h-14 w-14 object-cover object-left" referrerPolicy="no-referrer" />
+          </div>
+
+          {/* Desktop Nav */}
+          <div className="hidden lg:flex items-center gap-1">
+            <a href="#" className="text-xs font-bold uppercase tracking-wider text-white hover:bg-innovation-purple/40 py-2 px-3 rounded-lg transition-colors">
+              {t.nav.home}
+            </a>
+            <NavItem id="about" label={t.nav.about} subItems={t.nav.sub.about} />
+            <NavItem id="program" label={t.nav.program} subItems={t.nav.sub.program} />
+            <NavItem id="submissions" label={t.nav.submissions} subItems={t.nav.sub.submissions} />
+            <a href="#apoio" className="text-xs font-bold uppercase tracking-wider text-white hover:bg-innovation-purple/40 py-2 px-3 rounded-lg transition-colors">
+              {t.nav.partners}
+            </a>
+            <NavItem id="useful" label={t.nav.useful} subItems={t.nav.sub.useful} />
+          </div>
+
+          <div className="flex items-center gap-3">
+            {/* Language Switcher */}
+            <div className="flex items-center bg-white/10 rounded-full p-1 border border-white/20 gap-1">
+              {(['pt', 'en', 'es'] as Language[]).map((l) => {
+                const flagUrls = { 
+                  pt: 'https://flagcdn.com/w40/br.png', 
+                  en: 'https://flagcdn.com/w40/us.png', 
+                  es: 'https://flagcdn.com/w40/es.png' 
+                };
+                return (
+                  <button
+                    key={l}
+                    onClick={() => setLang(l)}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-full text-xs font-bold uppercase transition-all ${
+                      lang === l ? 'bg-white text-menu-green shadow-lg' : 'text-white/60 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    <img src={flagUrls[l]} alt={l} className="w-5 h-auto rounded-sm object-cover" />
+                    <span>{l}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Mobile Menu Toggle */}
+            <button 
+              className="lg:hidden p-2 text-white"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <ICONS.X size={24} /> : <ICONS.Menu size={24} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Nav */}
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="lg:hidden bg-menu-green border-t border-white/10 overflow-hidden"
+            >
+              <div className="p-6 flex flex-col gap-4">
+                <a href="#" onClick={() => setIsMenuOpen(false)} className="text-lg font-bold text-white uppercase">{t.nav.home}</a>
+                
+                {/* Mobile Accordions could be added here, but for now simple links */}
+                <div className="space-y-2">
+                  <p className="text-xs font-bold text-white/40 uppercase tracking-widest">{t.nav.about}</p>
+                  {t.nav.sub.about.map((item, i) => (
+                    <a key={i} href={item.href} className="block text-white/80 hover:text-white pl-4 py-1">{item.label}</a>
+                  ))}
+                </div>
+
+                <div className="space-y-2">
+                  <p className="text-xs font-bold text-white/40 uppercase tracking-widest">{t.nav.program}</p>
+                  {t.nav.sub.program.map((item, i) => (
+                    <a key={i} href={item.href} className="block text-white/80 hover:text-white pl-4 py-1">{item.label}</a>
+                  ))}
+                </div>
+
+                <div className="space-y-2">
+                  <p className="text-xs font-bold text-white/40 uppercase tracking-widest">{t.nav.submissions}</p>
+                  {t.nav.sub.submissions.map((item, i) => (
+                    <a key={i} href={item.href} className="block text-white/80 hover:text-white pl-4 py-1">{item.label}</a>
+                  ))}
+                </div>
+
+                <div className="space-y-2">
+                  <p className="text-xs font-bold text-white/40 uppercase tracking-widest">{t.nav.useful}</p>
+                  {t.nav.sub.useful.map((item, i) => (
+                    <a key={i} href={item.href} className="block text-white/80 hover:text-white pl-4 py-1">{item.label}</a>
+                  ))}
+                </div>
+
+                {/* Mobile Social Links */}
+                <div className="flex gap-4 pt-4 border-t border-white/10">
+                  {SOCIAL_LINKS.map((social) => {
+                    const Icon = ICONS[social.icon as keyof typeof ICONS];
+                    return (
+                      <a 
+                        key={social.name}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 rounded-full flex items-center justify-center text-white bg-innovation-purple hover:bg-amazon-green transition-all duration-300"
+                        title={social.name}
+                      >
+                        <Icon size={20} />
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+
+      {/* Hero Section */}
+      <section className="relative h-auto min-h-[100svh] md:h-[calc(100vh-100px)] md:min-h-[600px] flex items-center pt-20 overflow-hidden group">
+        {/* Background */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-r from-deep-purple via-deep-purple/80 to-transparent z-10"></div>
+          <img 
+            src="assets/teatro.jpg" 
+            alt="Teatro Amazonas" 
+            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+            referrerPolicy="no-referrer"
+          />
+          {/* Technological Overlay */}
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/circuit-board.png')] opacity-10 z-20 mix-blend-overlay group-hover:opacity-30 transition-opacity duration-500"></div>
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none z-20">
+            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(211,105,62,0.1),transparent_70%)] animate-pulse"></div>
+          </div>
+        </div>
+        
+        <div className="relative z-30 max-w-[1200px] mx-auto px-6 md:px-20 py-8 w-full flex flex-col md:flex-row items-start justify-between gap-12 pt-16 md:pt-20">
+          {/* Left Content */}
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="max-w-2xl text-left relative z-40"
+          >
+            <div className="inline-block px-6 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 text-white text-[10px] font-bold uppercase tracking-[0.3em] mb-4">
+              {t.hero.commemorative}
+            </div>
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-display font-bold text-white leading-[1.1] mb-4 drop-shadow-2xl">
+              {t.hero.title}
+            </h1>
+            <div className="mb-4 md:mb-8">
+              <span className="inline-block px-3 py-1 md:px-4 md:py-1.5 bg-menu-green text-white text-base md:text-xl font-semibold rounded-md shadow-lg">
+                {t.hero.subtitle}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 md:gap-3 text-lavender-light mb-6 md:mb-8">
+              <ICONS.Calendar size={20} className="text-energy-orange shrink-0" />
+              <span className="text-sm md:text-lg font-bold">{t.hero.info}</span>
+            </div>
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4">
+              <motion.a 
+                href="https://fieb.net.br/diretrizes-para-autores-2026/"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileTap={{ scale: 0.95 }}
+                className="px-6 py-3 md:px-8 md:py-4 bg-energy-orange hover:bg-white hover:text-energy-orange text-white rounded-full font-display font-bold text-sm md:text-base transition-all pill-shadow transform hover:scale-105 text-center w-full sm:w-auto"
+              >
+                {t.hero.ctaPrimary}
+              </motion.a>
+              <motion.a 
+                href="https://fieb.net.br/programacao/"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileTap={{ scale: 0.95 }}
+                className="px-6 py-3 md:px-8 md:py-4 bg-black hover:bg-white hover:text-black text-white rounded-full font-display font-bold text-sm md:text-base transition-all pill-shadow transform hover:scale-105 border-2 border-white/10 text-center w-full sm:w-auto"
+              >
+                {t.hero.ctaSecondary}
+              </motion.a>
+            </div>
+          </motion.div>
+
+          {/* Right Content - Mascot */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, x: 50 }}
+            whileInView={{ opacity: 1, scale: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative lg:mt-0 self-center md:self-end -mb-8 md:-mb-24 mt-8 md:mt-0"
+          >
+            <div className="relative z-10 w-[240px] sm:w-[300px] md:w-[500px] drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform translate-y-4 md:translate-y-12">
+              <img 
+                src="assets/mascote.png" 
+                alt="FIEB Mascot" 
+                className="w-full h-auto filter drop-shadow-2xl group-hover:brightness-110 transition-all duration-300"
+              />
+              {/* Technological details around mascot on hover */}
+              <div className="absolute -inset-4 border-2 border-energy-orange/0 group-hover:border-energy-orange/30 rounded-full transition-all duration-500 scale-110 animate-spin-slow opacity-0 group-hover:opacity-100"></div>
+              <div className="absolute -inset-8 border border-white/0 group-hover:border-white/10 rounded-full transition-all duration-700 scale-125 animate-reverse-spin opacity-0 group-hover:opacity-100"></div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Hero Marquee Ticker */}
+      <section className="py-3 md:py-6 bg-deep-purple border-y border-white/10 overflow-hidden relative z-20">
+        <div className="flex animate-marquee whitespace-nowrap items-center">
+          {[1, 2, 3, 4].map((n) => (
+            <div key={n} className="flex items-center group">
+              <a 
+                href="https://submissoes.fieb.net.br/fieb/about/submissions" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-sm sm:text-base md:text-2xl font-display font-bold text-white px-4 md:px-8 uppercase tracking-widest hover:text-energy-orange transition-colors flex items-center gap-2 md:gap-4"
+              >
+                SUBMISSÕES PRORROGADAS
+                <span className="px-3 py-1 md:px-4 md:py-1.5 bg-energy-orange text-white text-[8px] md:text-[10px] rounded-full">CLIQUE AQUI</span>
+              </a>
+              <span className="text-energy-orange text-xl md:text-2xl">|</span>
+              <a 
+                href="https://fieb.net.br/programacao/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-sm sm:text-base md:text-2xl font-display font-bold text-white px-4 md:px-8 uppercase tracking-widest hover:text-energy-orange transition-colors flex items-center gap-2 md:gap-4"
+              >
+                CONFIRA A PROGRAMAÇÃO PRELIMINAR
+                <span className="px-3 py-1 md:px-4 md:py-1.5 bg-innovation-purple text-white text-[8px] md:text-[10px] rounded-full">VER AGORA</span>
+              </a>
+              <span className="text-energy-orange text-xl md:text-2xl">|</span>
+              <a 
+                href="#apoio" 
+                className="text-sm sm:text-base md:text-2xl font-display font-bold text-white px-4 md:px-8 uppercase tracking-widest hover:text-energy-orange transition-colors flex items-center gap-2 md:gap-4"
+              >
+                SEJA UMA EMPRESA APOIADORA
+                <span className="px-3 py-1 md:px-4 md:py-1.5 bg-amazon-green text-white text-[8px] md:text-[10px] rounded-full">SAIBA MAIS</span>
+              </a>
+              <span className="text-energy-orange text-xl md:text-2xl">|</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section id="sobre" className="py-24 bg-white">
+        <div className="max-w-[1200px] mx-auto px-6 md:px-20">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-innovation-purple mb-8 uppercase tracking-wider">
+                {t.about.title}
+              </h2>
+              <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
+                <p>{t.about.text1}</p>
+                <p>{t.about.text2}</p>
+              </div>
+              <div className="mt-10 grid grid-cols-2 gap-6">
+                <div className="p-6 bg-lavender-light rounded-2xl border border-innovation-purple/10">
+                  <div className="text-3xl font-display font-bold text-innovation-purple mb-2">{t.about.statYears}</div>
+                  <div className="text-sm font-bold text-gray-500 uppercase tracking-tighter">{t.about.statLabelYears}</div>
+                </div>
+                <div className="p-6 bg-amazon-green/10 rounded-2xl border border-amazon-green/10">
+                  <div className="text-3xl font-display font-bold text-amazon-green mb-2">{t.about.statParticipants}</div>
+                  <div className="text-sm font-bold text-gray-500 uppercase tracking-tighter">{t.about.statLabelParticipants}</div>
+                </div>
+              </div>
+            </motion.div>
+            <div className="relative">
+              <img 
+                src="assets/sobre_evento_2.webp" 
+                alt="FIEB Edição Anterior" 
+                className="rounded-3xl shadow-2xl w-full h-auto max-h-[600px] object-cover"
+              />
+              <div className="absolute -bottom-6 -right-6 p-6 bg-innovation-purple text-white rounded-2xl shadow-xl hidden md:block">
+                <ICONS.Award size={32} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Program Section */}
+      <section id="programacao" className="py-24 bg-innovation-purple relative overflow-hidden">
+        {/* Texture overlay */}
+        <div className="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        
+        <div className="max-w-[1200px] mx-auto px-6 md:px-20 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-4 uppercase tracking-widest">
+              {t.program.title}
+            </h2>
+            <p className="text-lg text-lavender-light font-semibold">
+              {t.program.subtitle}
+            </p>
+          </div>
+
+          {/* Tabs */}
+          <div className="flex justify-center mb-12">
+            <div className="bg-white p-2 rounded-full shadow-lg flex gap-2 border border-innovation-purple/10">
+              <button
+                onClick={() => setActiveTab('day1')}
+                className={`px-8 py-3 rounded-full font-display font-bold text-sm uppercase transition-all ${
+                  activeTab === 'day1' ? 'bg-innovation-purple text-white' : 'text-innovation-purple hover:bg-lavender-light'
+                }`}
+              >
+                {t.program.day1}
+              </button>
+              <button
+                onClick={() => setActiveTab('day2')}
+                className={`px-8 py-3 rounded-full font-display font-bold text-sm uppercase transition-all ${
+                  activeTab === 'day2' ? 'bg-innovation-purple text-white' : 'text-innovation-purple hover:bg-lavender-light'
+                }`}
+              >
+                {t.program.day2}
+              </button>
+            </div>
+          </div>
+
+          {/* Carousel */}
+          <div className="relative group">
+            <button 
+              onClick={() => scrollCarousel('left')}
+              className="absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center text-innovation-purple hover:bg-innovation-purple hover:text-white transition-all opacity-0 group-hover:opacity-100"
+            >
+              <ICONS.ChevronLeft size={24} />
+            </button>
+            
+            <div 
+              ref={carouselRef}
+              onMouseEnter={() => setIsCarouselPaused(true)}
+              onMouseLeave={() => setIsCarouselPaused(false)}
+              className="flex gap-6 overflow-x-auto no-scrollbar pb-8 px-4 snap-x"
+            >
+              {PROGRAM_DATA[activeTab].map((item) => {
+                  const getTypeStyles = (type: string) => {
+                    const t = type.toUpperCase();
+                    if (t.includes('ABERTURA')) return 'bg-blue-600 text-white';
+                    if (t.includes('PAINEL 2')) return 'bg-energy-orange text-white';
+                    if (t.includes('PAINEL 1')) return 'bg-[#FEF9C3] text-black';
+                    if (t.includes('INTERVALO')) return 'bg-yellow-400 text-black';
+                    if (t.includes('DEBATE')) return 'bg-red-500 text-white';
+                    if (t.includes('TEMÁTICA')) return 'bg-entrepreneur-green text-white';
+                    if (t.includes('TEMÁTICO')) return 'bg-black text-white';
+                    if (t.includes('PAINEL')) return 'bg-deep-purple text-white';
+                    if (t.includes('CREDENCIAMENTO')) return 'bg-amazon-green text-white';
+                    if (t.includes('OFICINA')) return 'bg-energy-orange text-white';
+                    if (t.includes('ENCERRAMENTO')) return 'bg-red-600 text-white';
+                    if (t.includes('RELATOS')) return 'bg-blue-600 text-white';
+                    return 'bg-amazon-green text-white';
+                  };
+
+                  const typeStyles = getTypeStyles(item.type);
+
+                  return (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="min-w-[320px] max-w-[320px] bg-deep-purple rounded-[22px] overflow-hidden shadow-xl snap-center flex flex-col"
+                    >
+                      {/* Faixa Superior */}
+                      <div className={`px-4 py-3 text-center text-xs font-bold uppercase tracking-[0.2em] shadow-inner ${typeStyles}`}>
+                        {item.type}
+                      </div>
+
+                      {/* Specialized Lunch Logic */}
+                      {(() => {
+                        const isLunch = item.activity.toUpperCase().includes('ALMOÇO');
+                        return (
+                          <div className="p-6 flex flex-col h-full">
+                            {/* Photo or Logo */}
+                            <div className="w-full h-48 rounded-2xl overflow-hidden mb-6 border-2 border-white/10 bg-white/5 flex items-center justify-center relative">
+                              {item.isGeneral && !item.image ? (
+                                <div className="flex flex-col items-center gap-2">
+                                  <img src={LOGO_URL} alt="FIEB" className="h-16 w-16 opacity-40 grayscale" referrerPolicy="no-referrer" />
+                                  <span className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">{item.type}</span>
+                                </div>
+                              ) : (
+                                <img 
+                                  src={item.image} 
+                                  alt={item.name || item.type} 
+                                  className={`w-full h-full object-cover transition-all hover:scale-110 ${
+                                    item.name?.includes('Thalita') ? 'object-center' :
+                                    item.name?.includes('Rosângela') ? 'object-center' :
+                                    item.name?.includes('Amanda') ? 'object-top' :
+                                    'object-[center_25%]'
+                                  }`}
+                                  referrerPolicy="no-referrer"
+                                />
+                              )}
+                            </div>
+
+                            {!item.isGeneral && (
+                              <>
+                                <h3 className="text-xl font-display font-bold text-white leading-tight mb-1">
+                                  {item.name}
+                                </h3>
+                                <div className="text-[10px] font-bold text-energy-orange uppercase tracking-[0.2em] mb-3">
+                                  {item.location}
+                                </div>
+                                <div className="text-xs font-bold text-white/60 uppercase mb-4">
+                                  {item.institution} {item.role && `• ${item.role}`}
+                                </div>
+                              </>
+                            )}
+                            
+                            <div className="flex-grow flex flex-col justify-center">
+                              <div className={`rounded-xl overflow-hidden shadow-md mb-6 ${typeStyles.split(' ')[0]}`}>
+                                <p className={`font-bold p-4 leading-tight ${item.isGeneral ? 'text-lg text-center' : 'text-sm italic'} ${typeStyles.includes('text-black') ? 'text-black' : 'text-white'}`}>
+                                  {item.isGeneral ? item.activity : `"${item.activity}"`}
+                                </p>
+                              </div>
+                            </div>
+
+                            {isLunch ? (
+                              <div className="pt-4 border-t border-white/10">
+                                <a 
+                                  href="https://fieb.net.br/restaurantes/"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="w-full py-3 bg-white text-innovation-purple hover:bg-innovation-purple hover:text-white rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-2 uppercase tracking-wider shadow-lg"
+                                >
+                                  Restaurantes Recomendados
+                                  <ICONS.ChevronRight size={14} />
+                                </a>
+                              </div>
+                            ) : (
+                              <div className="space-y-3 pt-4 border-t border-white/10">
+                                <div className="flex items-center gap-2 text-sm font-bold text-white/60 uppercase tracking-tighter">
+                                  <ICONS.Clock size={14} className="text-energy-orange" />
+                                  <span>{item.date} • {item.time}</span>
+                                </div>
+                                <div className="flex items-center gap-2 text-xs font-bold text-white/40 uppercase tracking-tighter">
+                                  <ICONS.MapPin size={14} className="text-energy-orange" />
+                                  <span>{item.location}</span>
+                                </div>
+                                {item.upcomingRegistration && (
+                                  <div className="pt-2">
+                                    <button
+                                      disabled
+                                      className="w-full py-2 bg-gray-500 text-white rounded-lg font-bold text-xs uppercase tracking-wider shadow-md cursor-not-allowed opacity-80"
+                                    >
+                                      Inscrições em Breve
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })()}
+                    </motion.div>
+                  );
+              })}
+            </div>
+
+            <button 
+              onClick={() => scrollCarousel('right')}
+              className="absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center text-innovation-purple hover:bg-innovation-purple hover:text-white transition-all opacity-0 group-hover:opacity-100"
+            >
+              <ICONS.ChevronRight size={24} />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Videos Section */}
+      <section className="py-24 bg-amazon-green">
+        <div className="max-w-[1200px] mx-auto px-6 md:px-20">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-4 uppercase tracking-widest">
+              ASSISTA | IV FIEB FLORIANÓPOLIS
+            </h2>
+          </div>
+          <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl">
+            <iframe 
+              width="100%" 
+              height="100%" 
+              src="https://www.youtube.com/embed/Kpk8QDUoXBI?si=aGXpantwfYCwccvm" 
+              title="YouTube video player" 
+              frameBorder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              referrerPolicy="strict-origin-when-cross-origin" 
+              allowFullScreen
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
+      {/* Speakers Grid */}
+      <section id="convidados" className="py-24 bg-white">
+        <div className="max-w-[1200px] mx-auto px-6 md:px-20">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-display font-bold text-innovation-purple mb-4 uppercase tracking-widest">
+              {t.speakers.title}
+            </h2>
+            <p className="text-lg text-gray-600 font-semibold">
+              {t.speakers.subtitle}
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...PROGRAM_DATA.day1, ...PROGRAM_DATA.day2].filter(s => !s.isGeneral).map((speaker) => {
+              const borderColors: Record<string, string> = {
+                'energy-orange': 'border-energy-orange',
+                'entrepreneur-green': 'border-entrepreneur-green',
+                'innovation-purple': 'border-innovation-purple',
+                'amazon-green': 'border-amazon-green',
+                'black': 'border-black',
+                'blue': 'border-blue-500',
+                'red': 'border-red-600',
+              };
+              const borderColor = borderColors[speaker.color] || 'border-gray-200';
+              
+              return (
+                <motion.div
+                  key={speaker.id}
+                  whileHover={{ y: -10, scale: 1.02 }}
+                  className={`bg-white rounded-3xl overflow-hidden shadow-xl border-2 ${borderColor} transition-all duration-300`}
+                >
+                  <div className="h-72 overflow-hidden relative border-b-4 border-inherit">
+                  <img 
+                    src={speaker.image} 
+                    alt={speaker.name} 
+                    className={`w-full h-full object-cover transition-all hover:scale-110 ${
+                      speaker.name?.includes('Thalita') ? 'object-center' :
+                      speaker.name?.includes('Rosângela') ? 'object-center' :
+                      speaker.name?.includes('Amanda') ? 'object-top' :
+                      'object-[center_25%]'
+                    }`}
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute top-4 right-4 flex gap-2">
+                    {speaker.lattes && (
+                      <a 
+                        href={speaker.lattes}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-8 h-8 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-innovation-purple hover:bg-innovation-purple hover:text-white transition-all"
+                        title="Lattes"
+                      >
+                        <ICONS.GraduationCap size={14} />
+                      </a>
+                    )}
+                  </div>
+                </div>
+                <div className="p-6 flex-grow flex flex-col justify-between bg-deep-purple">
+                  <div>
+                    <h3 className="text-xl font-display font-bold text-white mb-1">{speaker.name}</h3>
+                    <div className="text-[10px] font-bold text-energy-orange uppercase tracking-[0.2em] mb-2">
+                      {speaker.location}
+                    </div>
+                    <div className="text-xs font-bold text-white/60 uppercase mb-4">
+                      {speaker.institution}
+                    </div>
+                  </div>
+                  
+                  <div className={`rounded-xl overflow-hidden shadow-md ${
+                    speaker.type.includes('ABERTURA') ? 'bg-energy-orange' : 
+                    speaker.type.includes('TEMÁTICA') ? 'bg-entrepreneur-green' : 
+                    speaker.type.includes('TEMÁTICO') ? 'bg-black' : 
+                    speaker.type.includes('PAINEL') ? 'bg-deep-purple' : 
+                    'bg-amazon-green'
+                  }`}>
+                    <p className="text-xs font-bold text-white p-4 leading-tight">
+                      {speaker.activity}
+                    </p>
+                  </div>
+                </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Submit Work Section */}
+      <section id="submissao" className="py-24 bg-gradient-to-br from-energy-orange to-[#d35400] relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/circuit-board.png')]"></div>
+          <div className="max-w-[1200px] mx-auto px-6 md:px-20 relative z-10 flex flex-col items-center">
+            
+            <div className="text-center mb-16">
+              <span className="inline-block px-4 py-1.5 bg-white/20 text-white font-bold text-sm tracking-widest uppercase rounded-full mb-4">
+                Submissão de Trabalhos
+              </span>
+              <h2 className="text-4xl md:text-5xl font-display font-bold text-white uppercase tracking-widest drop-shadow-md">
+                Cronograma Oficial
+              </h2>
+            </div>
+            
+            <div className="w-full max-w-5xl mt-8">
+              <div className="grid md:grid-cols-6 gap-4 md:gap-0 relative">
+                
+                {/* Connecting Line for Desktop */}
+                <div className="hidden md:block absolute top-[45px] left-[8%] right-[8%] h-1 bg-white/20 rounded-full z-0"></div>
+
+                {[
+                  { date: "20/02", desc: "Abertura", active: true },
+                  { date: "22/03", desc: "Encerramento", active: false },
+                  { date: "Até 30/03", desc: "Resultados Parciais", active: false },
+                  { date: "Até 08/04", desc: "Versão Final", active: false },
+                  { date: "15/04", desc: "Resultados Finais", active: false },
+                  { date: "15/05", desc: "Apresentações", active: false, highlight: true },
+                ].map((item, idx) => (
+                  <div key={idx} className="relative z-10 flex flex-row md:flex-col items-center gap-4 md:gap-6 bg-white/10 md:bg-transparent p-4 md:p-0 rounded-2xl md:rounded-none backdrop-blur-sm border md:border-none border-white/10">
+                    
+                    {/* Data / Step Indicator */}
+                    <div className="flex-shrink-0 w-20 md:w-full flex justify-center">
+                      <div className={`w-20 md:w-24 h-20 md:h-24 rounded-full flex flex-col items-center justify-center font-display font-bold text-center border-4 transition-all duration-300 shadow-xl ${
+                        item.highlight 
+                          ? 'bg-innovation-purple border-white text-white scale-110 rotate-3' 
+                          : item.active 
+                            ? 'bg-white border-white text-energy-orange scale-105' 
+                            : 'bg-energy-orange border-white text-white hover:bg-white hover:text-energy-orange cursor-pointer hover:scale-105'
+                      }`}>
+                        <span className="text-lg md:text-xl leading-none">{item.date.split('/')[0].replace('Até ', '')}</span>
+                        <span className="text-[10px] md:text-xs uppercase mt-1 tracking-wider opacity-80">
+                          {item.date.includes('/') ? (item.date.split('/')[1] === '02' ? 'FEV' : item.date.split('/')[1] === '03' ? 'MAR' : item.date.split('/')[1] === '04' ? 'ABR' : 'MAI') : ''}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Descrição */}
+                    <div className={`flex-grow md:text-center md:px-2 ${item.highlight ? 'text-white' : 'text-white/90'}`}>
+                      <h4 className="font-bold text-base md:text-lg leading-tight md:mt-4">{item.desc}</h4>
+                      {item.date.includes('Até') && (
+                        <span className="text-[10px] uppercase font-bold text-white/60 bg-white/10 px-2 py-0.5 rounded-full inline-block mt-2">
+                          Prazo máximo
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-20 flex flex-col items-center gap-6 max-w-2xl text-center">
+              <motion.a 
+                href="https://submissoes.fieb.net.br/fieb/about/submissions"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-white text-energy-orange px-10 py-5 rounded-full font-display font-bold text-lg uppercase tracking-wider shadow-2xl flex items-center gap-3 transition-colors hover:bg-innovation-purple hover:text-white"
+              >
+                <ICONS.FileText size={24} />
+                Sistema de Submissão
+              </motion.a>
+              
+              <div className="flex flex-col md:flex-row gap-4 text-xs font-semibold text-white/80 mt-4 italic">
+                <span className="flex items-center gap-2 justify-center drop-shadow-md">
+                  <ICONS.Award size={16} /> Regras no Edital
+                </span>
+                <span className="hidden md:inline text-white/40">•</span>
+                <span className="flex items-center gap-2 justify-center drop-shadow-md">
+                  <ICONS.Mail size={16} /> cientifica.fieb@gmail.com
+                </span>
+              </div>
+            </div>
+          </div>
+      </section>
+
+      {/* Support Section */}
+      <section id="apoio" className="py-24 bg-white">
+        <div className="max-w-[1200px] mx-auto px-6 md:px-20">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-innovation-purple mb-6 uppercase tracking-widest">
+              {t.support.title}
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              {t.support.text}
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Ouro */}
+            <motion.div 
+              whileHover={{ scale: 1.02 }}
+              onClick={() => setSelectedTier('gold')}
+              className={`p-8 bg-deep-purple rounded-[32px] text-white shadow-2xl transition-all cursor-pointer border-4 ${
+                selectedTier === 'gold' ? 'border-[#FFD700] scale-[1.03]' : 'border-white/10'
+              }`}
+            >
+              <div className="text-sm font-bold text-[#FFD700] uppercase tracking-widest mb-4">{t.support.gold}</div>
+              <div className="text-4xl font-display font-bold mb-8">R$ 5000</div>
+              <ul className="space-y-4 mb-10 text-sm text-lavender-light/80">
+                {(t.support.benefits?.gold || []).map((benefit, i) => (
+                  <li key={i} className="flex gap-2">
+                    <ICONS.Award size={18} className="text-[#FFD700] shrink-0" /> 
+                    <span>{benefit}</span>
+                  </li>
+                ))}
+              </ul>
+              <a 
+                href="https://tally.so/r/gDGyvd"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full py-4 bg-energy-orange hover:bg-energy-orange/80 rounded-full font-display font-bold transition-all text-center"
+              >
+                {t.support.cta}
+              </a>
+            </motion.div>
+
+            {/* Prata */}
+            <motion.div 
+              whileHover={{ scale: 1.02 }}
+              onClick={() => setSelectedTier('silver')}
+              className={`p-8 bg-deep-purple rounded-[32px] text-white shadow-xl transition-all cursor-pointer border-4 ${
+                selectedTier === 'silver' ? 'border-[#C0C0C0] scale-[1.03]' : 'border-white/10'
+              }`}
+            >
+              <div className="text-sm font-bold text-[#C0C0C0] uppercase tracking-widest mb-4">{t.support.silver}</div>
+              <div className="text-4xl font-display font-bold mb-8">R$ 3000</div>
+              <ul className="space-y-4 mb-10 text-sm text-lavender-light/80">
+                {(t.support.benefits?.silver || []).map((benefit, i) => (
+                  <li key={i} className="flex gap-2">
+                    <ICONS.Award size={18} className="text-[#C0C0C0] shrink-0" /> 
+                    <span>{benefit}</span>
+                  </li>
+                ))}
+              </ul>
+              <a 
+                href="https://tally.so/r/gDGyvd"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full py-4 bg-energy-orange hover:bg-energy-orange/80 rounded-full font-display font-bold transition-all text-center"
+              >
+                {t.support.cta}
+              </a>
+            </motion.div>
+
+            {/* Bronze */}
+            <motion.div 
+              whileHover={{ scale: 1.02 }}
+              onClick={() => setSelectedTier('bronze')}
+              className={`p-8 bg-deep-purple rounded-[32px] text-white shadow-xl transition-all cursor-pointer border-4 ${
+                selectedTier === 'bronze' ? 'border-[#CD7F32] scale-[1.03]' : 'border-white/10'
+              }`}
+            >
+              <div className="text-sm font-bold text-[#CD7F32] uppercase tracking-widest mb-4">{t.support.bronze}</div>
+              <div className="text-4xl font-display font-bold mb-8">R$ 1500</div>
+              <ul className="space-y-4 mb-10 text-sm text-lavender-light/80">
+                {(t.support.benefits?.bronze || []).map((benefit, i) => (
+                  <li key={i} className="flex gap-2">
+                    <ICONS.Award size={18} className="text-[#CD7F32] shrink-0" /> 
+                    <span>{benefit}</span>
+                  </li>
+                ))}
+              </ul>
+              <a 
+                href="https://tally.so/r/gDGyvd"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full py-4 bg-energy-orange hover:bg-energy-orange/80 rounded-full font-display font-bold transition-all text-center"
+              >
+                {t.support.cta}
+              </a>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Local Section */}
+      <section id="local" className="py-24 bg-innovation-purple relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/circuit-board.png')]"></div>
+        <div className="max-w-[1200px] mx-auto px-6 md:px-20 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-4 uppercase tracking-widest">
+              {t.location.title}
+            </h2>
+            <p className="text-lg text-lavender-light/80 font-semibold max-w-2xl mx-auto">
+              {t.location.address}
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div 
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10 group"
+            >
+              <div className="absolute inset-0 bg-innovation-purple/20 group-hover:bg-transparent transition-all duration-500 z-10 pointer-events-none"></div>
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d590.7234580990171!2d-59.97556782883606!3d-3.100222419536266!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x926c1b2b6a48c3e5%3A0x91aeec80d21e90d0!2sFaculdade%20de%20Ci%C3%AAncias%20Agr%C3%A1rias%20-%20FCA%2001!5e1!3m2!1spt-BR!2sbr!4v1773335183386!5m2!1spt-BR!2sbr" 
+                width="100%" 
+                height="450" 
+                style={{ border: 0 }} 
+                allowFullScreen 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+                className="relative z-0"
+              ></iframe>
+              
+              <motion.div 
+                animate={{ 
+                  scale: [1, 1.2, 1],
+                  opacity: [0.5, 1, 0.5]
+                }}
+                transition={{ 
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-energy-orange/30 rounded-full z-20 pointer-events-none"
+              ></motion.div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-energy-orange rounded-full z-30 shadow-[0_0_20px_rgba(211,105,62,0.8)] pointer-events-none"></div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="space-y-8"
+            >
+              <div className="bg-black/90 backdrop-blur-xl p-10 rounded-3xl border border-white/20 shadow-2xl group transition-all duration-300 hover:border-energy-orange/50">
+                <div className="flex items-start gap-6 mb-8">
+                  <div className="w-16 h-16 bg-energy-orange/20 rounded-2xl flex items-center justify-center text-energy-orange shrink-0">
+                    <ICONS.MapPin size={32} />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-display font-bold text-white mb-2">Endereço</h3>
+                    <p className="text-2xl text-white font-semibold leading-relaxed">
+                      {t.location.address}
+                    </p>
+                  </div>
+                </div>
+                <a 
+                  href="https://maps.app.goo.gl/91aeec80d21e90d0"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-5 bg-white text-black hover:bg-energy-orange hover:text-white rounded-2xl font-bold text-xl transition-all flex items-center justify-center gap-2 group"
+                >
+                  {t.location.cta}
+                  <ICONS.ChevronRight size={24} className="group-hover:translate-x-1 transition-transform" />
+                </a>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-black/90 backdrop-blur-xl p-8 rounded-3xl border border-white/20 text-center shadow-2xl transition-all duration-300 hover:border-energy-orange/50">
+                  <ICONS.Clock className="text-energy-orange mx-auto mb-4" size={32} />
+                  <h4 className="text-white font-bold text-lg mb-1">Abertura</h4>
+                  <p className="text-energy-orange font-bold text-xl">08:00 AM</p>
+                </div>
+                <div className="bg-black/90 backdrop-blur-xl p-8 rounded-3xl border border-white/20 text-center shadow-2xl transition-all duration-300 hover:border-energy-orange/50">
+                  <ICONS.Users className="text-energy-orange mx-auto mb-4" size={32} />
+                  <h4 className="text-white font-bold text-lg mb-1">Capacidade</h4>
+                  <p className="text-energy-orange font-bold text-xl">200 participantes</p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Partners Marquee Section */}
+      <section className="py-24 bg-white overflow-hidden">
+        <div className="max-w-[1240px] mx-auto px-6 md:px-20 mb-12">
+          
+          {/* Realização Section */}
+          <div className="mb-20">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl md:text-5xl font-display font-bold text-innovation-purple mb-4 uppercase tracking-widest">
+                Realização
+              </h2>
+              <div className="h-1.5 w-32 bg-energy-orange mx-auto rounded-full"></div>
+            </div>
+            
+            <div className="flex flex-wrap items-center justify-center gap-16 md:gap-32 animate-fade-in">
+              {PARTNERS_LOGOS.filter(p => p.category === 'Realização').map((partner, idx) => (
+                <div key={`${partner.name}-realizacao-${idx}`} className="flex flex-col items-center">
+                  <div className="h-40 w-40 md:h-56 md:w-56 flex items-center justify-center mb-6 transition-all duration-300 transform hover:scale-105">
+                    {partner.src ? (
+                      <img 
+                        src={partner.src} 
+                        alt={partner.name} 
+                        className="max-h-full max-w-full object-contain drop-shadow-md"
+                        referrerPolicy="no-referrer"
+                      />
+                    ) : (
+                      <div className="text-4xl font-display font-black text-innovation-purple tracking-tighter uppercase italic">
+                        {partner.name}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="w-full border-t-2 border-gray-100 mb-20"></div>
+
+          <div className="text-center">
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-innovation-purple mb-4 uppercase tracking-widest">
+              Nossos Parceiros e Apoiadores
+            </h2>
+            <div className="h-1.5 w-24 bg-energy-orange mx-auto rounded-full"></div>
+          </div>
+        </div>
+
+        <div className="relative flex overflow-hidden group py-10 bg-lavender-light/10 border-y border-gray-100">
+          <motion.div 
+            className="flex whitespace-nowrap gap-16 items-center"
+            animate={{ x: [0, -2000] }}
+            transition={{ 
+              duration: 30, 
+              repeat: Infinity, 
+              ease: "linear",
+              pauseOnHover: true 
+            }}
+          >
+            {(() => {
+              const carouselLogos = PARTNERS_LOGOS.filter(p => p.category !== 'Realização' && p.category !== 'Financiamento');
+              return [...carouselLogos, ...carouselLogos, ...carouselLogos].map((partner, idx) => (
+              <div 
+                key={`${partner.name}-${idx}`} 
+                className="flex flex-col items-center justify-center min-w-[280px] px-8"
+              >
+                <div className="h-32 w-full flex items-center justify-center mb-6 grayscale hover:grayscale-0 transition-all duration-300 transform hover:scale-110">
+                  {partner.src ? (
+                    <img 
+                      src={partner.src} 
+                      alt={partner.name} 
+                      className="max-h-full max-w-full object-contain mix-blend-multiply"
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : (
+                    <div className="text-2xl font-display font-black text-innovation-purple/20 tracking-tighter uppercase italic">
+                      {partner.name}
+                    </div>
+                  )}
+                </div>
+                <div className={`text-[10px] font-bold uppercase tracking-[0.2em] px-4 py-1.5 rounded-full border shadow-sm ${
+                  partner.category === 'Realização' ? 'bg-innovation-purple text-white border-innovation-purple shadow-innovation-purple/20' :
+                  partner.category === 'Instituição Parceira' ? 'bg-amazon-green text-white border-amazon-green shadow-amazon-green/20' :
+                  partner.category === 'Instituição Apoiadora' ? 'bg-energy-orange text-white border-energy-orange shadow-energy-orange/20' :
+                  partner.category === 'Apoio Ouro' ? 'bg-yellow-500 text-black border-yellow-500 font-black' :
+                  partner.category === 'Financiamento' ? 'bg-blue-600 text-white border-blue-600 shadow-blue-600/20' :
+                  'bg-gray-500 text-white border-gray-500'
+                }`}>
+                  {partner.category}
+                </div>
+              </div>
+            ))})()}
+          </motion.div>
+        </div>
+
+        {/* Financiamento Section */}
+        <div className="max-w-[1240px] mx-auto px-6 md:px-20 mt-20">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-4xl font-display font-bold text-innovation-purple mb-4 uppercase tracking-widest">
+              Financiamento
+            </h2>
+            <div className="h-1.5 w-24 bg-blue-600 mx-auto rounded-full"></div>
+          </div>
+          
+          <div className="flex flex-wrap items-center justify-center gap-16 md:gap-32 animate-fade-in">
+            {PARTNERS_LOGOS.filter(p => p.category === 'Financiamento').map((partner, idx) => (
+              <div key={`${partner.name}-financiamento-${idx}`} className="flex flex-col items-center">
+                <div className="h-40 w-auto md:h-64 md:w-[600px] flex items-center justify-center mb-6 transition-all duration-300 transform hover:scale-105">
+                  {partner.src ? (
+                    <img 
+                      src={partner.src} 
+                      alt={partner.name} 
+                      className="max-h-full max-w-full object-contain drop-shadow-sm"
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : (
+                    <div className="text-2xl font-display font-black text-innovation-purple tracking-tighter uppercase italic">
+                      {partner.name}
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-deep-purple text-white pt-20 pb-10">
+        <div className="max-w-[1200px] mx-auto px-6 md:px-20">
+          <div className="grid md:grid-cols-3 gap-12 mb-20">
+            <div className="md:col-span-1">
+              <div className="flex items-center gap-4 mb-6">
+                <img src={LOGO_URL} alt="FIEB Logo" className="h-20 w-20 object-cover object-left" referrerPolicy="no-referrer" />
+              </div>
+              <p className="text-lavender-light/60 max-w-md leading-relaxed">
+                Palestras, paineis temáticos, oficinas e visitas técnicas chegando na quinta edição do evento na UFAM em Manaus.
+              </p>
+            </div>
+
+            <div className="flex flex-col items-center md:items-start">
+              <h4 className="font-display font-bold text-lg mb-6 uppercase tracking-widest text-energy-orange">{t.footer.contact}</h4>
+              <ul className="space-y-4 text-lavender-light/60 text-center md:text-left">
+                <li className="flex items-center justify-center md:justify-start gap-2"><ICONS.Globe size={16} /> contato@fieb.net.br</li>
+                <li className="flex items-center justify-center md:justify-start gap-2"><ICONS.MapPin size={16} /> Manaus, Amazonas</li>
+                <li className="flex items-center justify-center md:justify-start gap-2"><ICONS.Clock size={16} /> 14 e 15 de Maio de 2026</li>
+              </ul>
+            </div>
+
+            <div className="flex flex-col items-center">
+              <h4 className="font-display font-bold text-lg mb-6 uppercase tracking-widest text-energy-orange">{t.footer.social}</h4>
+              <div className="flex flex-wrap justify-center gap-3">
+                {SOCIAL_LINKS.map((social) => {
+                  const Icon = ICONS[social.icon as keyof typeof ICONS];
+                  return (
+                    <a 
+                      key={social.name}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 bg-innovation-purple rounded-full flex items-center justify-center hover:bg-amazon-green transition-all duration-300 text-white"
+                      title={social.name}
+                    >
+                      <Icon size={20} />
+                    </a>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-lavender-light/40 uppercase font-bold tracking-widest">
+            <p>© 2026 V FIEB. {t.footer.rights}.</p>
+            <div className="flex gap-8">
+              <a href="#" className="hover:text-white transition-colors">Privacidade</a>
+              <a href="#" className="hover:text-white transition-colors">Termos</a>
+              <a href="#" className="hover:text-white transition-colors">Acessibilidade</a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}

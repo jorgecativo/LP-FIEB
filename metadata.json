@@ -1,0 +1,7 @@
+{
+  "name": "V Fórum de Inovação e Empreendedorismo na Biblioteconomia",
+  "description": "Landing page oficial do V FIEB - Empreendedorismo feminino na era digital em Manaus, Amazonas.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
