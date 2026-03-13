@@ -115,6 +115,7 @@ export const TRANSLATIONS = {
         useful: [
           { label: 'Hospedagem', href: 'https://fieb.net.br/hospedagem-manaus/' },
           { label: 'Espaços culturais e Lazer', href: 'https://fieb.net.br/espacos-culturais/' },
+          { label: 'Restaurantes', href: 'https://fieb.net.br/restaurantes/' },
         ]
       }
     },
@@ -228,6 +229,7 @@ export const TRANSLATIONS = {
         useful: [
           { label: 'Accommodation', href: 'https://fieb.net.br/hospedagem-manaus/' },
           { label: 'Cultural and Leisure Spaces', href: 'https://fieb.net.br/espacos-culturais/' },
+          { label: 'Restaurants', href: 'https://fieb.net.br/restaurantes/' },
         ]
       }
     },
@@ -341,6 +343,7 @@ export const TRANSLATIONS = {
         useful: [
           { label: 'Alojamiento', href: 'https://fieb.net.br/hospedagem-manaus/' },
           { label: 'Espacios Culturales y de Ocio', href: 'https://fieb.net.br/espacos-culturais/' },
+          { label: 'Restaurantes', href: 'https://fieb.net.br/restaurantes/' },
         ]
       }
     },
