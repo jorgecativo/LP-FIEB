@@ -25,7 +25,7 @@ jobs:
       run: npm run build
 
     - name: Realizar Deploy via FTP para o cPanel
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.3
+      uses: SamKirkland/FTP-Deploy-Action@4.3.3
       with:
         # Você deve configurar esses Secrets no seu projeto no GitHub em:
         # Settings > Secrets and variables > Actions > New repository secret
