@@ -39,4 +39,4 @@ jobs:
         # Opcional: Se seu vite envia para www.fieb.net.br/fieb2026, 
         # mude o server-dir abaixo caso seja uma subpasta. 
         # (ex: /public_html/fieb2026/). Deixando vazio, vai para a raiz do usuário FTP.
-        server-dir: /
+        server-dir: /public_html/fieb2026/
