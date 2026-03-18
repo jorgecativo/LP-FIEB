@@ -1,0 +1,42 @@
+name: Deploy to cPanel via FTP
+
+on:
+  push:
+    branches:
+      - main # O deploy acontecerá automaticamente sempre que houver um push na branch main
+
+jobs:
+  web-deploy:
+    name: Build & Deploy to cPanel
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout do Repositório
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Instalar Dependências
+      run: npm install
+
+    - name: Gerar Build (dist)
+      run: npm run build
+
+    - name: Realizar Deploy via FTP para o cPanel
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.3
+      with:
+        # Você deve configurar esses Secrets no seu projeto no GitHub em:
+        # Settings > Secrets and variables > Actions > New repository secret
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        
+        # Pasta gerada pelo Vite que será enviada
+        local-dir: ./dist/
+        
+        # Opcional: Se seu vite envia para www.fieb.net.br/fieb2026, 
+        # mude o server-dir abaixo caso seja uma subpasta. 
+        # (ex: /public_html/fieb2026/). Deixando vazio, vai para a raiz do usuário FTP.
+        server-dir: /
