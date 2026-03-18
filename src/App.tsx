@@ -155,6 +155,9 @@ export default function App() {
             <NavItem id="about" label={t.nav.about} subItems={t.nav.sub.about} />
             <NavItem id="program" label={t.nav.program} subItems={t.nav.sub.program} />
             <NavItem id="submissions" label={t.nav.submissions} subItems={t.nav.sub.submissions} />
+            <a href="https://fieb.net.br/inscricoes/" target="_blank" rel="noopener noreferrer" className="text-xs font-bold uppercase tracking-wider text-white bg-energy-orange hover:bg-white hover:text-energy-orange py-2 px-4 rounded-lg transition-colors shadow-lg">
+              INSCRIÇÕES
+            </a>
             <a href="#apoio" className="text-xs font-bold uppercase tracking-wider text-white hover:bg-innovation-purple/40 py-2 px-3 rounded-lg transition-colors">
               {t.nav.partners}
             </a>
@@ -228,6 +231,10 @@ export default function App() {
                     <a key={i} href={item.href} className="block text-white/80 hover:text-white pl-4 py-1">{item.label}</a>
                   ))}
                 </div>
+
+                <a href="https://fieb.net.br/inscricoes/" target="_blank" rel="noopener noreferrer" className="block w-full py-3 mt-2 bg-energy-orange text-white text-center rounded-xl font-bold uppercase tracking-widest shadow-lg active:scale-95 transition-transform">
+                  INSCRIÇÕES
+                </a>
 
                 <div className="space-y-2">
                   <p className="text-xs font-bold text-white/40 uppercase tracking-widest">{t.nav.useful}</p>
