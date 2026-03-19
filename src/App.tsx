@@ -436,14 +436,14 @@ export default function App() {
 
       {/* Pricing Marquee */}
       <section className="py-4 bg-innovation-purple border-y border-white/10 overflow-hidden relative z-20">
-        <div className="flex animate-marquee-reverse whitespace-nowrap items-center">
+        <div className="flex animate-marquee whitespace-nowrap items-center" style={{animationDuration: '25s'}}>
           {[1, 2, 3].map((n) => (
             <div key={n} className="flex items-center">
               {t.registrations.table.categories.map((cat, cIdx) => (
                 <div key={cIdx} className="flex items-center">
                   <span className="text-lg font-display font-bold text-white px-8 uppercase tracking-wider flex items-center gap-4">
                     {cat.name} 
-                    <span className="bg-black text-energy-orange px-4 py-1.5 rounded-xl border border-white/10 shadow-lg">
+                    <span className="bg-amazon-green text-white font-bold px-4 py-1.5 rounded-xl border border-white/10 shadow-lg">
                       {cat.prices ? cat.prices[0] : cat.special}
                     </span>
                   </span>
