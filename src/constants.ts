@@ -129,7 +129,7 @@ export const TRANSLATIONS = {
     },
     about: {
       title: 'Sobre o Evento',
-      text1: 'O Fórum de Inovação e Empreendedorismo na Biblioteconomia – FIEB é um evento científico e profissional de abrangência nacional que tem como finalidade fomentar a produção, a socialização e a aplicação de conhecimentos inovadores no campo da Biblioteconomia e da Ciência da Informação, com ênfase em empreendedorismo, inovação digital, gestão da informação e criação de produtos e serviços informacionais.',
+      text1: 'O Fórum de Inovação e Empreendedorismo na Biblioteconomia – FIEB é um evento científico e profissional de abrangência nacional que tem como finalidade fomentar a produção, a socialização e a aplicação de conhecimentos inovadores no campo da Biblioteconomia e da Ciência da Informação, com ênfase em empreendedorismo, inovação, avanço tecnológico digital, gestão da informação e criação de produtos e serviços informacionais.',
       text2: '10 anos depois da primeira edição em 2016, a edição será realizada na cidade de Manaus, com palestras, oficinas, painéis temáticos, apresentações de trabalhos nas categorias pesquisas concluídas, projetos em andamento e relatos de experiência.',
       statParticipants: 'Mais de 400',
       statYears: '10 Anos',
@@ -273,7 +273,7 @@ export const TRANSLATIONS = {
     },
     about: {
       title: 'About the Event',
-      text1: 'The Forum of Innovation and Entrepreneurship in Librarianship – FIEB is a national scientific and professional event aimed at fostering the production, socialization, and application of innovative knowledge in the field of Librarianship and Information Science, with an emphasis on entrepreneurship, digital innovation, information management, and the creation of informational products and services.',
+      text1: 'The Forum of Innovation and Entrepreneurship in Librarianship – FIEB is a national scientific and professional event aimed at fostering the production, socialization, and application of innovative knowledge in the field of Librarianship and Information Science, with an emphasis on entrepreneurship, innovation, digital technological advancement, information management, and the creation of informational products and services.',
       text2: '10 years after the first edition in 2016, this edition will be held in the city of Manaus, featuring lectures, workshops, thematic panels, and paper presentations in categories such as completed research, ongoing projects, and experience reports.',
       statParticipants: 'Over 400',
       statYears: '10 Years',
@@ -417,7 +417,7 @@ export const TRANSLATIONS = {
     },
     about: {
       title: 'Sobre el Evento',
-      text1: 'El Foro de Innovación y Emprendimiento en Bibliotecología – FIEB es un evento científico y profesional de alcance nacional que tiene como finalidad fomentar la producción, socialización y aplicación de conocimientos innovadores en el campo de la Bibliotecología y la Ciencia de la Información, con énfasis en emprendimiento, innovación digital, gestión de la información y creación de productos y servicios informativos.',
+      text1: 'El Foro de Innovación y Emprendimiento en Bibliotecología – FIEB es un evento científico y profesional de alcance nacional que tiene como finalidad fomentar la producción, socialización y aplicación de conocimientos innovadores en el campo de la Bibliotecología y la Ciencia de la Información, con énfasis en emprendimiento, innovación, avance tecnológico digital, gestión de la información y creación de productos y servicios informativos.',
       text2: '10 años después de la primera edición en 2016, la edición se realizará en la ciudad de Manaus, con conferencias, talleres, paneles temáticos, presentaciones de trabajos en las categorías de investigaciones concluidas, proyectos en curso y relatos de experiencia.',
       statParticipants: 'Más de 400',
       statYears: '10 Años',
