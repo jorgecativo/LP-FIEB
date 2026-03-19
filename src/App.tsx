@@ -493,15 +493,15 @@ export default function App() {
               <div className="font-display font-bold text-xl uppercase tracking-wider">{t.registrations.table.category}</div>
               <div className="text-center">
                 <div className="font-display font-bold text-lg uppercase">{t.registrations.table.lot1}</div>
-                <div className="text-[10px] opacity-80 font-bold tracking-widest mt-1">{t.registrations.table.dates1}</div>
+                <div className="text-[13px] opacity-80 font-bold tracking-widest mt-1">{t.registrations.table.dates1}</div>
               </div>
               <div className="text-center opacity-60">
                 <div className="font-display font-bold text-lg uppercase">{t.registrations.table.lot2}</div>
-                <div className="text-[10px] opacity-80 font-bold tracking-widest mt-1">{t.registrations.table.dates2}</div>
+                <div className="text-[13px] opacity-80 font-bold tracking-widest mt-1">{t.registrations.table.dates2}</div>
               </div>
               <div className="text-center opacity-40">
                 <div className="font-display font-bold text-lg uppercase">{t.registrations.table.lot3}</div>
-                <div className="text-[10px] opacity-80 font-bold tracking-widest mt-1">{t.registrations.table.dates3}</div>
+                <div className="text-[13px] opacity-80 font-bold tracking-widest mt-1">{t.registrations.table.dates3}</div>
               </div>
             </div>
 
