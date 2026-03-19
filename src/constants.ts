@@ -189,6 +189,36 @@ export const TRANSLATIONS = {
       title: 'LOCAL DO EVENTO : Auditório Samaúma - UFAM',
       address: 'Av. Jauary Marinho, Via de Acesso ao Setor Sul - UFAM - Coroado, Manaus - AM',
       cta: 'Ver no Google Maps'
+    },
+    registrations: {
+      title: 'INSCRIÇÕES ABERTAS',
+      subtitle: 'Garanta sua vaga no maior evento de inovação e empreendedorismo na Biblioteconomia.',
+      table: {
+        category: 'CATEGORIA',
+        lot1: 'Lote 1',
+        lot2: 'Lote 2',
+        lot3: 'Lote 3',
+        dates1: '18/03 a 31/03',
+        dates2: '01/04 a 15/04',
+        dates3: '16/04 a 30/04',
+        categories: [
+          { name: 'FIEB - Estudante graduação e pós-graduação*', prices: ['R$ 15,00', 'R$ 30,00', 'R$ 45,00'] },
+          { name: 'FIEB + 1 OFICINA - Estudante graduação e pós-graduação*', prices: ['R$ 25,00', 'R$ 40,00', 'R$ 55,00'] },
+          { name: 'FIEB - Profissionais', prices: ['R$ 40,00', 'R$ 55,00', 'R$ 70,00'] },
+          { name: 'FIEB + 1 OFICINA - Profissionais', prices: ['R$ 50,00', 'R$ 65,00', 'R$ 75,00'] },
+          { name: 'FIEB - Profissionais do SISTEBIB', special: 'Mediante Voucher até 31/03/2026' }
+        ]
+      },
+      info: [
+        'Estudantes de graduação e pós-graduação deverão anexar comprovante de matrícula atualizado.',
+        'A inscrição é obrigatória para participação no evento e para apresentação de trabalhos científicos.',
+        'Pelo menos um autor de trabalho aprovado deve estar inscrito no evento.',
+        'As inscrições estão sujeitas ao limite de vagas do auditório do evento.',
+        'As oficinas possuem vagas limitadas a 20 participantes por turma. Para garantir a diversidade do público, cada categoria (discentes e profissionais) terá uma reserva de até 20% das vagas.',
+        'A organização poderá encerrar as inscrições antecipadamente, caso o número máximo de participantes seja atingido.',
+        'Certificados digitais serão emitidos conforme a categoria de inscrição, considerando o credenciamento obrigatório nos dois dias do evento.'
+      ],
+      cta: 'Quero me inscrever'
     }
   },
   en: {
@@ -303,6 +333,36 @@ export const TRANSLATIONS = {
       title: 'EVENT LOCATION',
       address: 'Av. Jauary Marinho, Via de Acesso ao St. Sul - Coroado, Manaus - AM',
       cta: 'View on Google Maps'
+    },
+    registrations: {
+      title: 'REGISTRATION OPEN',
+      subtitle: 'Secure your spot at the largest innovation and entrepreneurship event in Librarianship.',
+      table: {
+        category: 'CATEGORY',
+        lot1: 'Lot 1',
+        lot2: 'Lot 2',
+        lot3: 'Lot 3',
+        dates1: '03/18 to 03/31',
+        dates2: '04/01 to 04/15',
+        dates3: '04/16 to 04/30',
+        categories: [
+          { name: 'FIEB - Undergrad & Graduate Students*', prices: ['$ 3.00', '$ 6.00', '$ 9.00'] },
+          { name: 'FIEB + 1 WORKSHOP - Undergrad & Graduate Students*', prices: ['$ 5.00', '$ 8.00', '$ 11.00'] },
+          { name: 'FIEB - Professionals', prices: ['$ 8.00', '$ 11.00', '$ 14.00'] },
+          { name: 'FIEB + 1 WORKSHOP - Professionals', prices: ['$ 10.00', '$ 13.00', '$ 15.00'] },
+          { name: 'FIEB - SISTEBIB Professionals', special: 'By Voucher until 03/31/2026' }
+        ]
+      },
+      info: [
+        'Undergraduate and graduate students must attach updated enrollment proof.',
+        'Registration is mandatory for participation and for presenting scientific papers.',
+        'At least one author of an approved paper must be registered for the event.',
+        'Registrations are subject to the auditorium capacity limit.',
+        'Workshops have limited spots (20 participants per class). Diversified quotas (20% for each category) will be reserved.',
+        'Organizers may close registrations early if the maximum number of participants is reached.',
+        'Digital certificates will be issued according to the category, requiring mandatory check-in on both days.'
+      ],
+      cta: 'Register now'
     }
   },
   es: {
@@ -417,6 +477,36 @@ export const TRANSLATIONS = {
       title: 'UBICACIÓN DEL EVENTO',
       address: 'Av. Jauary Marinho, Via de Acesso ao St. Sul - Coroado, Manaus - AM',
       cta: 'Ver en Google Maps'
+    },
+    registrations: {
+      title: 'INSCRIPCIONES ABIERTAS',
+      subtitle: 'Asegura tu lugar en el mayor evento de innovación y emprendimiento en Bibliotecología.',
+      table: {
+        category: 'CATEGORÍA',
+        lot1: 'Lote 1',
+        lot2: 'Lote 2',
+        lot3: 'Lote 3',
+        dates1: '18/03 al 31/03',
+        dates2: '01/04 al 15/04',
+        dates3: '16/04 al 30/04',
+        categories: [
+          { name: 'FIEB - Estudiantes de grado y posgrado*', prices: ['$ 3.00', '$ 6.00', '$ 9.00'] },
+          { name: 'FIEB + 1 TALLER - Estudiantes de grado y posgrado*', prices: ['$ 5.00', '$ 8.00', '$ 11.00'] },
+          { name: 'FIEB - Profesionales', prices: ['$ 8.00', '$ 11.00', '$ 14.00'] },
+          { name: 'FIEB + 1 TALLER - Profesionales', prices: ['$ 10.00', '$ 13.00', '$ 15.00'] },
+          { name: 'FIEB - Profesionales del SISTEBIB', special: 'Mediante Voucher hasta 31/03/2026' }
+        ]
+      },
+      info: [
+        'Los estudiantes de grado y posgrado deben adjuntar un comprobante de matrícula actualizado.',
+        'La inscripción é obligatoria para la participación y presentación de trabajos científicos.',
+        'Al menos um autor del trabajo aprobado debe estar inscrito en el evento.',
+        'Las inscripciones están sujetas al limite de capacidad del auditorio.',
+        'Los talleres tienen plazas limitadas (20 participantes por clase). Se reservará el 20% de las plazas por categoría.',
+        'La organización podrá cerrar las inscripciones anticipadamente.',
+        'Los certificados digitales se emitirán según la categoría de inscripción.'
+      ],
+      cta: 'Regístrate ahora'
     }
   }
 };

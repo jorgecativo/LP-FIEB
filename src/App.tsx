@@ -432,6 +432,156 @@ export default function App() {
         </div>
       </section>
 
+      {/* Registration Section */}
+      <section id="inscricoes" className="py-24 bg-lavender-light relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-energy-orange/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-innovation-purple/10 rounded-full blur-3xl -ml-32 -mb-32"></div>
+
+        <div className="max-w-[1200px] mx-auto px-6 md:px-20 relative z-10">
+          <div className="text-center mb-16">
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-4xl md:text-6xl font-display font-bold text-innovation-purple mb-4 uppercase tracking-widest"
+            >
+              {t.registrations.title}
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-lg text-gray-600 font-semibold max-w-2xl mx-auto"
+            >
+              {t.registrations.subtitle}
+            </motion.p>
+          </div>
+
+          {/* Pricing Table/Grid */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="bg-white rounded-[32px] shadow-2xl overflow-hidden border border-innovation-purple/5 mb-16"
+          >
+            {/* Table Header */}
+            <div className="grid grid-cols-1 md:grid-cols-4 bg-innovation-purple text-white p-6 md:p-8 hidden md:grid">
+              <div className="font-display font-bold text-xl uppercase tracking-wider">{t.registrations.table.category}</div>
+              <div className="text-center">
+                <div className="font-display font-bold text-lg uppercase">{t.registrations.table.lot1}</div>
+                <div className="text-[10px] opacity-80 font-bold tracking-widest mt-1">{t.registrations.table.dates1}</div>
+              </div>
+              <div className="text-center opacity-60">
+                <div className="font-display font-bold text-lg uppercase">{t.registrations.table.lot2}</div>
+                <div className="text-[10px] opacity-80 font-bold tracking-widest mt-1">{t.registrations.table.dates2}</div>
+              </div>
+              <div className="text-center opacity-40">
+                <div className="font-display font-bold text-lg uppercase">{t.registrations.table.lot3}</div>
+                <div className="text-[10px] opacity-80 font-bold tracking-widest mt-1">{t.registrations.table.dates3}</div>
+              </div>
+            </div>
+
+            {/* Table Body */}
+            <div className="divide-y divide-gray-100">
+              {t.registrations.table.categories.map((cat, idx) => (
+                <div key={idx} className="grid grid-cols-1 md:grid-cols-4 p-6 md:p-8 items-center hover:bg-lavender-light/30 transition-colors group">
+                  <div className="font-bold text-innovation-purple mb-4 md:mb-0 pr-4 group-hover:translate-x-1 transition-transform">{cat.name}</div>
+                  {cat.special ? (
+                    <div className="md:col-span-3 text-center md:text-left md:pl-8">
+                      <span className="inline-block px-4 py-2 bg-energy-orange/10 text-energy-orange rounded-full font-display font-bold text-sm tracking-wider">
+                        {cat.special}
+                      </span>
+                    </div>
+                  ) : (
+                    <>
+                      {cat.prices.map((price, pIdx) => (
+                        <div key={pIdx} className={`text-center flex md:block justify-between items-center mb-2 md:mb-0 ${pIdx === 0 ? 'bg-energy-orange/5 md:bg-transparent p-3 md:p-0 rounded-xl border border-energy-orange/10 md:border-none' : 'opacity-40'}`}>
+                          <span className="md:hidden text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                            {pIdx === 0 ? t.registrations.table.lot1 : pIdx === 1 ? t.registrations.table.lot2 : t.registrations.table.lot3}
+                          </span>
+                          <span className={`font-display font-bold text-xl ${pIdx === 0 ? 'text-energy-orange' : 'text-gray-400'}`}>
+                            {price}
+                          </span>
+                        </div>
+                      ))}
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Info area */}
+          <div className="grid lg:grid-cols-5 gap-12 items-start">
+            <motion.div 
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="lg:col-span-3 space-y-6"
+            >
+              <h3 className="text-2xl font-display font-bold text-innovation-purple flex items-center gap-3 uppercase tracking-wider">
+                <div className="w-10 h-10 bg-energy-orange rounded-xl flex items-center justify-center text-white shadow-lg">
+                  <ICONS.FileText size={20} />
+                </div>
+                Informações Importantes
+              </h3>
+              <div className="grid gap-4">
+                {t.registrations.info.map((item, idx) => (
+                  <motion.div 
+                    key={idx}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.05 }}
+                    className="flex gap-4 p-4 bg-white/50 rounded-2xl border border-innovation-purple/5 hover:border-innovation-purple/20 transition-colors group"
+                  >
+                    <div className="w-6 h-6 rounded-full bg-innovation-purple/10 flex items-center justify-center text-innovation-purple shrink-0 mt-0.5 group-hover:bg-innovation-purple group-hover:text-white transition-colors">
+                      <span className="text-[10px] font-bold">{idx + 1}</span>
+                    </div>
+                    <p className="text-sm text-gray-600 leading-relaxed font-medium">
+                      {item}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="lg:col-span-2 bg-gradient-to-br from-innovation-purple to-deep-purple p-10 rounded-[40px] shadow-2xl relative overflow-hidden group"
+            >
+              {/* Decorative elements */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 blur-2xl"></div>
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-energy-orange/20 rounded-full -ml-16 -mb-16 blur-2xl"></div>
+              
+              <div className="relative z-10 flex flex-col items-center text-center">
+                <div className="w-20 h-20 bg-white/10 backdrop-blur-md rounded-3xl flex items-center justify-center text-white mb-8 border border-white/20 shadow-xl group-hover:scale-110 transition-transform duration-500">
+                  <ICONS.Users size={40} />
+                </div>
+                <h4 className="text-3xl font-display font-bold text-white mb-4 tracking-tight">Pronto para participar?</h4>
+                <p className="text-lavender-light/70 mb-10 text-base leading-relaxed">
+                  As vagas são limitadas pela capacidade do auditório. Garanta as melhores condições inscrevendo-se no lote atual!
+                </p>
+                <motion.a 
+                  href="https://fieb.net.br/inscricoes/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full py-6 bg-energy-orange hover:bg-white text-white hover:text-energy-orange rounded-2xl font-display font-bold text-xl uppercase tracking-widest shadow-[0_20px_40px_rgba(211,105,62,0.3)] transition-all flex items-center justify-center gap-4 group/btn"
+                >
+                  {t.registrations.cta}
+                  <ICONS.ChevronRight className="group-hover/btn:translate-x-2 transition-transform" />
+                </motion.a>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* Program Section */}
       <section id="programacao" className="py-24 bg-innovation-purple relative overflow-hidden">
         {/* Texture overlay */}
