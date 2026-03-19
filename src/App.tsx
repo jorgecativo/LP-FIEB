@@ -517,7 +517,7 @@ export default function App() {
                   ) : (
                     <>
                       {cat.prices.map((price, pIdx) => (
-                        <div key={pIdx} className={`text-center flex md:block justify-between items-center mb-2 md:mb-0 ${pIdx === 0 ? 'bg-energy-orange/5 md:bg-transparent p-3 md:p-0 rounded-xl border border-energy-orange/10 md:border-none' : 'opacity-40'}`}>
+                        <div key={pIdx} className={`text-center flex md:block justify-between items-center mb-2 md:mb-0 ${pIdx === 0 ? 'bg-black p-3 md:py-2 md:px-4 rounded-xl shadow-lg border border-white/10' : 'opacity-40'}`}>
                           <span className="md:hidden text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                             {pIdx === 0 ? t.registrations.table.lot1 : pIdx === 1 ? t.registrations.table.lot2 : t.registrations.table.lot3}
                           </span>
