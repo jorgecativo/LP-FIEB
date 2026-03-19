@@ -359,6 +359,16 @@ export default function App() {
           {[1, 2, 3, 4].map((n) => (
             <div key={n} className="flex items-center group">
               <a 
+                href="https://fieb.net.br/inscricoes/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-sm sm:text-base md:text-2xl font-display font-bold text-white px-4 md:px-8 uppercase tracking-widest hover:text-energy-orange transition-colors flex items-center gap-2 md:gap-4 group"
+              >
+                INSCRIÇÕES ABERTAS
+                <span className="px-3 py-1 md:px-4 md:py-1.5 bg-energy-orange text-white text-[8px] md:text-[10px] rounded-full group-hover:bg-white group-hover:text-energy-orange transition-colors">INSREVA-SE AQUI</span>
+              </a>
+              <span className="text-energy-orange text-xl md:text-2xl">|</span>
+              <a 
                 href="https://submissoes.fieb.net.br/fieb/about/submissions" 
                 target="_blank" 
                 rel="noopener noreferrer"
@@ -376,14 +386,6 @@ export default function App() {
               >
                 CONFIRA A PROGRAMAÇÃO PRELIMINAR
                 <span className="px-3 py-1 md:px-4 md:py-1.5 bg-innovation-purple text-white text-[8px] md:text-[10px] rounded-full">VER AGORA</span>
-              </a>
-              <span className="text-energy-orange text-xl md:text-2xl">|</span>
-              <a 
-                href="#apoio" 
-                className="text-sm sm:text-base md:text-2xl font-display font-bold text-white px-4 md:px-8 uppercase tracking-widest hover:text-energy-orange transition-colors flex items-center gap-2 md:gap-4"
-              >
-                SEJA UMA EMPRESA APOIADORA
-                <span className="px-3 py-1 md:px-4 md:py-1.5 bg-amazon-green text-white text-[8px] md:text-[10px] rounded-full">SAIBA MAIS</span>
               </a>
               <span className="text-energy-orange text-xl md:text-2xl">|</span>
             </div>
@@ -429,6 +431,25 @@ export default function App() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Pricing Marquee */}
+      <section className="py-4 bg-innovation-purple border-y border-white/10 overflow-hidden relative z-20">
+        <div className="flex animate-marquee-reverse whitespace-nowrap items-center">
+          {[1, 2, 3].map((n) => (
+            <div key={n} className="flex items-center">
+              {t.registrations.table.categories.map((cat, cIdx) => (
+                <div key={cIdx} className="flex items-center">
+                  <span className="text-lg font-display font-bold text-white px-8 uppercase tracking-wider flex items-center gap-3">
+                    {cat.name} 
+                    <span className="text-energy-orange">{cat.prices ? cat.prices[0] : cat.special}</span>
+                  </span>
+                  <span className="text-white/20 text-2xl">★</span>
+                </div>
+              ))}
+            </div>
+          ))}
         </div>
       </section>
 
