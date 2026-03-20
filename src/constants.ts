@@ -142,7 +142,7 @@ export const TRANSLATIONS = {
     },
     speakers: {
       title: 'PESSOAS CONVIDADAS',
-      subtitle: 'Especialistas que estão transformando o cenário da Biblioteconomia.',
+      subtitle: 'Quem já confirmou participação e estará conosco em Manaus',
     },
     submit: {
       title: 'SUBMETA SEU TRABALHO',
@@ -183,13 +183,13 @@ export const TRANSLATIONS = {
       rights: 'Todos os direitos reservados',
     },
     location: {
-      title: 'LOCAL DO EVENTO : Auditório Samaúma - UFAM',
+      title: 'LOCAL DO EVENTO',
       address: 'Av. Jauary Marinho, Via de Acesso ao Setor Sul - UFAM - Coroado, Manaus - AM',
       cta: 'Ver no Google Maps'
     },
     registrations: {
       title: 'INSCRIÇÕES ABERTAS',
-      subtitle: 'Garanta sua vaga no maior evento de inovação e empreendedorismo na Biblioteconomia.',
+      subtitle: 'Primeiro lote disponível com opção apenas para o evento ou evento + 1 Oficina',
       table: {
         category: 'CATEGORIA',
         lot1: 'Lote 1',
@@ -515,26 +515,26 @@ export const PROGRAM_DATA = {
       type: 'CREDENCIAMENTO',
       activity: 'Credenciamento e Entrega de Materiais',
       date: '14 de maio',
-      time: '08:00 - 09:00',
+      time: '8h às 9h',
       location: 'HALL DO AUDITÓRIO',
-      color: 'energy-orange',
-      image: 'https://i.pinimg.com/736x/35/16/ec/3516ecebbc33893266103c3f80476ab8.jpg',
+      color: 'amazon-green',
+      image: 'https://i.pinimg.com/736x/80/17/98/801798e667ba7ba01784f92719204b34.jpg',
       isGeneral: true
     },
     {
-      id: 102,
-      type: 'Abertura do FIEB',
+      id: 112,
+      type: 'SESSÃO DE ABERTURA',
       activity: 'Sessão de Abertura Oficial + Sessão Cultural',
       date: '14 de maio',
       time: '09:00 - 09:25',
       location: 'AUDITÓRIO SAMAÚMA',
-      color: 'innovation-purple',
-      image: 'https://i.pinimg.com/736x/f8/9a/c0/f89ac027fcc08d5b17876bbdc0247a84.jpg',
+      color: 'beige',
+      image: 'https://i.pinimg.com/1200x/a1/c1/11/a1c111fb375cb5f22033724c4e5f718f.jpg',
       isGeneral: true
     },
     {
       id: 1,
-      type: 'PALESTRA MAGNA',
+      type: 'PALESTRA DE ABERTURA',
       name: 'Aurineide Alves Braga',
       role: 'Palestrante de abertura',
       activity: 'Transformação Digital e Empoderamento Feminino: perspectivas para o futuro',
@@ -542,7 +542,7 @@ export const PROGRAM_DATA = {
       time: '09:30 - 10:25',
       location: 'AUDITÓRIO SAMAÚMA',
       institution: 'UNIR | Sebrae',
-      color: 'energy-orange',
+      color: 'amazon-green',
       image: 'assets/aurineide.png',
       lattes: 'http://lattes.cnpq.br/5543348403805200'
     },
@@ -590,7 +590,7 @@ export const PROGRAM_DATA = {
       date: '14 de maio',
       time: '12:00 - 14:00',
       location: 'HALL',
-      color: 'energy-orange',
+      color: 'red',
       image: 'https://i.pinimg.com/736x/d7/1c/ba/d71cba205df2a7c5188b6784e2e3173c.jpg',
       isGeneral: true
     },
@@ -598,13 +598,13 @@ export const PROGRAM_DATA = {
       id: 3,
       type: 'PAINEL 1',
       name: 'Katty Anne de Souza Nunes',
-      role: 'Painelista',
+      role: 'PAINELISTA',
       activity: 'Gestão Estratégica e Liderança Feminina',
       description: 'Discussão sobre os desafios e estratégias para a liderança feminina eficaz, focando em como desenvolver equipes produtivas, gerir talentos e fomentar um ambiente organizacional inovador e inclusivo. Reflexão sobre competências e habilidades fundamentais para lideranças femininas em negócios digitais.',
       date: '14 de maio',
       time: '14:00 - 14:50',
       location: 'AUDITÓRIO SAMAÚMA',
-      institution: 'SES | KUAU',
+      institution: 'SISTEBIB | UFAM',
       color: 'black',
       image: 'assets/katty.png',
       lattes: 'https://lattes.cnpq.br/6383772134055820',
@@ -751,7 +751,7 @@ export const PROGRAM_DATA = {
     {
       id: 10,
       type: 'OFICINA',
-      name: 'Jorge Luiz Cativo Alauzo',
+      name: 'Jorge Cativo',
       activity: 'Inteligência Artificial na gestão de redes sociais para empreendedores',
       date: '15 de maio',
       time: '08:00 - 10:00',
@@ -783,24 +783,13 @@ export const PROGRAM_DATA = {
     },
     {
       id: 108,
-      type: 'MESA COLABORATIVA 1',
-      activity: 'Resumo Expandido de Pesquisa Concluída',
+      type: 'MESA COLABORATIVA',
+      activity: 'Resumo Expandido: Pesquisa Concluída e Projeto em Andamento',
       date: '15 de maio',
       time: '10:20 - 11:20',
       location: 'AUDITÓRIO SAMAÚMA',
       color: 'energy-orange',
       image: 'https://i.pinimg.com/736x/79/15/22/7915229cb87368de2abd7990755f009b.jpg',
-      isGeneral: true
-    },
-    {
-      id: 109,
-      type: 'MESA COLABORATIVA 2',
-      activity: 'Resumo Expandido de Projeto em Andamento',
-      date: '15 de maio',
-      time: '10:20 - 11:20',
-      location: 'AUDITÓRIO SAMAÚMA',
-      color: 'blue',
-      image: 'https://i.pinimg.com/736x/8a/18/7d/8a187d85dc65bbdad432c7c34032295d.jpg',
       isGeneral: true
     },
     {
@@ -832,7 +821,7 @@ export const PROGRAM_DATA = {
       date: '15 de maio',
       time: '12:00 - 14:00',
       location: 'HALL',
-      color: 'energy-orange',
+      color: 'red',
       image: 'https://i.pinimg.com/736x/d7/1c/ba/d71cba205df2a7c5188b6784e2e3173c.jpg',
       isGeneral: true
     },

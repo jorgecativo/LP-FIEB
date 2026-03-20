@@ -4,14 +4,38 @@ import { ICONS, TRANSLATIONS, PROGRAM_DATA, Language, SOCIAL_LINKS, LOGO_URL, PA
 
 const getTypeStyles = (t: string) => {
   const type = t.toUpperCase();
-  if (type.includes('ABERTURA')) return 'bg-energy-orange text-white';
-  if (type.includes('TEMÁTICA')) return 'bg-entrepreneur-green text-white';
-  if (type.includes('TEMÁTICO')) return 'bg-black text-white';
-  if (type.includes('PAINEL')) return 'bg-deep-purple text-white';
-  if (type.includes('RELATOS')) return 'bg-blue-600 text-white';
+  if (type.includes('INTERVALO')) return 'bg-red-600 text-white';
+  if (type.includes('PAINEL 1')) return 'bg-black text-white';
+  if (type.includes('PAINEL 2')) return 'bg-blue-600 text-white';
   if (type.includes('DEBATE')) return 'bg-black text-white';
-  if (type.includes('OFICINA')) return 'bg-amazon-green text-white';
+  if (type.includes('OFICINA')) return 'bg-energy-orange text-white';
+  if (type.includes('PALESTRA DE ABERTURA')) return 'bg-amazon-green text-white';
+  if (type.includes('CREDENCIAMENTO')) return 'bg-amazon-green text-white';
+  if (type.includes('SESSÃO DE ABERTURA')) return 'bg-[#FDF5E6] text-energy-orange font-bold border-b border-energy-orange/10';
+  if (type.includes('ABERTURA')) return 'bg-[#FDF5E6] text-energy-orange font-bold border-b border-energy-orange/10';
+  if (type.includes('TEMÁTICA')) return 'bg-entrepreneur-green text-white';
   return 'bg-amazon-green text-white';
+};
+
+const PROGRAM_IMAGES: Record<string, string> = {
+  'PALESTRA DE ABERTURA': 'https://i.pinimg.com/1200x/c9/45/0d/c9450dbfdda1bbd3c6a718252c4a5b4c.jpg',
+  'PALESTRA TEMÁTICA': 'https://i.pinimg.com/736x/63/9f/e6/639fe6a146f9fa15045e2f2fbd4baa35.jpg',
+  'SESSÃO DE ABERTURA': 'https://i.pinimg.com/1200x/a1/c1/11/a1c111fb375cb5f22033724c4e5f718f.jpg',
+  'PAINEL 1': 'https://i.pinimg.com/1200x/b2/4d/96/b24d96200dbaa54307e2e51e32dccebb.jpg',
+  'PAINEL 2': 'https://i.pinimg.com/1200x/ec/9d/d4/ec9dd4543eadca319aaa5be4304df295.jpg',
+  'INTERVALO_ALMOÇO': 'https://i.pinimg.com/1200x/d7/1c/ba/d71cba205df2a7c5188b6784e2e3173c.jpg',
+  'INTERVALO': 'https://i.pinimg.com/1200x/3e/5d/ea/3e5dea473ecd4ee25c19c35a32481bd9.jpg',
+  'CREDENCIAMENTO': 'https://i.pinimg.com/1200x/80/17/98/801798e667ba7ba01784f92719204b34.jpg',
+};
+
+const getProgramImage = (item: any): string | null => {
+  if (item.type === 'INTERVALO' && item.activity?.includes('Almoço')) {
+    return PROGRAM_IMAGES['INTERVALO_ALMOÇO'];
+  }
+  if (PROGRAM_IMAGES[item.type]) {
+    return PROGRAM_IMAGES[item.type];
+  }
+  return null;
 };
 
 export default function App() {
@@ -50,7 +74,7 @@ export default function App() {
           carouselRef.current.scrollBy({ left: 340, behavior: 'smooth' });
         }
       }
-    }, 3000);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [isCarouselPaused, activeTab]);
@@ -606,7 +630,7 @@ export default function App() {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full py-6 bg-energy-orange hover:bg-white text-white hover:text-energy-orange rounded-2xl font-display font-bold text-xl uppercase tracking-widest shadow-[0_20px_40px_rgba(211,105,62,0.3)] transition-all flex items-center justify-center gap-4 group/btn"
+                  className="w-full py-6 bg-deep-purple hover:bg-innovation-purple text-white rounded-2xl font-display font-bold text-xl uppercase tracking-widest shadow-[0_20px_40px_rgba(211,105,62,0.3)] transition-all flex items-center justify-center gap-4 group/btn"
                 >
                   {t.registrations.cta}
                   <ICONS.ChevronRight className="group-hover/btn:translate-x-2 transition-transform" />
@@ -663,151 +687,176 @@ export default function App() {
               <ICONS.ChevronLeft size={24} />
             </button>
             
-            <div 
+            <div
               ref={carouselRef}
               onMouseEnter={() => setIsCarouselPaused(true)}
-              onMouseLeave={() => setIsCarouselPaused(false)}
-              className="flex gap-6 overflow-x-auto no-scrollbar pb-8 px-4 snap-x"
+              onMouseLeave={() => { setIsCarouselPaused(false); }}
+              className="flex gap-6 overflow-x-auto no-scrollbar pb-8 px-4 md:px-8 snap-x snap-mandatory cursor-pointer"
             >
-              {PROGRAM_DATA[activeTab].map((item) => {
+              {(() => {
+                const processedItems: (typeof PROGRAM_DATA.day1[number] & { isPanel?: boolean; panelParticipants?: typeof PROGRAM_DATA.day1 })[] = [];
+                const panelGroups: { [key: string]: typeof PROGRAM_DATA.day1 } = {};
+                const processedPanelKeys = new Set<string>();
+                
+                PROGRAM_DATA[activeTab].forEach((item) => {
+                  if (item.type?.startsWith('PAINEL')) {
+                    const key = `${item.type}-${item.activity}`;
+                    if (!panelGroups[key]) panelGroups[key] = [];
+                    panelGroups[key].push(item);
+                    
+                    if (!processedPanelKeys.has(key)) {
+                      processedPanelKeys.add(key);
+                      processedItems.push({
+                        ...item,
+                        id: `panel-${item.type}` as any,
+                        isPanel: true,
+                        panelParticipants: panelGroups[key]
+                      });
+                    }
+                  } else {
+                    processedItems.push(item);
+                  }
+                });
+                
+                return processedItems.map((item: any) => {
                   const typeStyles = getTypeStyles(item.type);
+                  const isLunch = item.activity?.toUpperCase().includes('ALMOÇO');
+                  const isPanel = item.isPanel;
+                  
+                  const getBorderColor = (styles: string) => {
+                    if (styles.includes('bg-amazon-green')) return 'border-[#0d5c3d]';
+                    if (styles.includes('bg-energy-orange')) return 'border-[#d35400]';
+                    if (styles.includes('bg-red-600')) return 'border-red-700';
+                    if (styles.includes('bg-black')) return 'border-black';
+                    if (styles.includes('bg-blue-600')) return 'border-blue-700';
+                    if (styles.includes('bg-entrepreneur-green')) return 'border-[#10b981]';
+                    if (styles.includes('bg-[#FDF5E6]')) return 'border-[#d35400]';
+                    return 'border-[#0d5c3d]';
+                  };
 
                   return (
                     <motion.div
                       key={item.id}
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      className="min-w-[320px] max-w-[320px] bg-deep-purple rounded-[22px] overflow-hidden shadow-xl snap-center flex flex-col"
+                      className={`min-w-[320px] max-w-[320px] bg-deep-purple rounded-xl overflow-hidden shadow-xl snap-center flex flex-col border-4 ${getBorderColor(typeStyles)}`}
                     >
                       {/* Faixa Superior */}
                       <div className={`px-4 py-3 text-center text-xs font-bold uppercase tracking-[0.2em] shadow-inner ${typeStyles}`}>
                         {item.type}
                       </div>
 
-                      {/* Specialized Lunch Logic */}
-                      {(() => {
-                        const isLunch = item.activity.toUpperCase().includes('ALMOÇO');
-                        return (
-                          <div className="p-6 flex flex-col h-full">
-                            {/* Photo or Logo */}
-                            <div className="w-full h-48 rounded-2xl overflow-hidden mb-6 border-2 border-white/10 bg-white/5 flex items-center justify-center relative">
-                              {item.isGeneral && !item.image ? (
-                                <div className="flex flex-col items-center gap-2">
-                                  <img src={LOGO_URL} alt="FIEB" className="h-16 w-16 opacity-40 grayscale" referrerPolicy="no-referrer" />
-                                  <span className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">{item.type}</span>
-                                </div>
-                              ) : (
-                                <img 
-                                  src={item.image} 
-                                  alt={item.name || item.type} 
-                                  className={`w-full h-full object-cover transition-all hover:scale-110 ${
-                                    item.name?.includes('Suzane') ? 'object-center bg-white' :
-                                    item.name?.includes('Thalita') ? 'object-center' :
-                                    item.name?.includes('Rosângela') ? 'object-center' :
-                                    item.name?.includes('Amanda') ? 'object-top' :
-                                    'object-[center_25%]'
-                                  }`}
-                                  referrerPolicy="no-referrer"
-                                />
+                      {/* Photo or Logo */}
+                      <div className="w-full h-48 overflow-hidden mb-4 bg-white/5 flex items-center justify-center relative">
+                        {getProgramImage(item) ? (
+                          <img 
+                            src={getProgramImage(item)!} 
+                            alt={item.activity} 
+                            className="w-full h-full object-cover"
+                            referrerPolicy="no-referrer"
+                          />
+                        ) : item.image ? (
+                          <img 
+                            src={item.image} 
+                            alt={item.activity} 
+                            className="w-full h-full object-cover"
+                            referrerPolicy="no-referrer"
+                          />
+                        ) : (
+                          <div className="flex flex-col items-center gap-2">
+                            <img src={LOGO_URL} alt="FIEB" className="h-16 w-16 opacity-40 grayscale" referrerPolicy="no-referrer" />
+                            <span className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">{item.type}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="p-6 flex flex-col h-full">
+                        {/* Activity Name - Emphasized */}
+                        <div className={`rounded-xl overflow-hidden shadow-md mb-4 ${typeStyles.split(' ')[0]}`}>
+                          <p className={`font-bold p-4 leading-tight text-center text-lg ${typeStyles.includes('bg-[#FDF5E6]') ? 'text-energy-orange' : typeStyles.includes('text-black') ? 'text-black' : 'text-white'}`}>
+                            {item.activity}
+                          </p>
+                        </div>
+
+                        {isLunch ? (
+                          <div className="pt-4 border-t border-white/10">
+                            <a 
+                              href="https://fieb.net.br/restaurantes/"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="w-full py-3 bg-energy-orange hover:bg-innovation-purple text-white rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-2 uppercase tracking-wider shadow-lg"
+                            >
+                              Restaurantes Recomendados
+                              <ICONS.ChevronRight size={14} />
+                            </a>
+                          </div>
+                        ) : (
+                          <>
+                            <div className="pt-4 border-t border-white/10">
+                              <div className="flex items-center gap-2 text-sm font-bold text-white/80 tracking-tighter mb-2">
+                                <ICONS.Clock size={14} className="text-energy-orange" />
+                                <span>{item.date} • {item.time}</span>
+                              </div>
+                              <div className="flex items-center gap-2 text-xs font-bold text-white/60 uppercase tracking-tighter mb-3">
+                                <ICONS.MapPin size={14} className="text-energy-orange" />
+                                <span>{item.location}</span>
+                              </div>
+                              {item.registrationUrl ? (
+                                <a
+                                  href={item.registrationUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="block w-full py-2 bg-menu-green hover:bg-innovation-purple text-white text-center rounded-lg font-bold text-xs uppercase tracking-wider shadow-md transition-all active:scale-95"
+                                >
+                                  Inscreva-se
+                                </a>
+                              ) : item.upcomingRegistration && (
+                                <button
+                                  disabled
+                                  className="w-full py-2 bg-gray-500 text-white rounded-lg font-bold text-xs uppercase tracking-wider shadow-md cursor-not-allowed opacity-80"
+                                >
+                                  Inscrições em Breve
+                                </button>
                               )}
                             </div>
 
-                            {!item.isGeneral && (
-                              <>
-                                <h3 className="text-xl font-display font-bold text-white leading-tight mb-1">
+                            {isPanel && (
+                              <div className="pt-3 space-y-2">
+                                {item.panelParticipants?.map((p: any, idx: number) => (
+                                  <div key={idx} className="border-b border-white/10 last:border-0 pb-2 last:pb-0">
+                                    <div className="text-xs font-bold text-white/50 uppercase tracking-wider">
+                                      {p.role}
+                                    </div>
+                                    <div className="text-base font-semibold text-white/90">
+                                      {p.name}
+                                    </div>
+                                    <div className="text-xs text-white/50 uppercase">
+                                      {p.institution}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                            {!isPanel && !item.isGeneral && (
+                              <div className="pt-3">
+                                <div className="text-xs font-bold text-white/50 uppercase tracking-wider mb-1">
+                                  {item.role}
+                                </div>
+                                <div className="text-base font-semibold text-white/90">
                                   {item.name}
-                                </h3>
-                                <div className="text-xs font-bold text-white/80 uppercase mb-3">
-                                  {item.institution} {item.role && `• ${item.role}`}
                                 </div>
-                                <div className="flex gap-2 mb-4">
-                                  {item.lattes && (
-                                    <a 
-                                      href={item.lattes} 
-                                      target="_blank" 
-                                      rel="noopener noreferrer" 
-                                      className="px-3 py-1.5 bg-white/10 hover:bg-energy-orange text-white rounded-lg transition-all flex items-center justify-center gap-1.5 border border-white/10"
-                                      title="Lattes"
-                                    >
-                                      <ICONS.FileText size={12} />
-                                      <span className="text-[9px] font-bold uppercase tracking-wider">Lattes</span>
-                                    </a>
-                                  )}
-                                  {item.instagram && (
-                                    <a 
-                                      href={item.instagram} 
-                                      target="_blank" 
-                                      rel="noopener noreferrer" 
-                                      className="px-3 py-1.5 bg-white/10 hover:bg-energy-orange text-white rounded-lg transition-all flex items-center justify-center gap-1.5 border border-white/10"
-                                      title="Instagram"
-                                    >
-                                      <ICONS.Instagram size={12} />
-                                      <span className="text-[9px] font-bold uppercase tracking-wider">Instagram</span>
-                                    </a>
-                                  )}
+                                <div className="text-xs text-white/50 uppercase">
+                                  {item.institution}
                                 </div>
-                              </>
-                            )}
-                            
-                            <div className="flex-grow flex flex-col justify-center">
-                              <div className={`rounded-xl overflow-hidden shadow-md mb-6 ${typeStyles.split(' ')[0]}`}>
-                                <p className={`font-bold p-4 leading-tight ${item.isGeneral ? 'text-lg text-center' : 'text-sm italic'} ${typeStyles.includes('text-black') ? 'text-black' : 'text-white'}`}>
-                                  {item.isGeneral ? item.activity : `"${item.activity}"`}
-                                </p>
-                              </div>
-                            </div>
-
-                            {isLunch ? (
-                              <div className="pt-4 border-t border-white/10">
-                                <a 
-                                  href="https://fieb.net.br/restaurantes/"
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="w-full py-3 bg-white text-innovation-purple hover:bg-innovation-purple hover:text-white rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-2 uppercase tracking-wider shadow-lg"
-                                >
-                                  Restaurantes Recomendados
-                                  <ICONS.ChevronRight size={14} />
-                                </a>
-                              </div>
-                            ) : (
-                              <div className="space-y-3 pt-4 border-t border-white/10">
-                                <div className="flex items-center gap-2 text-sm font-bold text-white/60 uppercase tracking-tighter">
-                                  <ICONS.Clock size={14} className="text-energy-orange" />
-                                  <span>{item.date} • {item.time}</span>
-                                </div>
-                                <div className="flex items-center gap-2 text-xs font-bold text-white/40 uppercase tracking-tighter">
-                                  <ICONS.MapPin size={14} className="text-energy-orange" />
-                                  <span>{item.location}</span>
-                                </div>
-                                {item.registrationUrl ? (
-                                  <div className="pt-2">
-                                    <a
-                                      href={item.registrationUrl}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="block w-full py-2 bg-menu-green hover:bg-innovation-purple text-white text-center rounded-lg font-bold text-xs uppercase tracking-wider shadow-md transition-all active:scale-95"
-                                    >
-                                      Inscreva-se
-                                    </a>
-                                  </div>
-                                ) : item.upcomingRegistration && (
-                                  <div className="pt-2">
-                                    <button
-                                      disabled
-                                      className="w-full py-2 bg-gray-500 text-white rounded-lg font-bold text-xs uppercase tracking-wider shadow-md cursor-not-allowed opacity-80"
-                                    >
-                                      Inscrições em Breve
-                                    </button>
-                                  </div>
-                                )}
                               </div>
                             )}
-                          </div>
-                        );
-                      })()}
+                          </>
+                        )}
+                      </div>
                     </motion.div>
                   );
-              })}
+                });
+              })()}
             </div>
 
             <button 
@@ -861,9 +910,10 @@ export default function App() {
                 'entrepreneur-green': 'border-entrepreneur-green',
                 'innovation-purple': 'border-innovation-purple',
                 'amazon-green': 'border-amazon-green',
-                'black': 'border-black',
-                'blue': 'border-blue-500',
+                'black': 'border-black sm:border-t-black',
+                'blue': 'border-blue-600',
                 'red': 'border-red-600',
+                'beige': 'border-[#FDF5E6]',
               };
               const borderColor = borderColors[speaker.color] || 'border-gray-200';
               
@@ -871,14 +921,14 @@ export default function App() {
                 <motion.div
                   key={speaker.id}
                   whileHover={{ y: -10, scale: 1.02 }}
-                  className={`bg-white rounded-3xl overflow-hidden shadow-xl border-2 ${borderColor} transition-all duration-300`}
+                  className={`bg-deep-purple rounded-3xl overflow-hidden shadow-xl border-2 ${borderColor} transition-all duration-300`}
                 >
-                  <div className="h-72 overflow-hidden relative border-b-4 border-inherit">
+                  <div className="h-72 overflow-hidden relative">
                   <img 
                     src={speaker.image} 
                     alt={speaker.name} 
                     className={`w-full h-full object-cover transition-all hover:scale-110 ${
-                      speaker.name?.includes('Suzane') ? 'object-center bg-white' : 
+                      speaker.name?.includes('Suzane') ? 'object-center' : 
                       speaker.name?.includes('Thalita') ? 'object-center' :
                       speaker.name?.includes('Rosângela') ? 'object-center' :
                       speaker.name?.includes('Amanda') ? 'object-top' :
@@ -896,6 +946,17 @@ export default function App() {
                         title="Lattes"
                       >
                         <ICONS.GraduationCap size={14} />
+                      </a>
+                    )}
+                    {speaker.instagram && (
+                      <a 
+                        href={speaker.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-8 h-8 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-innovation-purple hover:bg-[#E1306C] hover:text-white transition-all"
+                        title="Instagram"
+                      >
+                        <ICONS.Instagram size={14} />
                       </a>
                     )}
                   </div>
@@ -924,9 +985,21 @@ export default function App() {
       {/* Submit Work Section */}
       <section id="submissao" className="py-24 bg-gradient-to-br from-energy-orange to-[#d35400] relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/circuit-board.png')]"></div>
-          <div className="max-w-[1200px] mx-auto px-6 md:px-20 relative z-10 flex flex-col items-center">
+        
+        {/* Digital Ticker */}
+        <div className="w-full overflow-hidden bg-deep-purple py-4 relative z-20">
+          <div className="animate-marquee whitespace-nowrap flex">
+            {[1, 2, 3, 4, 5, 6].map((n) => (
+              <span key={n} className="mx-8 text-xl md:text-2xl font-display font-bold text-white uppercase tracking-widest">
+                FALTAM 2 DIAS PARA O FIM DAS SUBMISSÕES
+              </span>
+            ))}
+          </div>
+        </div>
+        
+        <div className="max-w-[1200px] mx-auto px-6 md:px-20 relative z-10 flex flex-col items-center">
             
-            <div className="text-center mb-16">
+            <div className="text-center mb-16 mt-8">
               <span className="inline-block px-4 py-1.5 bg-white/20 text-white font-bold text-sm tracking-widest uppercase rounded-full mb-4">
                 Submissão de Trabalhos
               </span>
@@ -1106,12 +1179,17 @@ export default function App() {
         <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/circuit-board.png')]"></div>
         <div className="max-w-[1200px] mx-auto px-6 md:px-20 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-4 uppercase tracking-widest">
+            <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-8 uppercase tracking-widest">
               {t.location.title}
             </h2>
-            <p className="text-lg text-lavender-light/80 font-semibold max-w-2xl mx-auto">
-              {t.location.address}
-            </p>
+            <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-6 max-w-2xl mx-auto border border-white/10">
+              <p className="text-lg text-white/90 font-medium leading-relaxed">
+                Auditório Samaúma - UFAM
+              </p>
+              <p className="text-base text-white/70 mt-2">
+                Av. Jauary Marinho, Via de Acesso ao Setor Sul - UFAM - Coroado, Manaus - AM
+              </p>
+            </div>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -1181,7 +1259,7 @@ export default function App() {
                 <div className="bg-black/90 backdrop-blur-xl p-8 rounded-3xl border border-white/20 text-center shadow-2xl transition-all duration-300 hover:border-energy-orange/50">
                   <ICONS.Clock className="text-energy-orange mx-auto mb-4" size={32} />
                   <h4 className="text-white font-bold text-lg mb-1">Credenciamento</h4>
-                  <p className="text-energy-orange font-bold text-xl uppercase">8h às 09h</p>
+                  <p className="text-energy-orange font-bold text-xl">8h às 9h</p>
                 </div>
                 <div className="bg-black/90 backdrop-blur-xl p-8 rounded-3xl border border-white/20 text-center shadow-2xl transition-all duration-300 hover:border-energy-orange/50">
                   <ICONS.Users className="text-energy-orange mx-auto mb-4" size={32} />
