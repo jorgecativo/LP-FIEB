@@ -2,6 +2,18 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ICONS, TRANSLATIONS, PROGRAM_DATA, Language, SOCIAL_LINKS, LOGO_URL, PARTNERS_LOGOS } from './constants';
 
+const getTypeStyles = (t: string) => {
+  const type = t.toUpperCase();
+  if (type.includes('ABERTURA')) return 'bg-energy-orange text-white';
+  if (type.includes('TEMÁTICA')) return 'bg-entrepreneur-green text-white';
+  if (type.includes('TEMÁTICO')) return 'bg-black text-white';
+  if (type.includes('PAINEL')) return 'bg-deep-purple text-white';
+  if (type.includes('RELATOS')) return 'bg-blue-600 text-white';
+  if (type.includes('DEBATE')) return 'bg-black text-white';
+  if (type.includes('OFICINA')) return 'bg-amazon-green text-white';
+  return 'bg-amazon-green text-white';
+};
+
 export default function App() {
   const [lang, setLang] = useState<Language>('pt');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -658,23 +670,6 @@ export default function App() {
               className="flex gap-6 overflow-x-auto no-scrollbar pb-8 px-4 snap-x"
             >
               {PROGRAM_DATA[activeTab].map((item) => {
-                  const getTypeStyles = (type: string) => {
-                    const t = type.toUpperCase();
-                    if (t.includes('ABERTURA')) return 'bg-blue-600 text-white';
-                    if (t.includes('PAINEL 2')) return 'bg-energy-orange text-white';
-                    if (t.includes('PAINEL 1')) return 'bg-[#FEF9C3] text-black';
-                    if (t.includes('INTERVALO')) return 'bg-yellow-400 text-black';
-                    if (t.includes('DEBATE')) return 'bg-red-500 text-white';
-                    if (t.includes('TEMÁTICA')) return 'bg-entrepreneur-green text-white';
-                    if (t.includes('TEMÁTICO')) return 'bg-black text-white';
-                    if (t.includes('PAINEL')) return 'bg-deep-purple text-white';
-                    if (t.includes('CREDENCIAMENTO')) return 'bg-amazon-green text-white';
-                    if (t.includes('OFICINA')) return 'bg-energy-orange text-white';
-                    if (t.includes('ENCERRAMENTO')) return 'bg-red-600 text-white';
-                    if (t.includes('RELATOS')) return 'bg-blue-600 text-white';
-                    return 'bg-amazon-green text-white';
-                  };
-
                   const typeStyles = getTypeStyles(item.type);
 
                   return (
@@ -706,6 +701,7 @@ export default function App() {
                                   src={item.image} 
                                   alt={item.name || item.type} 
                                   className={`w-full h-full object-cover transition-all hover:scale-110 ${
+                                    item.name?.includes('Suzane') ? 'object-center bg-white' :
                                     item.name?.includes('Thalita') ? 'object-center' :
                                     item.name?.includes('Rosângela') ? 'object-center' :
                                     item.name?.includes('Amanda') ? 'object-top' :
@@ -721,11 +717,34 @@ export default function App() {
                                 <h3 className="text-xl font-display font-bold text-white leading-tight mb-1">
                                   {item.name}
                                 </h3>
-                                <div className="text-[10px] font-bold text-energy-orange uppercase tracking-[0.2em] mb-3">
-                                  {item.location}
-                                </div>
-                                <div className="text-xs font-bold text-white/60 uppercase mb-4">
+                                <div className="text-xs font-bold text-white/80 uppercase mb-3">
                                   {item.institution} {item.role && `• ${item.role}`}
+                                </div>
+                                <div className="flex gap-2 mb-4">
+                                  {item.lattes && (
+                                    <a 
+                                      href={item.lattes} 
+                                      target="_blank" 
+                                      rel="noopener noreferrer" 
+                                      className="px-3 py-1.5 bg-white/10 hover:bg-energy-orange text-white rounded-lg transition-all flex items-center justify-center gap-1.5 border border-white/10"
+                                      title="Lattes"
+                                    >
+                                      <ICONS.FileText size={12} />
+                                      <span className="text-[9px] font-bold uppercase tracking-wider">Lattes</span>
+                                    </a>
+                                  )}
+                                  {item.instagram && (
+                                    <a 
+                                      href={item.instagram} 
+                                      target="_blank" 
+                                      rel="noopener noreferrer" 
+                                      className="px-3 py-1.5 bg-white/10 hover:bg-energy-orange text-white rounded-lg transition-all flex items-center justify-center gap-1.5 border border-white/10"
+                                      title="Instagram"
+                                    >
+                                      <ICONS.Instagram size={12} />
+                                      <span className="text-[9px] font-bold uppercase tracking-wider">Instagram</span>
+                                    </a>
+                                  )}
                                 </div>
                               </>
                             )}
@@ -760,7 +779,18 @@ export default function App() {
                                   <ICONS.MapPin size={14} className="text-energy-orange" />
                                   <span>{item.location}</span>
                                 </div>
-                                {item.upcomingRegistration && (
+                                {item.registrationUrl ? (
+                                  <div className="pt-2">
+                                    <a
+                                      href={item.registrationUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="block w-full py-2 bg-menu-green hover:bg-innovation-purple text-white text-center rounded-lg font-bold text-xs uppercase tracking-wider shadow-md transition-all active:scale-95"
+                                    >
+                                      Inscreva-se
+                                    </a>
+                                  </div>
+                                ) : item.upcomingRegistration && (
                                   <div className="pt-2">
                                     <button
                                       disabled
@@ -814,7 +844,7 @@ export default function App() {
       </section>
 
       {/* Speakers Grid */}
-      <section id="convidados" className="py-24 bg-white">
+      <section id="pessoas-convidadas" className="py-24 bg-white">
         <div className="max-w-[1200px] mx-auto px-6 md:px-20">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-6xl font-display font-bold text-innovation-purple mb-4 uppercase tracking-widest">
@@ -848,6 +878,7 @@ export default function App() {
                     src={speaker.image} 
                     alt={speaker.name} 
                     className={`w-full h-full object-cover transition-all hover:scale-110 ${
+                      speaker.name?.includes('Suzane') ? 'object-center bg-white' : 
                       speaker.name?.includes('Thalita') ? 'object-center' :
                       speaker.name?.includes('Rosângela') ? 'object-center' :
                       speaker.name?.includes('Amanda') ? 'object-top' :
@@ -873,20 +904,11 @@ export default function App() {
                   <div>
                     <h3 className="text-xl font-display font-bold text-white mb-1">{speaker.name}</h3>
                     <div className="text-[10px] font-bold text-energy-orange uppercase tracking-[0.2em] mb-2">
-                      {speaker.location}
-                    </div>
-                    <div className="text-xs font-bold text-white/60 uppercase mb-4">
                       {speaker.institution}
                     </div>
                   </div>
                   
-                  <div className={`rounded-xl overflow-hidden shadow-md ${
-                    speaker.type.includes('ABERTURA') ? 'bg-energy-orange' : 
-                    speaker.type.includes('TEMÁTICA') ? 'bg-entrepreneur-green' : 
-                    speaker.type.includes('TEMÁTICO') ? 'bg-black' : 
-                    speaker.type.includes('PAINEL') ? 'bg-deep-purple' : 
-                    'bg-amazon-green'
-                  }`}>
+                  <div className={`rounded-xl overflow-hidden shadow-md ${getTypeStyles(speaker.type)}`}>
                     <p className="text-xs font-bold text-white p-4 leading-tight">
                       {speaker.activity}
                     </p>
@@ -920,24 +942,18 @@ export default function App() {
                 <div className="hidden md:block absolute top-[45px] left-[8%] right-[8%] h-1 bg-white/20 rounded-full z-0"></div>
 
                 {[
-                  { date: "20/02", desc: "Abertura", active: true },
+                  { date: "20/02", desc: "Abertura", active: false },
                   { date: "22/03", desc: "Encerramento", active: false },
                   { date: "Até 30/03", desc: "Resultados Parciais", active: false },
                   { date: "Até 08/04", desc: "Versão Final", active: false },
                   { date: "15/04", desc: "Resultados Finais", active: false },
-                  { date: "15/05", desc: "Apresentações", active: false, highlight: true },
+                  { date: "15/05", desc: "Apresentações", active: false },
                 ].map((item, idx) => (
                   <div key={idx} className="relative z-10 flex flex-row md:flex-col items-center gap-4 md:gap-6 bg-white/10 md:bg-transparent p-4 md:p-0 rounded-2xl md:rounded-none backdrop-blur-sm border md:border-none border-white/10">
                     
                     {/* Data / Step Indicator */}
                     <div className="flex-shrink-0 w-20 md:w-full flex justify-center">
-                      <div className={`w-20 md:w-24 h-20 md:h-24 rounded-full flex flex-col items-center justify-center font-display font-bold text-center border-4 transition-all duration-300 shadow-xl ${
-                        item.highlight 
-                          ? 'bg-innovation-purple border-white text-white scale-110 rotate-3' 
-                          : item.active 
-                            ? 'bg-white border-white text-energy-orange scale-105' 
-                            : 'bg-energy-orange border-white text-white hover:bg-white hover:text-energy-orange cursor-pointer hover:scale-105'
-                      }`}>
+                      <div className="w-20 md:w-24 h-20 md:h-24 rounded-full flex flex-col items-center justify-center font-display font-bold text-center border-4 border-white transition-all duration-300 shadow-xl bg-energy-orange text-white hover:bg-white hover:text-energy-orange cursor-pointer hover:scale-105">
                         <span className="text-lg md:text-xl leading-none">{item.date.split('/')[0].replace('Até ', '')}</span>
                         <span className="text-[10px] md:text-xs uppercase mt-1 tracking-wider opacity-80">
                           {item.date.includes('/') ? (item.date.split('/')[1] === '02' ? 'FEV' : item.date.split('/')[1] === '03' ? 'MAR' : item.date.split('/')[1] === '04' ? 'ABR' : 'MAI') : ''}
@@ -946,7 +962,7 @@ export default function App() {
                     </div>
 
                     {/* Descrição */}
-                    <div className={`flex-grow md:text-center md:px-2 ${item.highlight ? 'text-white' : 'text-white/90'}`}>
+                    <div className="flex-grow md:text-center md:px-2 text-white/90">
                       <h4 className="font-bold text-base md:text-lg leading-tight md:mt-4">{item.desc}</h4>
                       {item.date.includes('Até') && (
                         <span className="text-[10px] uppercase font-bold text-white/60 bg-white/10 px-2 py-0.5 rounded-full inline-block mt-2">
@@ -1164,13 +1180,13 @@ export default function App() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-black/90 backdrop-blur-xl p-8 rounded-3xl border border-white/20 text-center shadow-2xl transition-all duration-300 hover:border-energy-orange/50">
                   <ICONS.Clock className="text-energy-orange mx-auto mb-4" size={32} />
-                  <h4 className="text-white font-bold text-lg mb-1">Abertura</h4>
-                  <p className="text-energy-orange font-bold text-xl">08:00 AM</p>
+                  <h4 className="text-white font-bold text-lg mb-1">Credenciamento</h4>
+                  <p className="text-energy-orange font-bold text-xl uppercase">8h às 09h</p>
                 </div>
                 <div className="bg-black/90 backdrop-blur-xl p-8 rounded-3xl border border-white/20 text-center shadow-2xl transition-all duration-300 hover:border-energy-orange/50">
                   <ICONS.Users className="text-energy-orange mx-auto mb-4" size={32} />
-                  <h4 className="text-white font-bold text-lg mb-1">Capacidade</h4>
-                  <p className="text-energy-orange font-bold text-xl">200 participantes</p>
+                  <h4 className="text-white font-bold text-lg mb-1">Inscrições disponíveis</h4>
+                  <p className="text-energy-orange font-bold text-xl uppercase">150</p>
                 </div>
               </div>
             </motion.div>
@@ -1226,12 +1242,11 @@ export default function App() {
         <div className="relative flex overflow-hidden group py-10 bg-lavender-light/10 border-y border-gray-100">
           <motion.div 
             className="flex whitespace-nowrap gap-16 items-center"
-            animate={{ x: [0, -2000] }}
+            animate={{ x: [0, -1680] }}
             transition={{ 
-              duration: 30, 
+              duration: 25, 
               repeat: Infinity, 
-              ease: "linear",
-              pauseOnHover: true 
+              ease: "linear"
             }}
           >
             {(() => {

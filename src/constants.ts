@@ -93,11 +93,8 @@ export const TRANSLATIONS = {
           { label: 'Edições anteriores', href: 'https://fieb.net.br/edicoes-anteriores/' },
         ],
         program: [
-          { label: 'Programação Preliminar', href: 'https://fieb.net.br/programacao/' },
-          { label: 'Pessoas convidadas', href: 'https://fieb.net.br/pessoas-convidadas/' },
-          { label: 'Palestras', href: 'https://fieb.net.br/palestras/' },
-          { label: 'Painéis Temáticos', href: 'https://fieb.net.br/paineis-tematicos/' },
-          { label: 'Oficinas', href: 'https://fieb.net.br/oficinas/' },
+          { label: 'Programação Preliminar', href: '#programacao' },
+          { label: 'Pessoas Convidadas', href: '#pessoas-convidadas' }
         ],
         submissions: [
           { label: 'Chamada para Submissão', href: 'https://drive.google.com/file/d/1v2J5bXtUY8_kmE7fqea9QGugQ5PCx4-C/view?usp=sharing' },
@@ -206,7 +203,7 @@ export const TRANSLATIONS = {
           { name: 'FIEB + 1 OFICINA - Estudante graduação e pós-graduação*', prices: ['R$ 25,00', 'R$ 40,00', 'R$ 55,00'] },
           { name: 'FIEB - Profissionais', prices: ['R$ 40,00', 'R$ 55,00', 'R$ 70,00'] },
           { name: 'FIEB + 1 OFICINA - Profissionais', prices: ['R$ 50,00', 'R$ 65,00', 'R$ 75,00'] },
-          { name: 'FIEB - Profissionais do SISTEBIB', special: 'Mediante Voucher até 31/03/2026' }
+          { name: 'Servidores SISTEBIB', special: 'Mediante Voucher até 31/03/2026' }
         ]
       },
       info: [
@@ -519,7 +516,7 @@ export const PROGRAM_DATA = {
       activity: 'Credenciamento e Entrega de Materiais',
       date: '14 de maio',
       time: '08:00 - 09:00',
-      location: 'AUDITÓRIO SAMAÚMA',
+      location: 'HALL DO AUDITÓRIO',
       color: 'energy-orange',
       image: 'https://i.pinimg.com/736x/35/16/ec/3516ecebbc33893266103c3f80476ab8.jpg',
       isGeneral: true
@@ -529,7 +526,7 @@ export const PROGRAM_DATA = {
       type: 'Abertura do FIEB',
       activity: 'Sessão de Abertura Oficial + Sessão Cultural',
       date: '14 de maio',
-      time: '09:00 - 09:30',
+      time: '09:00 - 09:25',
       location: 'AUDITÓRIO SAMAÚMA',
       color: 'innovation-purple',
       image: 'https://i.pinimg.com/736x/f8/9a/c0/f89ac027fcc08d5b17876bbdc0247a84.jpg',
@@ -542,12 +539,23 @@ export const PROGRAM_DATA = {
       role: 'Palestrante de abertura',
       activity: 'Transformação Digital e Empoderamento Feminino: perspectivas para o futuro',
       date: '14 de maio',
-      time: '09:30 - 10:30',
+      time: '09:30 - 10:25',
       location: 'AUDITÓRIO SAMAÚMA',
       institution: 'UNIR | Sebrae',
       color: 'energy-orange',
       image: 'assets/aurineide.png',
       lattes: 'http://lattes.cnpq.br/5543348403805200'
+    },
+    {
+      id: 114,
+      type: 'DEBATE',
+      activity: 'Debate aberto ao público',
+      date: '14 de maio',
+      time: '10:25 - 10:40',
+      location: 'AUDITÓRIO SAMAÚMA',
+      color: 'black',
+      image: 'https://i.pinimg.com/736x/25/98/25/2598254da77f2f48e9a86c23ecec931b.jpg',
+      isGeneral: true
     },
     {
       id: 2,
@@ -556,19 +564,20 @@ export const PROGRAM_DATA = {
       role: 'Palestrante temática',
       activity: 'Empreendedorismo Feminino na Era Digital: desafios, oportunidades e soluções',
       date: '14 de maio',
-      time: '10:30 - 11:30',
+      time: '10:40 - 11:45',
       location: 'AUDITÓRIO SAMAÚMA',
       institution: 'Babi Descomplica | UNIRIO',
       color: 'entrepreneur-green',
       image: 'assets/barbara.png',
-      lattes: 'https://lattes.cnpq.br/0639685356783805'
+      lattes: 'https://lattes.cnpq.br/0639685356783805',
+      instagram: 'https://www.instagram.com/babidescomplica/'
     },
     {
-      id: 103,
+      id: 115,
       type: 'DEBATE',
       activity: 'Debate aberto ao público',
       date: '14 de maio',
-      time: '11:30 - 12:00',
+      time: '11:45 - 12:00',
       location: 'AUDITÓRIO SAMAÚMA',
       color: 'black',
       image: 'https://i.pinimg.com/736x/25/98/25/2598254da77f2f48e9a86c23ecec931b.jpg',
@@ -591,13 +600,15 @@ export const PROGRAM_DATA = {
       name: 'Katty Anne de Souza Nunes',
       role: 'Painelista',
       activity: 'Gestão Estratégica e Liderança Feminina',
+      description: 'Discussão sobre os desafios e estratégias para a liderança feminina eficaz, focando em como desenvolver equipes produtivas, gerir talentos e fomentar um ambiente organizacional inovador e inclusivo. Reflexão sobre competências e habilidades fundamentais para lideranças femininas em negócios digitais.',
       date: '14 de maio',
       time: '14:00 - 14:50',
       location: 'AUDITÓRIO SAMAÚMA',
       institution: 'SES | KUAU',
       color: 'black',
       image: 'assets/katty.png',
-      lattes: 'https://lattes.cnpq.br/6383772134055820'
+      lattes: 'https://lattes.cnpq.br/6383772134055820',
+      instagram: 'https://www.instagram.com/kattyannesnunes/'
     },
     {
       id: 4,
@@ -605,6 +616,7 @@ export const PROGRAM_DATA = {
       name: 'Maria do Perpétuo Socorro de Lima Verde Coelho',
       role: 'Painelista',
       activity: 'Gestão Estratégica e Liderança Feminina',
+      description: 'Discussão sobre os desafios e estratégias para a liderança feminina eficaz, focando em como desenvolver equipes produtivas, gerir talentos e fomentar um ambiente organizacional inovador e inclusivo. Reflexão sobre competências e habilidades fundamentais para lideranças femininas em negócios digitais.',
       date: '14 de maio',
       time: '14:00 - 14:50',
       location: 'AUDITÓRIO SAMAÚMA',
@@ -619,6 +631,7 @@ export const PROGRAM_DATA = {
       name: 'Inara Regina Batista da Costa',
       role: 'Mediadora',
       activity: 'Gestão Estratégica e Liderança Feminina',
+      description: 'Discussão sobre os desafios e estratégias para a liderança feminina eficaz, focando em como desenvolver equipes produtivas, gerir talentos e fomentar um ambiente organizacional inovador e inclusivo. Reflexão sobre competências e habilidades fundamentais para lideranças femininas em negócios digitais.',
       date: '14 de maio',
       time: '14:00 - 14:50',
       location: 'AUDITÓRIO SAMAÚMA',
@@ -628,11 +641,22 @@ export const PROGRAM_DATA = {
       lattes: 'https://lattes.cnpq.br/1687285959561295'
     },
     {
+      id: 116,
+      type: 'DEBATE',
+      activity: 'Debate aberto ao público',
+      date: '14 de maio',
+      time: '14:50 - 15:10',
+      location: 'AUDITÓRIO SAMAÚMA',
+      color: 'black',
+      image: 'https://i.pinimg.com/736x/25/98/25/2598254da77f2f48e9a86c23ecec931b.jpg',
+      isGeneral: true
+    },
+    {
       id: 105,
       type: 'INTERVALO',
       activity: 'Intervalo',
       date: '14 de maio',
-      time: '15:10 - 15:30',
+      time: '15:10 - 15:25',
       location: 'HALL',
       color: 'energy-orange',
       image: 'https://i.pinimg.com/474x/b6/fe/46/b6fe46a7f5bef0faa589f79d9e70092d.jpg',
@@ -644,13 +668,15 @@ export const PROGRAM_DATA = {
       name: 'Kamilla Pereira Silva',
       role: 'Painelista',
       activity: 'Marketing Digital e Prospecção de Clientes',
+      description: 'Análise das estratégias de marketing digital essenciais para o sucesso e crescimento dos negócios geridos por mulheres. Abordagem sobre como identificar e conquistar novos clientes através de ferramentas digitais, branding e relacionamento com o consumidor.',
       date: '14 de maio',
       time: '15:30 - 16:20',
       location: 'AUDITÓRIO SAMAÚMA',
       institution: 'SISTEBIB/UFAM',
       color: 'blue',
       image: 'assets/kamilla.png',
-      lattes: 'https://lattes.cnpq.br/2259147062922449'
+      lattes: 'https://lattes.cnpq.br/2259147062922449',
+      instagram: 'https://www.instagram.com/kamillaps._/'
     },
     {
       id: 7,
@@ -658,13 +684,15 @@ export const PROGRAM_DATA = {
       name: 'Thalita Oliveira da Silva Gama',
       role: 'Painelista',
       activity: 'Marketing Digital e Prospecção de Clientes',
+      description: 'Análise das estratégias de marketing digital essenciais para o sucesso e crescimento dos negócios geridos por mulheres. Abordagem sobre como identificar e conquistar novos clientes através de ferramentas digitais, branding e relacionamento com o consumidor.',
       date: '14 de maio',
       time: '15:30 - 16:20',
       location: 'AUDITÓRIO SAMAÚMA',
       institution: 'UNIRIO | Santa Biblioteconomia',
       color: 'blue',
       image: 'assets/thalita.png',
-      lattes: 'https://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K4364806Z5'
+      lattes: 'https://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K4364806Z5',
+      instagram: 'https://www.instagram.com/santabiblioteconomia/'
     },
     {
       id: 8,
@@ -672,6 +700,7 @@ export const PROGRAM_DATA = {
       name: 'Rosângela Fernandes Bentes',
       role: 'Painelista',
       activity: 'Marketing Digital e Prospecção de Clientes',
+      description: 'Análise das estratégias de marketing digital essenciais para o sucesso e crescimento dos negócios geridos por mulheres. Abordagem sobre como identificar e conquistar novos clientes através de ferramentas digitais, branding e relacionamento com o consumidor.',
       date: '14 de maio',
       time: '15:30 - 16:20',
       location: 'AUDITÓRIO SAMAÚMA',
@@ -686,6 +715,7 @@ export const PROGRAM_DATA = {
       name: 'Amanda C. O. Mota Flores',
       role: 'Mediadora',
       activity: 'Marketing Digital e Prospecção de Clientes',
+      description: 'Análise das estratégias de marketing digital essenciais para o sucesso e crescimento dos negócios geridos por mulheres. Abordagem sobre como identificar e conquistar novos clientes através de ferramentas digitais, branding e relacionamento com o consumidor.',
       date: '14 de maio',
       time: '15:30 - 16:20',
       location: 'AUDITÓRIO SAMAÚMA',
@@ -720,16 +750,35 @@ export const PROGRAM_DATA = {
   day2: [
     {
       id: 10,
-      type: 'OFICina',
+      type: 'OFICINA',
       name: 'Jorge Luiz Cativo Alauzo',
       activity: 'Inteligência Artificial na gestão de redes sociais para empreendedores',
       date: '15 de maio',
-      time: '08:00 - 09:30',
-      location: 'AMAZONAS',
+      time: '08:00 - 10:00',
+      location: 'LAB. MULTIMÍDIA',
       institution: 'INPA | Biblioteconomia Digital',
       color: 'energy-orange',
       image: 'assets/cativo.png',
       lattes: 'https://lattes.cnpq.br/0614227155680254',
+      instagram: 'https://www.instagram.com/biblioteconomiadigital/',
+      registrationUrl: 'https://tally.so/r/LZGy81',
+      upcomingRegistration: true
+    },
+    {
+      id: 11,
+      type: 'OFICINA',
+      name: 'Suzane Lima',
+      activity: 'Empreendedorismo digital para profissionais da informação',
+      description: 'Primeiros passos para montar o seu próprio negócio na Biblioteconomia - Ela compartilharia da experiência dela desde a criação do blog que ela fez até o processo de construção do curso e da plataforma dela. Um passo a passo mesmo: criar conteúdo, plataformizar, captação e fidelização de clientes, marketing nas redes sociais e nos grupos de mensagens, construção da marca, etc. Consultoria profissional, Criando e vendendo infoprodutos, Ser autônomo.',
+      date: '15 de maio',
+      time: '08:00 - 10:00',
+      location: 'LAB. MULTIMÍDIA',
+      institution: 'IBGE',
+      color: 'energy-orange',
+      image: 'assets/suzane.png',
+      lattes: 'https://lattes.cnpq.br/8812674350684147',
+      instagram: 'https://www.instagram.com/suzanelimaprof/',
+      registrationUrl: 'https://tally.so/r/LZGy81',
       upcomingRegistration: true
     },
     {
@@ -737,7 +786,7 @@ export const PROGRAM_DATA = {
       type: 'MESA COLABORATIVA 1',
       activity: 'Resumo Expandido de Pesquisa Concluída',
       date: '15 de maio',
-      time: '09:30 - 10:30',
+      time: '10:20 - 11:20',
       location: 'AUDITÓRIO SAMAÚMA',
       color: 'energy-orange',
       image: 'https://i.pinimg.com/736x/79/15/22/7915229cb87368de2abd7990755f009b.jpg',
@@ -748,7 +797,7 @@ export const PROGRAM_DATA = {
       type: 'MESA COLABORATIVA 2',
       activity: 'Resumo Expandido de Projeto em Andamento',
       date: '15 de maio',
-      time: '10:30 - 11:30',
+      time: '10:20 - 11:20',
       location: 'AUDITÓRIO SAMAÚMA',
       color: 'blue',
       image: 'https://i.pinimg.com/736x/8a/18/7d/8a187d85dc65bbdad432c7c34032295d.jpg',
@@ -768,7 +817,7 @@ export const PROGRAM_DATA = {
     {
       id: 110,
       type: 'ENCERRAMENTO',
-      activity: 'Anúncio da próxima edição do FIEB e sorteios',
+      activity: 'Encerramento, anúncio da próxima edição do FIEB e sorteios.',
       date: '15 de maio',
       time: '11:30',
       location: 'AUDITÓRIO SAMAÚMA',
@@ -788,12 +837,23 @@ export const PROGRAM_DATA = {
       isGeneral: true
     },
     {
+      id: 117,
+      type: 'TRANSLADO',
+      activity: 'Translado para a Visita Técnica',
+      date: '15 de maio',
+      time: '14:00 - 14:30',
+      location: 'ESTACIONAMENTO',
+      color: 'amazon-green',
+      image: 'https://i.pinimg.com/736x/bf/fc/03/bffc03704fb7b87808f9241cfaf23a51.jpg',
+      isGeneral: true
+    },
+    {
       id: 112,
       type: 'VISITA TÉCNICA',
-      activity: 'Visita Técnica em instituição parceira',
+      activity: 'Visitas Técnicas em instituições parceiras',
       date: '15 de maio',
-      time: '14:00 - 16:00',
-      location: 'AUDITÓRIO SAMAÚMA',
+      time: '14:30 - 18:00',
+      location: 'INSTITUIÇÕES PARCEIRAS',
       color: 'amazon-green',
       image: 'https://i.pinimg.com/736x/84/f4/89/84f489d21f34f37d5b7d44b118c6ff8f.jpg',
       isGeneral: true,
