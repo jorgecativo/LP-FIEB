@@ -604,7 +604,7 @@ export const PROGRAM_DATA = {
       date: '14 de maio',
       time: '14:00 - 14:50',
       location: 'AUDITÓRIO SAMAÚMA',
-      institution: 'SISTEBIB | UFAM',
+      institution: 'SES-AM | Kuau',
       color: 'black',
       image: 'assets/katty.png',
       lattes: 'https://lattes.cnpq.br/6383772134055820',

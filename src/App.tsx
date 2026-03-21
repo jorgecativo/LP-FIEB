@@ -26,6 +26,7 @@ const PROGRAM_IMAGES: Record<string, string> = {
   'INTERVALO_ALMOÇO': 'https://i.pinimg.com/1200x/d7/1c/ba/d71cba205df2a7c5188b6784e2e3173c.jpg',
   'INTERVALO': 'https://i.pinimg.com/1200x/3e/5d/ea/3e5dea473ecd4ee25c19c35a32481bd9.jpg',
   'CREDENCIAMENTO': 'https://i.pinimg.com/1200x/80/17/98/801798e667ba7ba01784f92719204b34.jpg',
+  'OFICINA': 'https://i.pinimg.com/1200x/4b/f8/9c/4bf89c17879bde1bbf093cec81e62256.jpg',
 };
 
 const getProgramImage = (item: any): string | null => {
@@ -36,6 +37,14 @@ const getProgramImage = (item: any): string | null => {
     return PROGRAM_IMAGES[item.type];
   }
   return null;
+};
+
+const getSpeakerObjectPosition = (name: string) => {
+  if (name?.includes('Suzane')) return 'object-center';
+  if (name?.includes('Thalita')) return 'object-center';
+  if (name?.includes('Rosângela')) return 'object-center';
+  if (name?.includes('Amanda')) return 'object-top';
+  return 'object-[center_25%]';
 };
 
 export default function App() {
@@ -827,8 +836,18 @@ export default function App() {
                                     <div className="text-xs font-bold text-white/50 uppercase tracking-wider">
                                       {p.role}
                                     </div>
-                                    <div className="text-base font-semibold text-white/90">
-                                      {p.name}
+                                    <div className="flex items-center gap-3">
+                                      {p.image && (
+                                        <img 
+                                          src={p.image} 
+                                          alt={p.name} 
+                                          className={`w-10 h-10 rounded-full border-2 border-white/20 object-cover ${getSpeakerObjectPosition(p.name)}`}
+                                          referrerPolicy="no-referrer"
+                                        />
+                                      )}
+                                      <div className="text-base font-semibold text-white/90 leading-tight">
+                                        {p.name}
+                                      </div>
                                     </div>
                                     <div className="text-xs text-white/50 uppercase">
                                       {p.institution}
@@ -842,8 +861,18 @@ export default function App() {
                                 <div className="text-xs font-bold text-white/50 uppercase tracking-wider mb-1">
                                   {item.role}
                                 </div>
-                                <div className="text-base font-semibold text-white/90">
-                                  {item.name}
+                                <div className="flex items-center gap-3">
+                                  {item.image && (
+                                    <img 
+                                      src={item.image} 
+                                      alt={item.name} 
+                                      className={`w-12 h-12 rounded-full border-2 border-white/20 object-cover ${getSpeakerObjectPosition(item.name)}`}
+                                      referrerPolicy="no-referrer"
+                                    />
+                                  )}
+                                  <div className="text-base font-semibold text-white/90 leading-tight">
+                                    {item.name}
+                                  </div>
                                 </div>
                                 <div className="text-xs text-white/50 uppercase">
                                   {item.institution}
@@ -927,13 +956,7 @@ export default function App() {
                   <img 
                     src={speaker.image} 
                     alt={speaker.name} 
-                    className={`w-full h-full object-cover transition-all hover:scale-110 ${
-                      speaker.name?.includes('Suzane') ? 'object-center' : 
-                      speaker.name?.includes('Thalita') ? 'object-center' :
-                      speaker.name?.includes('Rosângela') ? 'object-center' :
-                      speaker.name?.includes('Amanda') ? 'object-top' :
-                      'object-[center_25%]'
-                    }`}
+                    className={`w-full h-full object-cover transition-all hover:scale-110 ${getSpeakerObjectPosition(speaker.name)}`}
                     referrerPolicy="no-referrer"
                   />
                   <div className="absolute top-4 right-4 flex gap-2">
