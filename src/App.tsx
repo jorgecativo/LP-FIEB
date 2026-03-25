@@ -404,16 +404,7 @@ export default function App() {
                 <span className="px-3 py-1 md:px-4 md:py-1.5 bg-energy-orange text-white text-[8px] md:text-[10px] rounded-full group-hover:bg-white group-hover:text-energy-orange transition-colors">INSREVA-SE AQUI</span>
               </a>
               <span className="text-energy-orange text-xl md:text-2xl">|</span>
-              <a 
-                href="https://submissoes.fieb.net.br/fieb/about/submissions" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-sm sm:text-base md:text-2xl font-display font-bold text-white px-4 md:px-8 uppercase tracking-widest hover:text-energy-orange transition-colors flex items-center gap-2 md:gap-4"
-              >
-                SUBMISSÕES PRORROGADAS
-                <span className="px-3 py-1 md:px-4 md:py-1.5 bg-energy-orange text-white text-[8px] md:text-[10px] rounded-full">CLIQUE AQUI</span>
-              </a>
-              <span className="text-energy-orange text-xl md:text-2xl">|</span>
+
               <a 
                 href="https://fieb.net.br/programacao/" 
                 target="_blank" 
