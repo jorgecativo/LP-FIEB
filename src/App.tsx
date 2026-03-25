@@ -58,6 +58,7 @@ export default function App() {
   const [selectedTier, setSelectedTier] = useState<string | null>(null);
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
   const [selectedWorkshop, setSelectedWorkshop] = useState<any>(null);
+  const [showUpdates, setShowUpdates] = useState(false);
   const t = TRANSLATIONS[lang];
 
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -1555,11 +1556,54 @@ export default function App() {
             </div>
           </div>
 
-          <div className="pt-10 border-t border-white/10 flex flex-col items-center gap-3 text-[10px] text-white/50 uppercase font-bold tracking-[0.2em]">
+          <div className="pt-10 border-t border-white/10 flex flex-col items-center gap-4 text-[10px] text-white/50 uppercase font-bold tracking-[0.2em] relative">
             <p>© 2026 V FIEB. {t.footer.rights}.</p>
-            <div className="px-4 py-1.5 bg-white/5 rounded-full border border-white/10 text-white/30">
-              Site Version 25.3.6
+            <div className="flex items-center gap-3">
+              <div className="px-4 py-1.5 bg-white/5 rounded-full border border-white/10 text-white/30">
+                Última Atualização em: 25.03.2026
+              </div>
+              <button 
+                onClick={() => setShowUpdates(!showUpdates)}
+                className="w-8 h-8 rounded-full bg-energy-orange text-white flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-lg shadow-energy-orange/20"
+                title="Ver atualizações"
+              >
+                <ICONS.FileText size={14} />
+              </button>
             </div>
+
+            {/* Floating Updates Card */}
+            <AnimatePresence>
+              {showUpdates && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                  className="absolute bottom-full mb-4 w-72 bg-white rounded-2xl shadow-2xl p-6 border border-innovation-purple/10 text-left z-50 overflow-hidden"
+                >
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-energy-orange to-innovation-purple"></div>
+                  <div className="flex justify-between items-center mb-4">
+                    <h5 className="text-innovation-purple text-xs font-black tracking-widest uppercase">Novidades</h5>
+                    <button onClick={() => setShowUpdates(false)} className="text-gray-400 hover:text-innovation-purple">
+                      <ICONS.X size={14} />
+                    </button>
+                  </div>
+                  <ul className="space-y-3 normal-case tracking-normal">
+                    <li className="flex items-start gap-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-energy-orange mt-1.5 shrink-0"></div>
+                      <p className="text-gray-600 text-xs font-bold leading-relaxed">Ementa das 2 Oficinas</p>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-innovation-purple mt-1.5 shrink-0"></div>
+                      <p className="text-gray-600 text-xs font-bold leading-relaxed">Lote de Inscrições para SISTEBIB</p>
+                    </li>
+                  </ul>
+                  <div className="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-[8px] text-gray-400 font-bold italic">
+                    <ICONS.Calendar size={10} />
+                    <span>Publicado hoje</span>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </footer>
