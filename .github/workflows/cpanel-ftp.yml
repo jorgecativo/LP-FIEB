@@ -36,7 +36,7 @@ jobs:
         # Pasta gerada pelo Vite que será enviada
         local-dir: ./dist/
         
-        # Revertendo para / conforme funcionava anteriormente
+        # Tentando conexão segura (FTPS) para ver se o servidor aceita
         server-dir: /
-        protocol: ftp
+        protocol: ftps
         port: 21
