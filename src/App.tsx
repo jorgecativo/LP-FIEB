@@ -1348,7 +1348,7 @@ export default function App() {
           <div className="pt-10 border-t border-white/10 flex flex-col items-center gap-3 text-[10px] text-white/50 uppercase font-bold tracking-[0.2em]">
             <p>© 2026 V FIEB. {t.footer.rights}.</p>
             <div className="px-4 py-1.5 bg-white/5 rounded-full border border-white/10 text-white/30">
-              Site Version 25.3
+              Site Version 25.3.1
             </div>
           </div>
         </div>

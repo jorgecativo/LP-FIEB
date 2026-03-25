@@ -1,9 +1,9 @@
-name: Deploy to cPanel via SFTP
+name: Deploy to cPanel via FTP
 
 on:
   push:
     branches:
-      - main
+      - main # O deploy acontecerá automaticamente sempre que houver um push na branch main
 
 jobs:
   web-deploy:
@@ -24,14 +24,16 @@ jobs:
     - name: Gerar Build (dist)
       run: npm run build
 
-    - name: Realizar Deploy via SFTP para o cPanel
-      uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+    - name: Realizar Deploy via FTP para o cPanel
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        port: 22
-        local_path: './dist/*'
-        remote_path: '/public_html/fieb2026/'
-        # Nota: Se o seu IP estiver correto nas Secrets, 
-        # o SFTP usará a porta 22 para ignorar bloqueios comuns de FTP.
+        local-dir: ./dist/
+        # Usando a raiz / pois funcionava anteriormente
+        server-dir: /
+        protocol: ftp
+        port: 21
+        # Reduzindo a chance de erro por cache do estado de deploy
+        dangerous-clean-slate: false
