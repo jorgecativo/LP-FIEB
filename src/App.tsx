@@ -30,6 +30,9 @@ const PROGRAM_IMAGES: Record<string, string> = {
 };
 
 const getProgramImage = (item: any): string | null => {
+  if (item.workshopImage) {
+    return item.workshopImage;
+  }
   if (item.type === 'INTERVALO' && item.activity?.includes('Almoço')) {
     return PROGRAM_IMAGES['INTERVALO_ALMOÇO'];
   }
@@ -54,6 +57,7 @@ export default function App() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [selectedTier, setSelectedTier] = useState<string | null>(null);
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
+  const [selectedWorkshop, setSelectedWorkshop] = useState<any>(null);
   const t = TRANSLATIONS[lang];
 
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -87,6 +91,12 @@ export default function App() {
 
     return () => clearInterval(interval);
   }, [isCarouselPaused, activeTab]);
+
+  useEffect(() => {
+    if (activeTab === 'day2' && carouselRef.current) {
+      carouselRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+    }
+  }, [activeTab]);
 
   const scrollCarousel = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
@@ -675,7 +685,21 @@ export default function App() {
           </div>
 
           {/* Carousel */}
-          <div className="relative group">
+          <div className="relative group/carousel">
+            {/* Arrows */}
+            <button 
+              onClick={() => scrollCarousel('left')}
+              className="absolute left-[-20px] top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-white rounded-full flex items-center justify-center text-innovation-purple shadow-xl opacity-0 group-hover/carousel:opacity-100 transition-opacity hover:bg-energy-orange hover:text-white"
+            >
+              <ICONS.ChevronLeft size={24} />
+            </button>
+            <button 
+              onClick={() => scrollCarousel('right')}
+              className="absolute right-[-20px] top-1/2 -translate-y-1/2 z-30 w-12 h-12 bg-white rounded-full flex items-center justify-center text-innovation-purple shadow-xl opacity-0 group-hover/carousel:opacity-100 transition-opacity hover:bg-energy-orange hover:text-white"
+            >
+              <ICONS.ChevronRight size={24} />
+            </button>
+
             <div
               ref={carouselRef}
               onMouseEnter={() => setIsCarouselPaused(true)}
@@ -807,6 +831,15 @@ export default function App() {
                                   Inscrições em Breve
                                 </button>
                               )}
+
+                              {(item.name === 'Suzane Lima' || item.name === 'Jorge Cativo') && (
+                                <button
+                                  onClick={() => setSelectedWorkshop(item)}
+                                  className="w-full mt-2 py-2 bg-innovation-purple text-white rounded-lg font-bold text-xs uppercase tracking-wider shadow-md hover:bg-amazon-green transition-all"
+                                >
+                                  EMENTA
+                                </button>
+                              )}
                             </div>
 
                             {isPanel && (
@@ -870,6 +903,183 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      {/* Ementa Modal */}
+      <AnimatePresence>
+        {selectedWorkshop && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 sm:p-12">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedWorkshop(null)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-2xl bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[80vh]"
+            >
+              <div className="p-8 bg-innovation-purple text-white flex justify-between items-center">
+                <div className="flex flex-col gap-1">
+                  <h3 className="text-xl md:text-2xl font-display font-bold uppercase tracking-wider leading-tight">
+                    {selectedWorkshop.activity}
+                  </h3>
+                  <div className="flex items-center gap-2 text-sm opacity-90 font-bold">
+                    <span className="bg-white/20 px-2 py-0.5 rounded">Facilitador(a): {selectedWorkshop.name}</span>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setSelectedWorkshop(null)}
+                  className="w-10 h-10 shrink-0 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all text-white font-bold text-xl ml-4"
+                >
+                  <ICONS.X size={20} />
+                </button>
+              </div>
+              <div className="p-8 overflow-y-auto text-innovation-purple">
+                <div className="space-y-6">
+                  {selectedWorkshop.name === 'Suzane Lima' ? (
+                    <>
+                      <div className="space-y-4">
+                        <p className="font-bold text-lg border-b border-innovation-purple/10 pb-2">Apresentação e contextualização</p>
+                        <ul className="list-disc pl-6 space-y-1 text-sm font-medium opacity-80">
+                          <li>Quem é o profissional da informação no contexto digital</li>
+                          <li>Por que profissionais da informação têm vantagem competitiva no mercado de infoprodutos</li>
+                          <li>Panorama do mercado de educação online no Brasil</li>
+                        </ul>
+                      </div>
+                      <div className="space-y-4">
+                        <p className="font-bold text-lg border-b border-innovation-purple/10 pb-2">Posicionamento e Nicho</p>
+                        <ul className="list-disc pl-6 space-y-1 text-sm font-medium opacity-80">
+                          <li>O que é nicho e por que ele importa</li>
+                          <li>Como identificar a interseção entre conhecimento técnico + demanda de mercado + perfil pessoal</li>
+                          <li>Exemplos práticos de nichos para profissionais da informação</li>
+                          <li>Atividade rápida: mapeamento individual do nicho</li>
+                        </ul>
+                      </div>
+                      <div className="space-y-4">
+                        <p className="font-bold text-lg border-b border-innovation-purple/10 pb-2">O que vender: escolha do produto digital</p>
+                        <ul className="list-disc pl-6 space-y-1 text-sm font-medium opacity-80">
+                          <li>Tipologia de produtos e serviços digitais: cursos, e-books, mentorias, consultorias, afiliação</li>
+                          <li>Critérios de escolha: investimento de tempo, ticket médio, escalabilidade e perfil do criador</li>
+                          <li>Produtos de entrada vs. produtos de alto ticket</li>
+                          <li>Como começar sem precisar ter tudo pronto</li>
+                        </ul>
+                      </div>
+                      <div className="space-y-4">
+                        <p className="font-bold text-lg border-b border-innovation-purple/10 pb-2">Modelagem do negócio</p>
+                        <ul className="list-disc pl-6 space-y-1 text-sm font-medium opacity-80">
+                          <li>Introdução ao Business Model Canvas adaptado para infoprodutores</li>
+                          <li>Os blocos mais críticos para quem está começando: proposta de valor, segmento de clientes, canais e fontes de receita</li>
+                          <li>Exercício: preenchimento simplificado do Canvas</li>
+                        </ul>
+                      </div>
+                      <div className="space-y-4">
+                        <p className="font-bold text-lg border-b border-innovation-purple/10 pb-2">Presença digital e primeiros passos</p>
+                        <ul className="list-disc pl-6 space-y-1 text-sm font-medium opacity-80">
+                          <li>Qual plataforma escolher (Instagram, YouTube, TikTok, etc) e por quê não precisa estar em todas</li>
+                          <li>A lógica de conteúdo que vende: autoridade antes de oferta</li>
+                          <li>Ferramentas básicas para começar (Hotmart, Eduzz Kiwify etc.)</li>
+                        </ul>
+                      </div>
+                      <div className="space-y-4">
+                        <p className="font-bold text-lg border-b border-innovation-purple/10 pb-2">Encerramento e próximos passos</p>
+                        <ul className="list-disc pl-6 space-y-1 text-sm font-medium opacity-80">
+                          <li>Checklist de ação: o que fazer nos próximos 7 dias</li>
+                          <li>Dúvidas e troca entre participantes</li>
+                        </ul>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="space-y-4">
+                        <p className="font-bold text-lg border-b border-innovation-purple/10 pb-2">1. Contexto estratégico e mentalidade digital</p>
+                        <ul className="list-disc pl-6 space-y-1 text-sm font-medium opacity-80">
+                          <li>Papel das redes sociais como canal de aquisição, relacionamento e vendas</li>
+                          <li>Uso da IA para melhorar a produção de conteúdo em negócios locais</li>
+                          <li>Erros comuns na gestão de redes sociais sem estratégia</li>
+                          <li>Diferença entre postar conteúdo e construir presença digital</li>
+                        </ul>
+                      </div>
+                      <div className="space-y-4">
+                        <p className="font-bold text-lg border-b border-innovation-purple/10 pb-2">2. Posicionamento estratégico com IA</p>
+                        <ul className="list-disc pl-6 space-y-1 text-sm font-medium opacity-80">
+                          <li>Definição de nicho, valores e crenças como base do conteúdo</li>
+                          <li>Identificação de público, persona e dores reais</li>
+                          <li>Níveis de consciência do público e impacto na comunicação</li>
+                          <li>Uso de IA para mapear dores, desejos e dúvidas</li>
+                        </ul>
+                        <div className="bg-innovation-purple/5 p-4 rounded-xl border-l-4 border-energy-orange">
+                          <p className="font-bold text-xs uppercase tracking-widest mb-2 text-energy-orange">Atividade 1: Posicionando seu negócio nas redes sociais com IA a partir da:</p>
+                          <ul className="text-xs font-bold space-y-1">
+                            <li>• Definição de nicho</li>
+                            <li>• Definição de público</li>
+                            <li>• Identificação das principais dores</li>
+                            <li>• Construção da promessa central</li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="space-y-4">
+                        <p className="font-bold text-lg border-b border-innovation-purple/10 pb-2">3. Planejamento de conteúdo</p>
+                        <ul className="list-disc pl-6 space-y-1 text-sm font-medium opacity-80">
+                          <li>O que postar e por que postar no contexto do negócio</li>
+                          <li>10 Tipos de editorias de conteúdo</li>
+                          <li>Benchmarking inteligente com apoio de IA</li>
+                          <li>Aplicação da técnica das ideias que colam</li>
+                        </ul>
+                        <div className="bg-innovation-purple/5 p-4 rounded-xl border-l-4 border-amazon-green">
+                          <p className="font-bold text-xs uppercase tracking-widest mb-2 text-amazon-green">Atividade 2: Criação de um Calendário editorial validado</p>
+                        </div>
+                      </div>
+                      <div className="space-y-4">
+                        <p className="font-bold text-lg border-b border-innovation-purple/10 pb-2">4. Produção de conteúdo com IA</p>
+                        <ul className="list-disc pl-6 space-y-1 text-sm font-medium opacity-80">
+                          <li>Estrutura de conteúdos que geram engajamento</li>
+                          <li>Técnicas de escrita de legendas para redes sociais</li>
+                          <li>Criação de roteiros de ideias virais</li>
+                          <li>Transformação de um tema em múltiplos conteúdos</li>
+                        </ul>
+                        <div className="bg-innovation-purple/5 p-4 rounded-xl border-l-4 border-innovation-purple">
+                          <p className="font-bold text-xs uppercase tracking-widest mb-2 text-innovation-purple">Atividade 3: Desenvolvimento de conteúdo com uma das editorias</p>
+                        </div>
+                      </div>
+                      <div className="space-y-4">
+                        <p className="font-bold text-lg border-b border-innovation-purple/10 pb-2">5. Automação e plataformas de criação com IA</p>
+                        <ul className="list-disc pl-6 space-y-1 text-sm font-medium opacity-80">
+                          <li>Introdução à automação de conteúdo</li>
+                          <li>Princípios de UX e UI para criadores de conteúdo</li>
+                          <li>Ferramentas de IA para design e produção</li>
+                          <li>Construção de fluxo prático da ideia ao post com IA</li>
+                        </ul>
+                        <div className="bg-energy-orange/10 p-4 rounded-xl border border-energy-orange/20">
+                          <p className="font-bold text-xs uppercase tracking-widest mb-2 text-energy-orange leading-tight">Atividade final: Desenvolvimento de carrossel automatizado estilo tweet com legenda</p>
+                        </div>
+                        <div className="bg-energy-orange/10 p-4 rounded-xl border border-energy-orange/20">
+                          <p className="font-bold text-xs uppercase tracking-widest mb-2 text-energy-orange leading-tight">Entrega do participante</p>
+                          <ul className="text-xs font-bold space-y-1">
+                            <li>• Gerador de carrossel configurado</li>
+                            <li>• Texto, estrutura e design gerados com IA</li>
+                            <li>• Conteúdo pronto para download e publicação</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+              <div className="p-6 bg-lavender-light/30 border-t border-innovation-purple/5 flex justify-end">
+                <button 
+                  onClick={() => setSelectedWorkshop(null)}
+                  className="px-8 py-3 bg-energy-orange text-white rounded-xl font-bold uppercase text-sm shadow-lg hover:bg-innovation-purple transition-all"
+                >
+                  Fechar
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Videos Section */}
       <section className="py-24 bg-amazon-green">
@@ -1348,7 +1558,7 @@ export default function App() {
           <div className="pt-10 border-t border-white/10 flex flex-col items-center gap-3 text-[10px] text-white/50 uppercase font-bold tracking-[0.2em]">
             <p>© 2026 V FIEB. {t.footer.rights}.</p>
             <div className="px-4 py-1.5 bg-white/5 rounded-full border border-white/10 text-white/30">
-              Site Version 25.3.1
+              Site Version 25.3.6
             </div>
           </div>
         </div>

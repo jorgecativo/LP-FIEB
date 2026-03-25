@@ -776,6 +776,7 @@ export const PROGRAM_DATA = {
       institution: 'IBGE',
       color: 'energy-orange',
       image: 'assets/suzane.png',
+      workshopImage: 'https://i.pinimg.com/1200x/7e/19/a6/7e19a628f1e676b3f869aba57e95919c.jpg',
       lattes: 'https://lattes.cnpq.br/8812674350684147',
       instagram: 'https://www.instagram.com/suzanelimaprof/',
       registrationUrl: 'https://tally.so/r/LZGy81',

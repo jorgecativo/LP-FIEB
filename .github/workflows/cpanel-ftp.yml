@@ -31,10 +31,11 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./dist/
-        # Usando a raiz / pois funcionava anteriormente
+        # Usando a raiz / pois funcionava anteriormente conforme o histórico
         server-dir: /
-        protocol: ftps
+        protocol: ftp
         port: 21
-        # Reduzindo a chance de erro por cache do estado de deploy
+        # Usando arquivo de estado para acelerar o deploy e evitar timeouts
+        state-name: .ftp-deploy-sync-state.json
         dangerous-clean-slate: false
         log-level: verbose
