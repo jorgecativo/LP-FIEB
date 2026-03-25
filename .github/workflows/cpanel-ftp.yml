@@ -33,7 +33,8 @@ jobs:
         local-dir: ./dist/
         # Usando a raiz / pois funcionava anteriormente
         server-dir: /
-        protocol: ftp
+        protocol: ftps
         port: 21
         # Reduzindo a chance de erro por cache do estado de deploy
         dangerous-clean-slate: false
+        log-level: verbose
