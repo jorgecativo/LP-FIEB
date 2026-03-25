@@ -413,23 +413,14 @@ export default function App() {
                 <span className="px-3 py-1 md:px-4 md:py-1.5 bg-energy-orange text-white text-[8px] md:text-[10px] rounded-full group-hover:bg-white group-hover:text-energy-orange transition-colors">INSREVA-SE AQUI</span>
               </a>
               <span className="text-energy-orange text-xl md:text-2xl">|</span>
-              <a 
-                href="https://submissoes.fieb.net.br/fieb/about/submissions" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-sm sm:text-base md:text-2xl font-display font-bold text-white px-4 md:px-8 uppercase tracking-widest hover:text-energy-orange transition-colors flex items-center gap-2 md:gap-4"
-              >
-                SUBMISSÕES PRORROGADAS
-                <span className="px-3 py-1 md:px-4 md:py-1.5 bg-energy-orange text-white text-[8px] md:text-[10px] rounded-full">CLIQUE AQUI</span>
-              </a>
-              <span className="text-energy-orange text-xl md:text-2xl">|</span>
+
               <a 
                 href="https://fieb.net.br/programacao/" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-sm sm:text-base md:text-2xl font-display font-bold text-white px-4 md:px-8 uppercase tracking-widest hover:text-energy-orange transition-colors flex items-center gap-2 md:gap-4"
               >
-                CONFIRA A PROGRAMAÇÃO PRELIMINAR
+                CONFIRA A PROGRAMAÇÃO
                 <span className="px-3 py-1 md:px-4 md:py-1.5 bg-innovation-purple text-white text-[8px] md:text-[10px] rounded-full">VER AGORA</span>
               </a>
               <span className="text-energy-orange text-xl md:text-2xl">|</span>
@@ -454,14 +445,10 @@ export default function App() {
                 <p>{t.about.text1}</p>
                 <p>{t.about.text2}</p>
               </div>
-              <div className="mt-10 grid grid-cols-2 gap-6">
-                <div className="p-6 bg-lavender-light rounded-2xl border border-innovation-purple/10">
+              <div className="mt-10">
+                <div className="p-6 bg-lavender-light rounded-2xl border border-innovation-purple/10 inline-block">
                   <div className="text-3xl font-display font-bold text-innovation-purple mb-2">{t.about.statYears}</div>
                   <div className="text-sm font-bold text-gray-500 uppercase tracking-tighter">{t.about.statLabelYears}</div>
-                </div>
-                <div className="p-6 bg-amazon-green/10 rounded-2xl border border-amazon-green/10">
-                  <div className="text-3xl font-display font-bold text-amazon-green mb-2">{t.about.statParticipants}</div>
-                  <div className="text-sm font-bold text-gray-500 uppercase tracking-tighter">{t.about.statLabelParticipants}</div>
                 </div>
               </div>
             </motion.div>
@@ -689,13 +676,6 @@ export default function App() {
 
           {/* Carousel */}
           <div className="relative group">
-            <button 
-              onClick={() => scrollCarousel('left')}
-              className="absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center text-innovation-purple hover:bg-innovation-purple hover:text-white transition-all opacity-0 group-hover:opacity-100"
-            >
-              <ICONS.ChevronLeft size={24} />
-            </button>
-            
             <div
               ref={carouselRef}
               onMouseEnter={() => setIsCarouselPaused(true)}
@@ -887,13 +867,6 @@ export default function App() {
                 });
               })()}
             </div>
-
-            <button 
-              onClick={() => scrollCarousel('right')}
-              className="absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center text-innovation-purple hover:bg-innovation-purple hover:text-white transition-all opacity-0 group-hover:opacity-100"
-            >
-              <ICONS.ChevronRight size={24} />
-            </button>
           </div>
         </div>
       </section>
@@ -1005,97 +978,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Submit Work Section */}
-      <section id="submissao" className="py-24 bg-gradient-to-br from-energy-orange to-[#d35400] relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/circuit-board.png')]"></div>
-        
-        {/* Digital Ticker */}
-        <div className="w-full overflow-hidden bg-deep-purple py-4 relative z-20">
-          <div className="animate-marquee whitespace-nowrap flex">
-            {[1, 2, 3, 4, 5, 6].map((n) => (
-              <span key={n} className="mx-8 text-xl md:text-2xl font-display font-bold text-white uppercase tracking-widest">
-                FALTAM 2 DIAS PARA O FIM DAS SUBMISSÕES
-              </span>
-            ))}
-          </div>
-        </div>
-        
-        <div className="max-w-[1200px] mx-auto px-6 md:px-20 relative z-10 flex flex-col items-center">
-            
-            <div className="text-center mb-16 mt-8">
-              <span className="inline-block px-4 py-1.5 bg-white/20 text-white font-bold text-sm tracking-widest uppercase rounded-full mb-4">
-                Submissão de Trabalhos
-              </span>
-              <h2 className="text-4xl md:text-5xl font-display font-bold text-white uppercase tracking-widest drop-shadow-md">
-                Cronograma Oficial
-              </h2>
-            </div>
-            
-            <div className="w-full max-w-5xl mt-8">
-              <div className="grid md:grid-cols-6 gap-4 md:gap-0 relative">
-                
-                {/* Connecting Line for Desktop */}
-                <div className="hidden md:block absolute top-[45px] left-[8%] right-[8%] h-1 bg-white/20 rounded-full z-0"></div>
 
-                {[
-                  { date: "20/02", desc: "Abertura", active: false },
-                  { date: "22/03", desc: "Encerramento", active: false },
-                  { date: "Até 30/03", desc: "Resultados Parciais", active: false },
-                  { date: "Até 08/04", desc: "Versão Final", active: false },
-                  { date: "15/04", desc: "Resultados Finais", active: false },
-                  { date: "15/05", desc: "Apresentações", active: false },
-                ].map((item, idx) => (
-                  <div key={idx} className="relative z-10 flex flex-row md:flex-col items-center gap-4 md:gap-6 bg-white/10 md:bg-transparent p-4 md:p-0 rounded-2xl md:rounded-none backdrop-blur-sm border md:border-none border-white/10">
-                    
-                    {/* Data / Step Indicator */}
-                    <div className="flex-shrink-0 w-20 md:w-full flex justify-center">
-                      <div className="w-20 md:w-24 h-20 md:h-24 rounded-full flex flex-col items-center justify-center font-display font-bold text-center border-4 border-white transition-all duration-300 shadow-xl bg-energy-orange text-white hover:bg-white hover:text-energy-orange cursor-pointer hover:scale-105">
-                        <span className="text-lg md:text-xl leading-none">{item.date.split('/')[0].replace('Até ', '')}</span>
-                        <span className="text-[10px] md:text-xs uppercase mt-1 tracking-wider opacity-80">
-                          {item.date.includes('/') ? (item.date.split('/')[1] === '02' ? 'FEV' : item.date.split('/')[1] === '03' ? 'MAR' : item.date.split('/')[1] === '04' ? 'ABR' : 'MAI') : ''}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Descrição */}
-                    <div className="flex-grow md:text-center md:px-2 text-white/90">
-                      <h4 className="font-bold text-base md:text-lg leading-tight md:mt-4">{item.desc}</h4>
-                      {item.date.includes('Até') && (
-                        <span className="text-[10px] uppercase font-bold text-white/60 bg-white/10 px-2 py-0.5 rounded-full inline-block mt-2">
-                          Prazo máximo
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-20 flex flex-col items-center gap-6 max-w-2xl text-center">
-              <motion.a 
-                href="https://submissoes.fieb.net.br/fieb/about/submissions"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-white text-energy-orange px-10 py-5 rounded-full font-display font-bold text-lg uppercase tracking-wider shadow-2xl flex items-center gap-3 transition-colors hover:bg-innovation-purple hover:text-white"
-              >
-                <ICONS.FileText size={24} />
-                Sistema de Submissão
-              </motion.a>
-              
-              <div className="flex flex-col md:flex-row gap-4 text-xs font-semibold text-white/80 mt-4 italic">
-                <span className="flex items-center gap-2 justify-center drop-shadow-md">
-                  <ICONS.Award size={16} /> Regras no Edital
-                </span>
-                <span className="hidden md:inline text-white/40">•</span>
-                <span className="flex items-center gap-2 justify-center drop-shadow-md">
-                  <ICONS.Mail size={16} /> cientifica.fieb@gmail.com
-                </span>
-              </div>
-            </div>
-          </div>
-      </section>
 
       {/* Support Section */}
       <section id="apoio" className="py-24 bg-white">
@@ -1462,13 +1345,8 @@ export default function App() {
             </div>
           </div>
 
-          <div className="pt-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-lavender-light/40 uppercase font-bold tracking-widest">
+          <div className="pt-10 border-t border-white/10 flex justify-center text-xs text-white uppercase font-bold tracking-widest">
             <p>© 2026 V FIEB. {t.footer.rights}.</p>
-            <div className="flex gap-8">
-              <a href="#" className="hover:text-white transition-colors">Privacidade</a>
-              <a href="#" className="hover:text-white transition-colors">Termos</a>
-              <a href="#" className="hover:text-white transition-colors">Acessibilidade</a>
-            </div>
           </div>
         </div>
       </footer>

@@ -93,7 +93,7 @@ export const TRANSLATIONS = {
           { label: 'Edições anteriores', href: 'https://fieb.net.br/edicoes-anteriores/' },
         ],
         program: [
-          { label: 'Programação Preliminar', href: '#programacao' },
+          { label: 'Ver Programação', href: '#programacao' },
           { label: 'Pessoas Convidadas', href: '#pessoas-convidadas' }
         ],
         submissions: [
@@ -234,7 +234,7 @@ export const TRANSLATIONS = {
           { label: 'Previous Editions', href: 'https://fieb.net.br/edicoes-anteriores/' },
         ],
         program: [
-          { label: 'Preliminary Program', href: 'https://fieb.net.br/programacao/' },
+          { label: 'View Program', href: 'https://fieb.net.br/programacao/' },
           { label: 'Guest Speakers', href: 'https://fieb.net.br/pessoas-convidadas/' },
           { label: 'Lectures', href: 'https://fieb.net.br/palestras/' },
           { label: 'Thematic Panels', href: 'https://fieb.net.br/paineis-tematicos/' },
@@ -378,7 +378,7 @@ export const TRANSLATIONS = {
           { label: 'Ediciones Anteriores', href: 'https://fieb.net.br/edicoes-anteriores/' },
         ],
         program: [
-          { label: 'Programa Preliminar', href: 'https://fieb.net.br/programacao/' },
+          { label: 'Ver Programa', href: 'https://fieb.net.br/programacao/' },
           { label: 'Personas Invitadas', href: 'https://fieb.net.br/pessoas-convidadas/' },
           { label: 'Conferencias', href: 'https://fieb.net.br/palestras/' },
           { label: 'Paneles Temáticos', href: 'https://fieb.net.br/paineis-tematicos/' },
