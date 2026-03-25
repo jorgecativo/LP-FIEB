@@ -36,7 +36,7 @@ jobs:
         # Pasta gerada pelo Vite que será enviada
         local-dir: ./dist/
         
-        # Pasta no servidor onde os arquivos serão colocados. 
-        # Como o seu site está configurado para o caminho /fieb2026/ no vite.config.ts,
-        # os arquivos DEVEM ser enviados para essa mesma pasta no cPanel.
-        server-dir: /public_html/fieb2026/
+        # Revertendo para / conforme funcionava anteriormente
+        server-dir: /
+        protocol: ftp
+        port: 21
