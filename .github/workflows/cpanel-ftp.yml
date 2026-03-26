@@ -30,8 +30,8 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        port: 22
+        port: 22 # Mantendo 22 (SSH) para evitar o erro de Timeout da porta 21
         local_path: './dist/*'
-        remote_path: '/public_html/' # Se o seu site estiver em outra pasta, mude aqui.
+        remote_path: '/public_html/fieb2026/' # Pasta específica solicitada
         delete_remote_files: false
-        ssh_private_key: '' # Deixe vazio se usar apenas senha
+        ssh_private_key: ''
