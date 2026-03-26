@@ -24,14 +24,14 @@ jobs:
     - name: Gerar Build (dist)
       run: npm run build
 
-    - name: Realizar Deploy via FTP para o cPanel
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+    - name: Realizar Deploy via SFTP (SSH)
+      uses: wlixcc/SFTP-Deploy-Action@v1.2.4
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./dist/
-        server-dir: / # Se o site estiver em uma subpasta, mude para /pasta/
-        protocol: ftp
-        port: 21
-        state-name: .ftp-deploy-sync-state.json
+        port: 22
+        local_path: './dist/*'
+        remote_path: '/public_html/' # Se o seu site estiver em outra pasta, mude aqui.
+        delete_remote_files: false
+        ssh_private_key: '' # Deixe vazio se usar apenas senha
