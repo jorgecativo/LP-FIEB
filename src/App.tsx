@@ -406,48 +406,47 @@ export default function App() {
             </div>
           </motion.div>
         </div>
-
-        {/* Hero Marquee Ticker - Integrated at the bottom of the first fold */}
-        <div className="absolute bottom-0 left-0 w-full z-20 overflow-hidden bg-black/40 backdrop-blur-md border-y border-white/5 py-3 md:py-4">
+        {/* Hero Marquee Ticker - Positioned IN FRONT of the mascot to act as a base/table */}
+        <div className="absolute bottom-0 left-0 w-full z-50 overflow-hidden bg-[#0a0514] border-t border-white/10 py-4 shadow-[0_-20px_40px_rgba(0,0,0,0.5)]">
           <div className="flex animate-marquee whitespace-nowrap items-center" style={{ animationDuration: '40s' }}>
             {[1, 2, 3, 4, 5, 6].map((n) => (
-              <div key={n} className="flex items-center gap-6 md:gap-10 mx-6">
+              <div key={n} className="flex items-center gap-6 md:gap-12 mx-6">
                 {/* Compact Vacancies Display */}
-                <div className="flex items-center gap-3 px-4 py-1.5 bg-black/50 rounded-xl border border-energy-orange/20 shadow-lg">
-                  <span className="text-[8px] md:text-[10px] font-black text-white/30 uppercase tracking-[0.2em] leading-none">Restam</span>
-                  <div className="bg-black/80 px-3 py-1 rounded-lg border border-energy-orange/40 flex items-center justify-center min-w-[50px] md:min-w-[80px]">
-                    <span className="text-energy-orange font-mono font-black text-base md:text-2xl leading-none pt-0.5" style={{ textShadow: '0 0 10px rgba(211,105,62,0.8)' }}>
+                <div className="flex items-center gap-3 px-4 py-2 bg-black rounded-xl border border-energy-orange/40 shadow-xl">
+                  <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] leading-none">Restam</span>
+                  <div className="bg-[#111] px-4 py-1.5 rounded-lg border border-energy-orange/60 flex items-center justify-center min-w-[60px] md:min-w-[90px]">
+                    <span className="text-energy-orange font-mono font-black text-xl md:text-3xl leading-none pt-0.5" style={{ textShadow: '0 0 10px rgba(211,105,62,1)' }}>
                       {vagas}
                     </span>
                   </div>
-                  <span className="text-[8px] md:text-[10px] font-black text-white/30 uppercase tracking-[0.2em] leading-none">Vagas</span>
+                  <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] leading-none">Vagas</span>
                 </div>
                 
-                <span className="text-innovation-purple text-lg md:text-xl opacity-40">★</span>
+                <span className="text-innovation-purple text-xl opacity-40">★</span>
 
                 <a 
                   href="https://fieb.net.br/inscricoes/" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 group"
+                  className="flex items-center gap-3 group"
                 >
-                  <span className="text-xs md:text-lg font-display font-black text-white uppercase tracking-wider group-hover:text-energy-orange transition-colors">Inscrições Abertas</span>
-                  <span className="px-2 py-0.5 bg-energy-orange text-white text-[7px] md:text-[9px] rounded-full font-black uppercase shadow-lg">Inscreva-se</span>
+                  <span className="text-sm md:text-xl font-display font-black text-white uppercase tracking-wider group-hover:text-energy-orange transition-colors">Inscrições Abertas</span>
+                  <span className="px-3 py-1 bg-energy-orange text-white text-[10px] rounded-full font-black uppercase shadow-lg group-hover:bg-white group-hover:text-energy-orange transition-all">Inscreva-se</span>
                 </a>
 
-                <span className="text-innovation-purple text-lg md:text-xl opacity-40">★</span>
+                <span className="text-innovation-purple text-xl opacity-40">★</span>
 
                 <a 
                   href="https://fieb.net.br/programacao/" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 group"
+                  className="flex items-center gap-3 group"
                 >
-                  <span className="text-xs md:text-lg font-display font-black text-white uppercase tracking-wider group-hover:text-innovation-purple transition-colors">Ver Programação</span>
-                  <span className="px-2 py-0.5 bg-innovation-purple text-white text-[7px] md:text-[9px] rounded-full font-black uppercase shadow-lg">Conferir</span>
+                  <span className="text-sm md:text-xl font-display font-black text-white uppercase tracking-wider group-hover:text-innovation-purple transition-colors">Programação Completa</span>
+                  <span className="px-3 py-1 bg-innovation-purple text-white text-[10px] rounded-full font-black uppercase shadow-lg group-hover:bg-white group-hover:text-innovation-purple transition-all">Ver agora</span>
                 </a>
 
-                <span className="text-white/10 text-2xl font-black mx-4">/</span>
+                <span className="text-white/20 text-3xl font-black mx-10">/</span>
               </div>
             ))}
           </div>
