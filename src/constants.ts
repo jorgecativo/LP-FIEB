@@ -523,13 +523,13 @@ export const PROGRAM_DATA = {
     },
     {
       id: 112,
-      type: 'SESSÃO DE ABERTURA',
-      activity: 'Sessão de Abertura Oficial + Sessão Cultural',
+      type: 'SESSÃO DE ABERTURA OFICIAL',
+      activity: 'Sessão de Abertura Oficial',
       date: '14 de maio',
       time: '09:00 - 09:25',
       location: 'AUDITÓRIO SAMAÚMA',
       color: 'beige',
-      image: 'https://i.pinimg.com/1200x/a1/c1/11/a1c111fb375cb5f22033724c4e5f718f.jpg',
+      image: 'https://i.pinimg.com/1200x/27/eb/45/27eb458ee615e2e669c082e305d6e207.jpg',
       isGeneral: true
     },
     {
@@ -755,7 +755,8 @@ export const PROGRAM_DATA = {
       activity: 'Inteligência Artificial na gestão de redes sociais para empreendedores',
       date: '15 de maio',
       time: '08:00 - 10:00',
-      location: 'LAB. MULTIMÍDIA',
+      location: 'Laboratório LIFT II',
+      locationUrl: 'https://moovitapp.com/tripplan/manaus-1743/poi/LIFT%20II%20%28FT~2FUFAM%29,%20Manaus/Auditorio%20Samauma-FCA%2001-%20UFAM,%20Manaus/pt-br?customerId=4908&ref=1&af_sub8=%2Findex%2Fpt-br%2Ftransporte_p%25C3%25BAblico-LIFT_II_FT_UFAM-Manaus-site_20246732-1743&af_sub9=Search%20bar%20button&poiType=efsite&fll=-3.099982_-59.975965&tll=-3.088408_-59.963989&metroSeoName=Manaus',
       institution: 'INPA | Biblioteconomia Digital',
       color: 'energy-orange',
       image: 'assets/cativo.png',
@@ -772,7 +773,8 @@ export const PROGRAM_DATA = {
       description: 'Primeiros passos para montar o seu próprio negócio na Biblioteconomia - Ela compartilharia da experiência dela desde a criação do blog que ela fez até o processo de construção do curso e da plataforma dela. Um passo a passo mesmo: criar conteúdo, plataformizar, captação e fidelização de clientes, marketing nas redes sociais e nos grupos de mensagens, construção da marca, etc. Consultoria profissional, Criando e vendendo infoprodutos, Ser autônomo.',
       date: '15 de maio',
       time: '08:00 - 10:00',
-      location: 'LAB. MULTIMÍDIA',
+      location: 'Laboratório LIFT I',
+      locationUrl: 'https://moovitapp.com/tripplan/manaus-1743/poi/UFAM%20-%20Lab%20de%20Inform%C3%A1tica%20%28LIFT%201%29/Auditorio%20Samauma-FCA%2001-%20UFAM,%20Manaus/pt-br?customerId=4908&ref=1&af_sub8=%2Findex%2Fpt-br%2Ftransporte_p%25C3%25BAblico-LIFT_II_FT_UFAM-Manaus-site_20246732-1743&af_sub9=Search%20bar%20button&poiType=efsite&fll=-3.099982_-59.975965&tll=-3.088778_-59.963408&metroSeoName=Manaus',
       institution: 'IBGE',
       color: 'energy-orange',
       image: 'assets/suzane.png',
@@ -813,6 +815,17 @@ export const PROGRAM_DATA = {
       location: 'AUDITÓRIO SAMAÚMA',
       color: 'red',
       image: 'https://i.pinimg.com/736x/4f/da/ab/4fdaab760389c407ea507b44f62d27cf.jpg',
+      isGeneral: true
+    },
+    {
+      id: 118,
+      type: 'ATRAÇÃO CULTURAL',
+      activity: 'Atração Cultural de Encerramento',
+      date: '15 de maio',
+      time: '11:30 - 12h 30',
+      location: 'Em breve...',
+      color: 'energy-orange',
+      image: 'https://i.pinimg.com/1200x/88/8d/d2/888dd2327f33a2aa8385b5df0dbb75d4.jpg',
       isGeneral: true
     },
     {

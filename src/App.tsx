@@ -842,6 +842,18 @@ export default function App() {
                                 </button>
                               )}
 
+                              {item.locationUrl && (
+                                <a
+                                  href={item.locationUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="block w-full mt-2 py-2 bg-amazon-green hover:bg-innovation-purple text-white text-center rounded-lg font-bold text-xs uppercase tracking-wider shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
+                                >
+                                  <ICONS.MapPin size={12} />
+                                  Como chegar
+                                </a>
+                              )}
+
                               {(item.name === 'Suzane Lima' || item.name === 'Jorge Cativo') && (
                                 <button
                                   onClick={() => setSelectedWorkshop(item)}
@@ -1078,10 +1090,19 @@ export default function App() {
                   )}
                 </div>
               </div>
-              <div className="p-6 bg-lavender-light/30 border-t border-innovation-purple/5 flex justify-end">
+              <div className="p-6 bg-lavender-light/30 border-t border-innovation-purple/5 flex flex-col sm:flex-row justify-between items-center gap-4">
+                <a 
+                  href="https://tally.so/r/LZGy81"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto px-8 py-3 bg-menu-green text-white rounded-xl font-bold uppercase text-sm shadow-lg hover:bg-innovation-purple transition-all flex items-center justify-center gap-2"
+                >
+                  Quero me inscrever
+                  <ICONS.ChevronRight size={16} />
+                </a>
                 <button 
                   onClick={() => setSelectedWorkshop(null)}
-                  className="px-8 py-3 bg-energy-orange text-white rounded-xl font-bold uppercase text-sm shadow-lg hover:bg-innovation-purple transition-all"
+                  className="w-full sm:w-auto px-8 py-3 bg-energy-orange text-white rounded-xl font-bold uppercase text-sm shadow-lg hover:bg-innovation-purple transition-all"
                 >
                   Fechar
                 </button>
