@@ -427,9 +427,7 @@ export default function App() {
               <span className="text-innovation-purple text-xl opacity-40">★</span>
 
               <a 
-                href="https://fieb.net.br/inscricoes/" 
-                target="_blank" 
-                rel="noopener noreferrer"
+                href="#inscricoes" 
                 className="flex items-center gap-3 group"
               >
                 <span className="text-sm md:text-xl font-display font-black text-white uppercase tracking-wider group-hover:text-energy-orange transition-colors">Inscrições Abertas</span>
@@ -439,9 +437,7 @@ export default function App() {
               <span className="text-innovation-purple text-xl opacity-40">★</span>
 
               <a 
-                href="https://fieb.net.br/programacao/" 
-                target="_blank" 
-                rel="noopener noreferrer"
+                href="#programacao" 
                 className="flex items-center gap-3 group"
               >
                 <span className="text-sm md:text-xl font-display font-black text-white uppercase tracking-wider group-hover:text-innovation-purple transition-colors">Programação Completa</span>
