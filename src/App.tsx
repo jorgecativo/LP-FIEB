@@ -233,25 +233,6 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Vagas Counter */}
-            <div className="hidden sm:flex items-center gap-2 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-energy-orange/30 shadow-[0_0_15px_rgba(211,105,62,0.2)]">
-              <span className="text-[9px] font-black text-white/50 uppercase tracking-widest">Inscrições:</span>
-              <div className="flex items-center gap-1">
-                <span className="text-[10px] font-bold text-lavender-light uppercase">Restam</span>
-                <div className="bg-black px-2 py-0.5 rounded border border-energy-orange/50 flex overflow-hidden h-5">
-                  <motion.span 
-                    key={vagas}
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    className="text-energy-orange font-mono font-black text-sm drop-shadow-[0_0_5px_rgba(211,105,62,0.8)]"
-                  >
-                    {vagas}
-                  </motion.span>
-                </div>
-                <span className="text-[10px] font-bold text-lavender-light uppercase">Vagas</span>
-              </div>
-            </div>
-
             {/* Language Switcher */}
             <div className="flex items-center bg-white/10 rounded-full p-1 border border-white/20 gap-1">
               {(['pt', 'en', 'es'] as Language[]).map((l) => {
@@ -436,7 +417,25 @@ export default function App() {
       <section className="py-3 md:py-6 bg-deep-purple border-y border-white/10 overflow-hidden relative z-20">
         <div className="flex animate-marquee whitespace-nowrap items-center">
           {[1, 2, 3, 4].map((n) => (
-            <div key={n} className="flex items-center group">
+           <div key={n} className="flex items-center group">
+              <div className="flex items-center gap-2 px-6 md:px-12 py-2 mx-4 bg-black/50 border-x-2 border-energy-orange/30 backdrop-blur-md rounded-lg">
+                <span className="text-sm md:text-xl font-display font-black text-white/40 uppercase tracking-tighter">RESTAM</span>
+                <div className="bg-black px-4 py-1 rounded shadow-[0_0_20px_rgba(211,105,62,0.4)] border border-energy-orange/60">
+                  <motion.span 
+                    key={vagas}
+                    initial={{ y: 30, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    className="text-energy-orange font-mono font-black text-2xl md:text-4xl inline-block"
+                    style={{ textShadow: '0 0 10px #d3693e, 0 0 20px #d3693e' }}
+                  >
+                    {vagas}
+                  </motion.span>
+                </div>
+                <span className="text-sm md:text-xl font-display font-black text-white/40 uppercase tracking-tighter">VAGAS</span>
+              </div>
+              
+              <span className="text-energy-orange text-xl md:text-2xl mx-4">★</span>
+
               <a 
                 href="https://fieb.net.br/inscricoes/" 
                 target="_blank" 
@@ -446,7 +445,7 @@ export default function App() {
                 INSCRIÇÕES ABERTAS
                 <span className="px-3 py-1 md:px-4 md:py-1.5 bg-energy-orange text-white text-[8px] md:text-[10px] rounded-full group-hover:bg-white group-hover:text-energy-orange transition-colors">INSREVA-SE AQUI</span>
               </a>
-              <span className="text-energy-orange text-xl md:text-2xl">|</span>
+              <span className="text-energy-orange text-xl md:text-2xl mx-4">★</span>
 
               <a 
                 href="https://fieb.net.br/programacao/" 
@@ -457,7 +456,7 @@ export default function App() {
                 CONFIRA A PROGRAMAÇÃO
                 <span className="px-3 py-1 md:px-4 md:py-1.5 bg-innovation-purple text-white text-[8px] md:text-[10px] rounded-full">VER AGORA</span>
               </a>
-              <span className="text-energy-orange text-xl md:text-2xl">|</span>
+              <span className="text-energy-orange text-xl md:text-2xl mx-4">★</span>
             </div>
           ))}
         </div>
