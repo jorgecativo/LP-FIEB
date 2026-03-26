@@ -24,14 +24,13 @@ jobs:
     - name: Gerar Build (dist)
       run: npm run build
 
-    - name: Realizar Deploy via SFTP (SSH)
-      uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+    - name: Realizar Deploy via SCP (SSH)
+      uses: appleboy/scp-action@v0.1.7
       with:
-        server: ${{ secrets.FTP_SERVER }}
+        host: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        port: 22 # Mantendo 22 (SSH) para evitar o erro de Timeout da porta 21
-        local_path: './dist/*'
-        remote_path: '/public_html/fieb2026/' # Pasta específica solicitada
-        delete_remote_files: false
-        ssh_private_key: ''
+        port: 22
+        source: "./dist/*"
+        target: "/public_html/fieb2026/"
+        strip_components: 1 # Isso remove a pasta 'dist' do caminho final
