@@ -374,9 +374,8 @@ export default function App() {
             </div>
             <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4">
               <motion.a 
-                href="https://fieb.net.br/inscricoes/"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#inscricoes"
+                whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(211,105,62,0.4)" }}
                 whileTap={{ scale: 0.95 }}
                 className="px-8 py-4 md:px-12 md:py-5 bg-energy-orange hover:bg-white hover:text-energy-orange text-white rounded-full font-display font-bold text-base md:text-xl transition-all pill-shadow transform hover:scale-105 text-center w-full sm:w-auto flex items-center justify-center gap-3"
               >
