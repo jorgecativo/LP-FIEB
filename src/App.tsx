@@ -59,6 +59,7 @@ export default function App() {
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
   const [selectedWorkshop, setSelectedWorkshop] = useState<any>(null);
   const [showUpdates, setShowUpdates] = useState(false);
+  const [vagas, setVagas] = useState(147);
   const t = TRANSLATIONS[lang];
 
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -98,6 +99,17 @@ export default function App() {
       carouselRef.current.scrollTo({ left: 0, behavior: 'smooth' });
     }
   }, [activeTab]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVagas(prev => {
+        if (prev <= 12) return prev;
+        // Simular uma redução progressiva e orgânica
+        return prev - (Math.random() > 0.7 ? 1 : 0);
+      });
+    }, 15000); // A cada 15 segundos tenta reduzir uma vaga
+    return () => clearInterval(interval);
+  }, []);
 
   const scrollCarousel = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
@@ -221,6 +233,25 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-3">
+            {/* Vagas Counter */}
+            <div className="hidden sm:flex items-center gap-2 bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-energy-orange/30 shadow-[0_0_15px_rgba(211,105,62,0.2)]">
+              <span className="text-[9px] font-black text-white/50 uppercase tracking-widest">Inscrições:</span>
+              <div className="flex items-center gap-1">
+                <span className="text-[10px] font-bold text-lavender-light uppercase">Restam</span>
+                <div className="bg-black px-2 py-0.5 rounded border border-energy-orange/50 flex overflow-hidden h-5">
+                  <motion.span 
+                    key={vagas}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    className="text-energy-orange font-mono font-black text-sm drop-shadow-[0_0_5px_rgba(211,105,62,0.8)]"
+                  >
+                    {vagas}
+                  </motion.span>
+                </div>
+                <span className="text-[10px] font-bold text-lavender-light uppercase">Vagas</span>
+              </div>
+            </div>
+
             {/* Language Switcher */}
             <div className="flex items-center bg-white/10 rounded-full p-1 border border-white/20 gap-1">
               {(['pt', 'en', 'es'] as Language[]).map((l) => {
@@ -367,22 +398,14 @@ export default function App() {
             </div>
             <div className="flex flex-col sm:flex-row flex-wrap gap-3 md:gap-4">
               <motion.a 
-                href="https://fieb.net.br/diretrizes-para-autores-2026/"
+                href="https://fieb.net.br/inscricoes/"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileTap={{ scale: 0.95 }}
-                className="px-6 py-3 md:px-8 md:py-4 bg-energy-orange hover:bg-white hover:text-energy-orange text-white rounded-full font-display font-bold text-sm md:text-base transition-all pill-shadow transform hover:scale-105 text-center w-full sm:w-auto"
+                className="px-8 py-4 md:px-12 md:py-5 bg-energy-orange hover:bg-white hover:text-energy-orange text-white rounded-full font-display font-bold text-base md:text-xl transition-all pill-shadow transform hover:scale-105 text-center w-full sm:w-auto flex items-center justify-center gap-3"
               >
-                {t.hero.ctaPrimary}
-              </motion.a>
-              <motion.a 
-                href="https://fieb.net.br/programacao/"
-                target="_blank"
-                rel="noopener noreferrer"
-                whileTap={{ scale: 0.95 }}
-                className="px-6 py-3 md:px-8 md:py-4 bg-black hover:bg-white hover:text-black text-white rounded-full font-display font-bold text-sm md:text-base transition-all pill-shadow transform hover:scale-105 border-2 border-white/10 text-center w-full sm:w-auto"
-              >
-                {t.hero.ctaSecondary}
+                <ICONS.Menu size={20} className="rotate-90" />
+                Inscrições Abertas
               </motion.a>
             </div>
           </motion.div>
