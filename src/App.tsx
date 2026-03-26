@@ -101,15 +101,10 @@ export default function App() {
   }, [activeTab]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setVagas(prev => {
-        if (prev <= 12) return prev;
-        // Simular uma redução progressiva e orgânica
-        return prev - (Math.random() > 0.7 ? 1 : 0);
-      });
-    }, 15000); // A cada 15 segundos tenta reduzir uma vaga
-    return () => clearInterval(interval);
-  }, []);
+    if (activeTab === 'day2' && carouselRef.current) {
+      carouselRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+    }
+  }, [activeTab]);
 
   const scrollCarousel = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
@@ -411,57 +406,51 @@ export default function App() {
             </div>
           </motion.div>
         </div>
-      </section>
 
-      {/* Hero Marquee Ticker */}
-      <section className="py-6 md:py-10 bg-deep-purple border-y border-white/10 overflow-hidden relative z-20">
-        <div className="flex animate-marquee whitespace-nowrap items-center">
-          {[1, 2, 3, 4, 5, 6].map((n) => (
-            <div key={n} className="flex items-center gap-6 md:gap-12 mx-6">
-              {/* Vacancies Display */}
-              <div className="flex items-center gap-4 px-8 py-3 bg-black/40 backdrop-blur-xl rounded-2xl border border-energy-orange/30 shadow-[0_0_20px_rgba(0,0,0,0.3)]">
-                <span className="text-[10px] md:text-sm font-black text-lavender-light/40 uppercase tracking-[0.3em] leading-none">Restam</span>
-                <div className="bg-gradient-to-b from-black to-[#111] px-5 py-2 rounded-xl border border-energy-orange/50 shadow-[0_0_25px_rgba(211,105,62,0.15)] flex items-center justify-center min-w-[80px] md:min-w-[120px]">
-                  <motion.span 
-                    key={vagas}
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    className="text-energy-orange font-mono font-black text-3xl md:text-5xl leading-none block pt-1"
-                    style={{ textShadow: '0 0 15px rgba(211,105,62,0.9), 0 0 30px rgba(211,105,62,0.3)' }}
-                  >
-                    {vagas}
-                  </motion.span>
+        {/* Hero Marquee Ticker - Integrated at the bottom of the first fold */}
+        <div className="absolute bottom-0 left-0 w-full z-20 overflow-hidden bg-black/40 backdrop-blur-md border-y border-white/5 py-3 md:py-4">
+          <div className="flex animate-marquee whitespace-nowrap items-center" style={{ animationDuration: '40s' }}>
+            {[1, 2, 3, 4, 5, 6].map((n) => (
+              <div key={n} className="flex items-center gap-6 md:gap-10 mx-6">
+                {/* Compact Vacancies Display */}
+                <div className="flex items-center gap-3 px-4 py-1.5 bg-black/50 rounded-xl border border-energy-orange/20 shadow-lg">
+                  <span className="text-[8px] md:text-[10px] font-black text-white/30 uppercase tracking-[0.2em] leading-none">Restam</span>
+                  <div className="bg-black/80 px-3 py-1 rounded-lg border border-energy-orange/40 flex items-center justify-center min-w-[50px] md:min-w-[80px]">
+                    <span className="text-energy-orange font-mono font-black text-base md:text-2xl leading-none pt-0.5" style={{ textShadow: '0 0 10px rgba(211,105,62,0.8)' }}>
+                      {vagas}
+                    </span>
+                  </div>
+                  <span className="text-[8px] md:text-[10px] font-black text-white/30 uppercase tracking-[0.2em] leading-none">Vagas</span>
                 </div>
-                <span className="text-[10px] md:text-sm font-black text-lavender-light/40 uppercase tracking-[0.3em] leading-none">Vagas</span>
+                
+                <span className="text-innovation-purple text-lg md:text-xl opacity-40">★</span>
+
+                <a 
+                  href="https://fieb.net.br/inscricoes/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 group"
+                >
+                  <span className="text-xs md:text-lg font-display font-black text-white uppercase tracking-wider group-hover:text-energy-orange transition-colors">Inscrições Abertas</span>
+                  <span className="px-2 py-0.5 bg-energy-orange text-white text-[7px] md:text-[9px] rounded-full font-black uppercase shadow-lg">Inscreva-se</span>
+                </a>
+
+                <span className="text-innovation-purple text-lg md:text-xl opacity-40">★</span>
+
+                <a 
+                  href="https://fieb.net.br/programacao/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 group"
+                >
+                  <span className="text-xs md:text-lg font-display font-black text-white uppercase tracking-wider group-hover:text-innovation-purple transition-colors">Ver Programação</span>
+                  <span className="px-2 py-0.5 bg-innovation-purple text-white text-[7px] md:text-[9px] rounded-full font-black uppercase shadow-lg">Conferir</span>
+                </a>
+
+                <span className="text-white/10 text-2xl font-black mx-4">/</span>
               </div>
-              
-              <div className="w-1.5 h-1.5 rounded-full bg-energy-orange/30"></div>
-
-              <a 
-                href="https://fieb.net.br/inscricoes/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center gap-4 text-sm md:text-3xl font-display font-black text-white hover:text-energy-orange transition-all group tracking-tighter"
-              >
-                <span className="uppercase">Inscrições Abertas</span>
-                <span className="px-4 py-1.5 bg-energy-orange text-white text-[10px] rounded-full group-hover:bg-white group-hover:text-energy-orange transition-all font-black uppercase shadow-lg shadow-energy-orange/20">Quero minha vaga</span>
-              </a>
-
-              <div className="w-1.5 h-1.5 rounded-full bg-innovation-purple/30"></div>
-
-              <a 
-                href="https://fieb.net.br/programacao/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center gap-4 text-sm md:text-3xl font-display font-black text-white hover:text-innovation-purple transition-all group tracking-tighter"
-              >
-                <span className="uppercase">Programação Completa</span>
-                <span className="px-4 py-1.5 bg-innovation-purple text-white text-[10px] rounded-full group-hover:bg-white group-hover:text-innovation-purple transition-all font-black uppercase shadow-lg shadow-innovation-purple/20">Ver agora</span>
-              </a>
-
-              <span className="text-white/5 text-5xl font-black mx-12">/</span>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
