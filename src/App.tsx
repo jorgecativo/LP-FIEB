@@ -59,7 +59,7 @@ export default function App() {
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
   const [selectedWorkshop, setSelectedWorkshop] = useState<any>(null);
   const [showUpdates, setShowUpdates] = useState(false);
-  const [vagas, setVagas] = useState(135);
+  const [vagas, setVagas] = useState(134);
   const t = TRANSLATIONS[lang];
 
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -407,20 +407,20 @@ export default function App() {
         </div>
       </section>
 
-      {/* Hero Marquee Ticker - Positioned after the Hero to avoid overlapping and fit the 'white part' transition */}
-      <section className="py-3 md:py-4 bg-[#0a0514] border-y border-white/5 overflow-hidden relative z-30">
+      {/* Hero Marquee Ticker - Thinner section to overlap less */}
+      <section className="py-1.5 md:py-2 bg-[#0a0514] border-y border-white/5 overflow-hidden relative z-30">
         <div className="flex animate-marquee whitespace-nowrap items-center" style={{ animationDuration: '40s' }}>
           {[1, 2, 3, 4, 5, 6].map((n) => (
             <div key={n} className="flex items-center gap-6 md:gap-12 mx-6">
               {/* Compact Vacancies Display */}
               <div className="flex items-center gap-3 px-4 py-1.5 bg-black rounded-xl border border-energy-orange/40 shadow-xl">
-                <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] leading-none">Restam</span>
+                <span className="text-[10px] font-black text-white/90 uppercase tracking-[0.3em] leading-none">Restam</span>
                 <div className="bg-[#111] px-4 py-1.5 rounded-lg border border-energy-orange/60 flex items-center justify-center min-w-[60px] md:min-w-[90px]">
                   <span className="text-energy-orange font-mono font-black text-xl md:text-3xl leading-none pt-0.5" style={{ textShadow: '0 0 10px rgba(211,105,62,1)' }}>
                     {vagas}
                   </span>
                 </div>
-                <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] leading-none">Vagas</span>
+                <span className="text-[10px] font-black text-white/90 uppercase tracking-[0.3em] leading-none">Vagas</span>
               </div>
               
               <span className="text-innovation-purple text-xl opacity-40">★</span>
@@ -446,10 +446,10 @@ export default function App() {
               <span className="text-innovation-purple text-xl opacity-40">★</span>
 
               <div className="flex items-center gap-3 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
-                <span className="text-[10px] font-black text-white/40 uppercase tracking-widest whitespace-nowrap">Última Atualização</span>
-                <span className="text-white font-bold text-sm">27.03.2026</span>
-                <div className="w-1 h-1 bg-white/20 rounded-full mx-1"></div>
-                <span className="text-amazon-green font-bold text-sm tracking-tight">Lotes CO disponíveis</span>
+                <span className="text-[10px] font-black text-white/90 uppercase tracking-widest whitespace-nowrap">Última Atualização</span>
+                <span className="text-white font-bold text-base">27.03.2026</span>
+                <div className="w-1.5 h-1.5 bg-white/20 rounded-full mx-2"></div>
+                <span className="text-[#fdfbd4] font-black text-base tracking-normal uppercase">Lotes CO disponíveis</span>
               </div>
 
               <span className="text-white/20 text-3xl font-black mx-10">/</span>
