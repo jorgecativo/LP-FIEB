@@ -120,7 +120,7 @@ export const TRANSLATIONS = {
       commemorative: 'Edição Comemorativa de 10 Anos',
       title: 'V Fórum de Inovação e Empreendedorismo na Biblioteconomia',
       subtitle: 'Empreendedorismo feminino na era digital',
-      info: '14 e 15 de maio de 2026 • Manaus, Amazonas',
+      info: '14 e 15 de maio de 2026 • Auditório Samaúma - UFAM - Manaus - AM',
       ctaPrimary: 'Submeter trabalho',
       ctaSecondary: 'Ver programação',
     },
@@ -203,7 +203,8 @@ export const TRANSLATIONS = {
           { name: 'FIEB + 1 OFICINA - Estudante graduação e pós-graduação*', prices: ['R$ 25,00', 'R$ 40,00', 'R$ 55,00'] },
           { name: 'FIEB - Profissionais', prices: ['R$ 40,00', 'R$ 55,00', 'R$ 70,00'] },
           { name: 'FIEB + 1 OFICINA - Profissionais', prices: ['R$ 50,00', 'R$ 65,00', 'R$ 75,00'] },
-          { name: 'Servidores SISTEBIB', special: 'Mediante Voucher até 31/03/2026' }
+          { name: 'Servidores SISTEBIB', special: 'Mediante Voucher até 31/03/2026' },
+          { name: 'Comissão Organizadora', special: 'Mediante Voucher até 31/03/2026' }
         ]
       },
       info: [
@@ -264,7 +265,7 @@ export const TRANSLATIONS = {
       commemorative: '10th Anniversary Commemorative Edition',
       title: 'V Forum of Innovation and Entrepreneurship in Librarianship',
       subtitle: 'Female entrepreneurship in the digital era',
-      info: 'May 14 and 15, 2026 • Manaus, Amazonas',
+      info: 'May 14 and 15, 2026 • Samaúma Auditorium - UFAM - Manaus - AM',
       ctaPrimary: 'Submit work',
       ctaSecondary: 'View program',
     },
@@ -347,7 +348,8 @@ export const TRANSLATIONS = {
           { name: 'FIEB + 1 WORKSHOP - Undergrad & Graduate Students*', prices: ['$ 5.00', '$ 8.00', '$ 11.00'] },
           { name: 'FIEB - Professionals', prices: ['$ 8.00', '$ 11.00', '$ 14.00'] },
           { name: 'FIEB + 1 WORKSHOP - Professionals', prices: ['$ 10.00', '$ 13.00', '$ 15.00'] },
-          { name: 'FIEB - SISTEBIB Professionals', special: 'By Voucher until 03/31/2026' }
+          { name: 'FIEB - SISTEBIB Professionals', special: 'By Voucher until 03/31/2026' },
+          { name: 'Organizing Committee', special: 'By Voucher until 03/31/2026' }
         ]
       },
       info: [
@@ -408,7 +410,7 @@ export const TRANSLATIONS = {
       commemorative: 'Edición Conmemorativa de 10 Años',
       title: 'V Foro de Innovación y Emprendimiento en Bibliotecología',
       subtitle: 'Emprendimiento femenino en la era digital',
-      info: '14 y 15 de mayo de 2026 • Manaus, Amazonas',
+      info: '14 y 15 de mayo de 2026 • Auditorio Samaúma - UFAM - Manaus - AM',
       ctaPrimary: 'Enviar trabajo',
       ctaSecondary: 'Ver programa',
     },
@@ -491,7 +493,8 @@ export const TRANSLATIONS = {
           { name: 'FIEB + 1 TALLER - Estudiantes de grado y posgrado*', prices: ['$ 5.00', '$ 8.00', '$ 11.00'] },
           { name: 'FIEB - Profesionales', prices: ['$ 8.00', '$ 11.00', '$ 14.00'] },
           { name: 'FIEB + 1 TALLER - Profesionales', prices: ['$ 10.00', '$ 13.00', '$ 15.00'] },
-          { name: 'FIEB - Profesionales del SISTEBIB', special: 'Mediante Voucher hasta 31/03/2026' }
+          { name: 'FIEB - Profesionales del SISTEBIB', special: 'Mediante Voucher hasta 31/03/2026' },
+          { name: 'Comisión Organizadora', special: 'Mediante Voucher hasta 31/03/2026' }
         ]
       },
       info: [
@@ -692,7 +695,8 @@ export const PROGRAM_DATA = {
       color: 'blue',
       image: 'assets/thalita.png',
       lattes: 'https://buscatextual.cnpq.br/buscatextual/visualizacv.do?id=K4364806Z5',
-      instagram: 'https://www.instagram.com/santabiblioteconomia/'
+      instagram: 'https://www.instagram.com/santabiblioteconomia/',
+      website: 'https://www.santabiblioteconomia.com.br/'
     },
     {
       id: 8,
@@ -762,6 +766,8 @@ export const PROGRAM_DATA = {
       image: 'assets/cativo.png',
       lattes: 'https://lattes.cnpq.br/0614227155680254',
       instagram: 'https://www.instagram.com/biblioteconomiadigital/',
+      website: 'https://biblioteconomiadigital.com.br/',
+      youtube: 'https://www.youtube.com/@JorgeCativo',
       registrationUrl: 'https://tally.so/r/LZGy81',
       upcomingRegistration: true
     },
@@ -775,12 +781,14 @@ export const PROGRAM_DATA = {
       time: '08:00 - 10:00',
       location: 'Laboratório LIFT I',
       locationUrl: 'https://moovitapp.com/tripplan/manaus-1743/poi/UFAM%20-%20Lab%20de%20Inform%C3%A1tica%20%28LIFT%201%29/Auditorio%20Samauma-FCA%2001-%20UFAM,%20Manaus/pt-br?customerId=4908&ref=1&af_sub8=%2Findex%2Fpt-br%2Ftransporte_p%25C3%25BAblico-LIFT_II_FT_UFAM-Manaus-site_20246732-1743&af_sub9=Search%20bar%20button&poiType=efsite&fll=-3.099982_-59.975965&tll=-3.088778_-59.963408&metroSeoName=Manaus',
-      institution: 'IBGE',
+      institution: 'IBGE | Biblioconcurseiros',
       color: 'energy-orange',
       image: 'assets/suzane.png',
       workshopImage: 'https://i.pinimg.com/1200x/7e/19/a6/7e19a628f1e676b3f869aba57e95919c.jpg',
       lattes: 'https://lattes.cnpq.br/8812674350684147',
       instagram: 'https://www.instagram.com/suzanelimaprof/',
+      website: 'https://biblioconcurseiros.com.br/',
+      youtube: 'https://www.youtube.com/channel/UCQxW7p7-3OVvS0opaeacAVg',
       registrationUrl: 'https://tally.so/r/LZGy81',
       upcomingRegistration: true
     },

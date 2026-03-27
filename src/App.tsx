@@ -59,7 +59,7 @@ export default function App() {
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
   const [selectedWorkshop, setSelectedWorkshop] = useState<any>(null);
   const [showUpdates, setShowUpdates] = useState(false);
-  const [vagas, setVagas] = useState(147);
+  const [vagas, setVagas] = useState(135);
   const t = TRANSLATIONS[lang];
 
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -443,6 +443,15 @@ export default function App() {
                 <span className="px-3 py-1 bg-innovation-purple text-white text-[10px] rounded-full font-black uppercase shadow-lg group-hover:bg-white group-hover:text-innovation-purple transition-all">Ver agora</span>
               </a>
 
+              <span className="text-innovation-purple text-xl opacity-40">★</span>
+
+              <div className="flex items-center gap-3 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
+                <span className="text-[10px] font-black text-white/40 uppercase tracking-widest whitespace-nowrap">Última Atualização</span>
+                <span className="text-white font-bold text-sm">27.03.2026</span>
+                <div className="w-1 h-1 bg-white/20 rounded-full mx-1"></div>
+                <span className="text-amazon-green font-bold text-sm tracking-tight">Lotes CO disponíveis</span>
+              </div>
+
               <span className="text-white/20 text-3xl font-black mx-10">/</span>
             </div>
           ))}
@@ -614,7 +623,7 @@ export default function App() {
                     <div className="w-6 h-6 rounded-full bg-innovation-purple/10 flex items-center justify-center text-innovation-purple shrink-0 mt-0.5 group-hover:bg-innovation-purple group-hover:text-white transition-colors">
                       <span className="text-[10px] font-bold">{idx + 1}</span>
                     </div>
-                    <p className="text-sm text-gray-600 leading-relaxed font-medium">
+                    <p className="text-base text-gray-700 leading-relaxed font-semibold">
                       {item}
                     </p>
                   </motion.div>
@@ -1147,7 +1156,7 @@ export default function App() {
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[...PROGRAM_DATA.day1, ...PROGRAM_DATA.day2].filter(s => !s.isGeneral).map((speaker) => {
+            {[...PROGRAM_DATA.day1, ...PROGRAM_DATA.day2].filter(s => !s.isGeneral).map((speaker: any) => {
               const borderColors: Record<string, string> = {
                 'energy-orange': 'border-energy-orange',
                 'entrepreneur-green': 'border-entrepreneur-green',
@@ -1196,12 +1205,34 @@ export default function App() {
                         <ICONS.Instagram size={14} />
                       </a>
                     )}
+                    {speaker.website && (
+                      <a 
+                        href={speaker.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-8 h-8 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-innovation-purple hover:bg-amazon-green hover:text-white transition-all"
+                        title="Website"
+                      >
+                        <ICONS.Globe size={14} />
+                      </a>
+                    )}
+                    {speaker.youtube && (
+                      <a 
+                        href={speaker.youtube}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-8 h-8 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-innovation-purple hover:bg-red-600 hover:text-white transition-all"
+                        title="YouTube"
+                      >
+                        <ICONS.Youtube size={14} />
+                      </a>
+                    )}
                   </div>
                 </div>
                 <div className="p-6 flex-grow flex flex-col justify-between bg-deep-purple">
                   <div>
                     <h3 className="text-xl font-display font-bold text-white mb-1">{speaker.name}</h3>
-                    <div className="text-[10px] font-bold text-energy-orange uppercase tracking-[0.2em] mb-2">
+                    <div className="text-[10px] font-bold text-white/70 uppercase tracking-[0.2em] mb-2">
                       {speaker.institution}
                     </div>
                   </div>
