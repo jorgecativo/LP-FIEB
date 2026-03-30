@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
 import { ICONS, TRANSLATIONS, PROGRAM_DATA, Language, SOCIAL_LINKS, LOGO_URL, PARTNERS_LOGOS } from './constants';
 
 const getTypeStyles = (t: string) => {
@@ -48,6 +48,57 @@ const getSpeakerObjectPosition = (name: string) => {
   if (name?.includes('Rosângela')) return 'object-center';
   if (name?.includes('Amanda')) return 'object-top';
   return 'object-[center_25%]';
+};
+
+import React from 'react';
+
+const ScrollableWorkCard: React.FC<{ work: any, idx: number }> = ({ work, idx }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  
+  // Track this element's position within the viewport
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+
+  // Calculate opacity and scale:
+  // Starts at 0.1, fully visible between 30% and 70% of the screen, fades back to 0.1 at the top
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.1, 1, 1, 0.1]);
+  const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.85, 1, 1, 0.85]);
+
+  return (
+    <motion.div 
+      ref={ref}
+      style={{ opacity, scale }}
+      className="relative"
+    >
+      {/* Separator Line */}
+      {idx !== 0 && (
+        <div className="absolute -top-4 md:-top-6 left-1/2 -translate-x-1/2 w-[80%] max-w-md h-px bg-gradient-to-r from-transparent via-innovation-purple/30 to-transparent"></div>
+      )}
+      
+      <div className="bg-white rounded-3xl p-6 md:p-10 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(102,51,153,0.3)] transition-all duration-500 group border-b-4 border-innovation-purple/20 hover:border-energy-orange">
+        <h3 className="text-lg md:text-2xl font-bold text-innovation-purple mb-6 uppercase tracking-wide leading-relaxed group-hover:text-energy-orange transition-colors duration-300">
+          {work.title}
+        </h3>
+        <div className="space-y-4 md:space-y-3">
+          {work.authors.map((author: any, aIdx: number) => (
+            <div key={aIdx} className="flex flex-col md:flex-row md:items-center gap-1 md:gap-3 text-sm md:text-base p-3 md:p-0 bg-gray-50 md:bg-transparent rounded-xl md:rounded-none">
+              <span className="font-bold text-gray-800 flex items-center gap-2">
+                <ICONS.Users size={14} className="text-innovation-purple md:hidden" />
+                {author.name}
+              </span>
+              <span className="hidden md:block text-gray-300">•</span>
+              <span className="text-innovation-purple font-bold uppercase text-xs md:text-sm tracking-widest pl-6 md:pl-0 flex items-center gap-2">
+                <ICONS.MapPin size={12} className="md:hidden opacity-70" />
+                {author.affiliation}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+  );
 };
 
 export default function App() {
@@ -446,15 +497,159 @@ export default function App() {
               <span className="text-innovation-purple text-xl opacity-40">★</span>
 
               <div className="flex items-center gap-3 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
-                <span className="text-[10px] font-black text-white/90 uppercase tracking-widest whitespace-nowrap">Última Atualização</span>
-                <span className="text-white font-bold text-base">27.03.2026</span>
-                <div className="w-1.5 h-1.5 bg-white/20 rounded-full mx-2"></div>
                 <span className="text-[#fdfbd4] font-black text-base tracking-normal uppercase">Lotes CO disponíveis</span>
               </div>
+
+              <span className="text-innovation-purple text-xl opacity-40 ml-6">★</span>
+
+              <a 
+                href="#trabalhos-aprovados" 
+                className="flex items-center gap-3 px-4 py-2 bg-energy-orange/10 rounded-xl border border-energy-orange/30 hover:bg-energy-orange/20 transition-colors group ml-6"
+              >
+                <span className="text-[10px] font-black text-energy-orange uppercase tracking-widest whitespace-nowrap px-2 py-1 bg-energy-orange/20 rounded-md">Novidade</span>
+                <span className="text-sm md:text-lg font-display font-black text-white uppercase tracking-wider group-hover:text-energy-orange transition-colors">Divulgados os trabalhos aprovados</span>
+              </a>
 
               <span className="text-white/20 text-3xl font-black mx-10">/</span>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Approved Works Section */}
+      <section id="trabalhos-aprovados" className="py-24 bg-white relative overflow-hidden">
+        
+        <div className="max-w-[1000px] mx-auto px-6 md:px-20 relative z-10">
+          <div className="text-center mb-16 md:mb-24">
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-5xl font-display font-bold text-innovation-purple mb-6 uppercase tracking-widest drop-shadow-sm"
+            >
+              Trabalhos <span className="text-energy-orange">Aprovados</span>
+            </motion.h2>
+            <motion.div 
+              initial={{ opacity: 0, scale: 0 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="w-24 h-1 bg-innovation-purple mx-auto rounded-full mb-8"
+            ></motion.div>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+              className="text-gray-900 max-w-3xl mx-auto text-sm md:text-base leading-relaxed font-semibold bg-gray-50 p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100"
+            >
+              O comitê científico torna pública a lista dos trabalhos aprovados no V FIEB - Manaus. 
+              Informamos que os autores serão comunicados pela plataforma acerca dos possíveis ajustes 
+              e que as alterações deverão ser realizadas no <strong className="text-energy-orange">prazo máximo de 08/04/2026</strong>. 
+            </motion.p>
+          </div>
+        </div>
+      </section>
+
+      {/* Scrolling Cards Section (Dark Background) */}
+      <section className="py-24 bg-black relative overflow-hidden">
+        {/* Background Decorative Elements for Dark Mode */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-innovation-purple/10 rounded-full blur-[100px] -mr-48 -mt-48 pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-energy-orange/5 rounded-full blur-[100px] -ml-48 -mb-48 pointer-events-none"></div>
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+
+        <div className="max-w-[1000px] mx-auto px-6 md:px-20 relative z-10">
+          <div className="space-y-8 md:space-y-12">
+            {[
+              {
+                title: "INTRAEMPREENDEDORISMO NA CRIAÇÃO DA PLATAFORMA LUMENS CS: DA IDEIA AO SAAS",
+                authors: [
+                  { name: "Ana Caroline Remor Corrêa", affiliation: "Clarivate" },
+                  { name: "Jorge Luiz Cativo Alauzo", affiliation: "INPA" }
+                ]
+              },
+              {
+                title: "MODELOS DE NEGÓCIO APLICADOS A SERVIÇOS INFORMACIONAIS",
+                authors: [
+                  { name: "Daniela Spudeit", affiliation: "Universidade do Estado de Santa Catarina" },
+                  { name: "Genilson Geraldo", affiliation: "Universidade Federal do Paraná" }
+                ]
+              },
+              {
+                title: "PROPRIEDADE INTELECTUAL E INTELIGÊNCIA ARTIFICIAL: A BIBLIOTECA ESCOLAR COMO HUB DE INOVAÇÃO E INTEGRIDADE NO ENSINO MÉDIO TÉCNICO",
+                authors: [
+                  { name: "Edinara Sobrinho da Silva", affiliation: "IFAM" },
+                  { name: "Raynara Sobrinho da Silva", affiliation: "IFAM" }
+                ]
+              },
+              {
+                title: "ENTRE NORMAS E PRAZOS: A ATUAÇÃO DA BIBLIOTECÁRIA EMPREENDEDORA NA NORMALIZAÇÃO DE TRABALHOS ACADÊMICOS EM CONTEXTOS DE URGÊNCIA: UM RELATO DE EXPERIÊNCIA",
+                authors: [
+                  { name: "Juliany Ferreira Lisboa da Silva", affiliation: "Universidade Federal do Rio de Janeiro (UFRJ)" }
+                ]
+              },
+              {
+                title: "INTEGRAÇÃO ENTRE CIÊNCIA DA INFORMAÇÃO E INOVAÇÃO TECNOLÓGICA: CONTRIBUIÇÕES INFORMACIONAIS PARA PROCESSOS DE EMPREENDEDORISMO E TRANSFERÊNCIA DE CONHECIMENTO EM AMBIENTE UNIVERSITÁRIO",
+                authors: [
+                  { name: "Ana Paula Puhl Sehn", affiliation: "Universidade do Estado de Santa Catarina" },
+                  { name: "Elaine Zeni Vieira", affiliation: "Universidade do Estado de Santa Catarina" },
+                  { name: "Lucas George Wendt", affiliation: "Universidade Federal do Rio Grande do Sul" }
+                ]
+              },
+              {
+                title: "DO ARQUIVO DIGITAL À EXPERIÊNCIA SENSORIAL: INOVAÇÃO E CURADORIA NA EXPOSIÇÃO “POESIAS HISTÓRICAS DO AMAZONAS (1861-1984)”",
+                authors: [
+                  { name: "Samuel Souza da Silva", affiliation: "Secretaria de Estado de Cultura e Economia Criativa" },
+                  { name: "Ana Estela dos Santos Ferreira", affiliation: "Secretaria de Estado de Cultura e Economia Criativa" },
+                  { name: "Adaísa de Alencar Almeida", affiliation: "Secretaria de Estado de Cultura e Economia Criativa" }
+                ]
+              },
+              {
+                title: "NEM ENCADERNADO NEM AUTODEPÓSITO: UM NOVO SERVIÇO DE DEPÓSITO LEGAL TOTALMENTE DIGITAL",
+                authors: [
+                  { name: "Katia Abreu", affiliation: "Unioeste" }
+                ]
+              }
+            ].map((work, idx) => (
+              <ScrollableWorkCard key={idx} work={work} idx={idx} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Mandatory Registration Section */}
+      <section className="py-16 bg-white border-y border-gray-100 relative overflow-hidden">
+        <div className="max-w-[1000px] mx-auto px-6 md:px-20">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="bg-lavender-light rounded-3xl p-8 md:p-12 text-center border-2 border-innovation-purple/10 shadow-xl relative overflow-hidden"
+          >
+            {/* Decoration */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-energy-orange/10 rounded-full blur-2xl -mr-16 -mt-16 pointer-events-none"></div>
+            
+            <h3 className="text-lg md:text-2xl font-display font-black text-innovation-purple uppercase tracking-widest mb-4 flex flex-col md:flex-row items-center justify-center gap-4 relative z-10">
+              <ICONS.FileText size={32} className="text-energy-orange mb-2 md:mb-0" />
+              Lembramos que a inscrição é obrigatória
+            </h3>
+            <p className="text-gray-700 font-medium text-base md:text-lg relative z-10 mb-8">
+              para participação no evento e para apresentação de trabalhos científicos.
+            </p>
+            
+            <div className="flex justify-center relative z-10">
+              <motion.a 
+                href="https://tally.so/r/LZGy81" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="inline-flex items-center gap-3 px-8 py-4 bg-energy-orange hover:bg-innovation-purple text-white rounded-full font-display font-bold text-lg uppercase tracking-widest shadow-[0_10px_20px_rgba(211,105,62,0.3)] hover:shadow-[0_10px_20px_rgba(102,51,153,0.3)] transition-colors"
+              >
+                Inscreva-se <ICONS.ChevronRight size={20} className="opacity-80" />
+              </motion.a>
+            </div>
+          </motion.div>
         </div>
       </section>
 
