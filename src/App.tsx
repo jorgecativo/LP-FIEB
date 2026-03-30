@@ -110,7 +110,7 @@ export default function App() {
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
   const [selectedWorkshop, setSelectedWorkshop] = useState<any>(null);
   const [showUpdates, setShowUpdates] = useState(false);
-  const [vagas, setVagas] = useState(134);
+  const [vagas, setVagas] = useState(124);
   const t = TRANSLATIONS[lang];
 
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -441,10 +441,10 @@ export default function App() {
             initial={{ opacity: 0, scale: 0.8, x: 50 }}
             whileInView={{ opacity: 1, scale: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative lg:mt-0 self-center md:self-end -mb-8 md:-mb-24 mt-8 md:mt-0"
+            transition={{ duration: 0.8, delay: 0.4 }} // Delayed for smooth entry
+            className="relative lg:mt-0 self-center md:self-end -mb-8 md:-mb-24 mt-8 md:mt-0 z-20"
           >
-            <div className="relative z-10 w-[240px] sm:w-[300px] md:w-[500px] drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform translate-y-4 md:translate-y-12">
+            <div className="relative z-10 w-[300px] sm:w-[600px] md:w-[1300px] lg:w-[1500px] drop-shadow-[0_50px_100px_rgba(0,0,0,0.8)] transform translate-y-[10px] md:translate-y-[10px] lg:translate-x-[-180px]">
               <img 
                 src="assets/mascote.png" 
                 alt="FIEB Mascot" 
