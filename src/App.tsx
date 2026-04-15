@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'motion/react';
-import { ICONS, TRANSLATIONS, PROGRAM_DATA, Language, SOCIAL_LINKS, LOGO_URL, PARTNERS_LOGOS } from './constants';
+import { AlertTriangle } from 'lucide-react';
+import { ICONS, TRANSLATIONS, PROGRAM_DATA, WORKSHOPS_DATA, Language, SOCIAL_LINKS, LOGO_URL, PARTNERS_LOGOS } from './constants';
 
 const getTypeStyles = (t: string) => {
   const type = t.toUpperCase();
@@ -46,25 +47,36 @@ const getSpeakerObjectPosition = (name: string) => {
   if (name?.includes('Suzane')) return 'object-center';
   if (name?.includes('Thalita')) return 'object-center';
   if (name?.includes('Rosângela')) return 'object-center';
+  if (name?.includes('Mayara')) return 'object-center';
   if (name?.includes('Amanda')) return 'object-top';
   return 'object-[center_25%]';
 };
 
 import React from 'react';
 
+const CATEGORY_STYLES: Record<string, { bg: string; text: string; border: string }> = {
+  'Pesquisa Concluída': { bg: 'bg-amazon-green/10', text: 'text-amazon-green', border: 'border-amazon-green/30' },
+  'Relato de Experiência': { bg: 'bg-energy-orange/10', text: 'text-energy-orange', border: 'border-energy-orange/30' },
+  'Projeto em Andamento': { bg: 'bg-innovation-purple/10', text: 'text-innovation-purple', border: 'border-innovation-purple/30' },
+};
+
+const AXIS_STYLES: Record<number, { bg: string; text: string; border: string }> = {
+  1: { bg: 'bg-[#f59e0b]/10', text: 'text-[#d97706]', border: 'border-[#f59e0b]/40' },
+  2: { bg: 'bg-innovation-purple/10', text: 'text-innovation-purple', border: 'border-innovation-purple/40' },
+};
+
 const ScrollableWorkCard: React.FC<{ work: any, idx: number }> = ({ work, idx }) => {
   const ref = useRef<HTMLDivElement>(null);
   
-  // Track this element's position within the viewport
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
   });
 
-  // Calculate opacity and scale:
-  // Starts at 0.1, fully visible between 30% and 70% of the screen, fades back to 0.1 at the top
   const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.1, 1, 1, 0.1]);
   const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.85, 1, 1, 0.85]);
+
+  const catStyle = work.category ? (CATEGORY_STYLES[work.category] ?? { bg: 'bg-gray-100', text: 'text-gray-600', border: 'border-gray-200' }) : null;
 
   return (
     <motion.div 
@@ -72,12 +84,19 @@ const ScrollableWorkCard: React.FC<{ work: any, idx: number }> = ({ work, idx })
       style={{ opacity, scale }}
       className="relative"
     >
-      {/* Separator Line */}
       {idx !== 0 && (
         <div className="absolute -top-4 md:-top-6 left-1/2 -translate-x-1/2 w-[80%] max-w-md h-px bg-gradient-to-r from-transparent via-innovation-purple/30 to-transparent"></div>
       )}
       
       <div className="bg-white rounded-3xl p-6 md:p-10 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(102,51,153,0.3)] transition-all duration-500 group border-b-4 border-innovation-purple/20 hover:border-energy-orange">
+        {catStyle && (
+          <div className="flex flex-wrap gap-3 mb-6">
+            <span className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs md:text-sm font-black uppercase tracking-widest border ${catStyle.bg} ${catStyle.text} ${catStyle.border}`}>
+              <span className="w-2 h-2 rounded-full bg-current inline-block"></span>
+              {work.category}
+            </span>
+          </div>
+        )}
         <h3 className="text-lg md:text-2xl font-bold text-innovation-purple mb-6 uppercase tracking-wide leading-relaxed group-hover:text-energy-orange transition-colors duration-300">
           {work.title}
         </h3>
@@ -101,6 +120,20 @@ const ScrollableWorkCard: React.FC<{ work: any, idx: number }> = ({ work, idx })
   );
 };
 
+const CASSINA_IMAGES = [
+  'https://i.pinimg.com/1200x/c3/9c/5a/c39c5a957187c3e35b267d06b1ca3218.jpg',
+  'https://i.pinimg.com/1200x/0a/8c/8e/0a8c8ea7ea44a156cf80ebc8ba1a4a62.jpg',
+  'https://i.pinimg.com/1200x/87/27/ff/8727ff04460f4db46091e22b92468c8c.jpg',
+  'https://i.pinimg.com/1200x/cf/a8/37/cfa83720e116b7d4bad7caf0b5680bcc.jpg',
+  'https://i.pinimg.com/1200x/9a/2b/d4/9a2bd4e43b248071df620fec01b93023.jpg',
+  'https://i.pinimg.com/1200x/89/12/8d/89128d85ae06778cd502e1c47ef2b45a.jpg',
+  'https://i.pinimg.com/1200x/b4/c0/e5/b4c0e52ad2ab4dfc0d945444646daa62.jpg',
+  'https://i.pinimg.com/1200x/01/df/1f/01df1f3ac95dc1693be13baee13c7529.jpg',
+  'https://i.pinimg.com/1200x/c5/bc/f6/c5bcf66cd27d8cfe55cdeea221fe1f58.jpg',
+  'https://i.pinimg.com/1200x/45/aa/7b/45aa7b576c65fb25ec1cbfae74ffbd17.jpg',
+  'https://i.pinimg.com/1200x/18/c0/ce/18c0ce925a01a929e8868a2d6795732b.jpg'
+];
+
 export default function App() {
   const [lang, setLang] = useState<Language>('pt');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -110,11 +143,13 @@ export default function App() {
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
   const [selectedWorkshop, setSelectedWorkshop] = useState<any>(null);
   const [showUpdates, setShowUpdates] = useState(false);
-  const [vagas, setVagas] = useState(124);
+  const [vagas, setVagas] = useState(87);
+  const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
   const t = TRANSLATIONS[lang];
 
   const carouselRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -124,6 +159,12 @@ export default function App() {
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    if (heroVideoRef.current) {
+      heroVideoRef.current.playbackRate = 0.2;
+    }
   }, []);
 
   useEffect(() => {
@@ -270,7 +311,7 @@ export default function App() {
             <NavItem id="program" label={t.nav.program} subItems={t.nav.sub.program} />
             <NavItem id="submissions" label={t.nav.submissions} subItems={t.nav.sub.submissions} />
             <a href="https://fieb.net.br/inscricoes/" target="_blank" rel="noopener noreferrer" className="text-xs font-bold uppercase tracking-wider text-white bg-energy-orange hover:bg-white hover:text-energy-orange py-2 px-4 rounded-lg transition-colors shadow-lg">
-              INSCRIÇÕES
+              Inscrições
             </a>
             <a href="#apoio" className="text-xs font-bold uppercase tracking-wider text-white hover:bg-innovation-purple/40 py-2 px-3 rounded-lg transition-colors">
               {t.nav.partners}
@@ -347,7 +388,7 @@ export default function App() {
                 </div>
 
                 <a href="https://fieb.net.br/inscricoes/" target="_blank" rel="noopener noreferrer" className="block w-full py-3 mt-2 bg-energy-orange text-white text-center rounded-xl font-bold uppercase tracking-widest shadow-lg active:scale-95 transition-transform">
-                  INSCRIÇÕES
+                  {t.registrations.cta}
                 </a>
 
                 <div className="space-y-2">
@@ -386,12 +427,23 @@ export default function App() {
         {/* Background */}
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-r from-deep-purple via-deep-purple/80 to-transparent z-10"></div>
-          <img 
-            src="assets/teatro.jpg" 
-            alt="Teatro Amazonas" 
-            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-            referrerPolicy="no-referrer"
-          />
+          <motion.div
+            className="absolute inset-0 flex items-center justify-center"
+            initial={{ scale: 0.82 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 5, ease: [0.25, 0.1, 0.25, 1] }}
+          >
+            <video
+              ref={heroVideoRef}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-contain"
+            >
+              <source src="assets/fieb-2024-hero.mp4" type="video/mp4" />
+            </video>
+          </motion.div>
           {/* Technological Overlay */}
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/circuit-board.png')] opacity-10 z-20 mix-blend-overlay group-hover:opacity-30 transition-opacity duration-500"></div>
           <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none z-20">
@@ -399,7 +451,7 @@ export default function App() {
           </div>
         </div>
         
-        <div className="relative z-30 max-w-[1200px] mx-auto px-6 md:px-20 py-8 w-full flex flex-col md:flex-row items-start justify-between gap-12 pt-16 md:pt-20">
+        <div className="relative z-30 max-w-[1200px] mx-auto px-6 md:px-20 py-8 w-full flex flex-col md:flex-row items-start justify-between gap-12 pt-24 md:pt-28">
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -431,30 +483,12 @@ export default function App() {
                 className="px-8 py-4 md:px-12 md:py-5 bg-energy-orange hover:bg-white hover:text-energy-orange text-white rounded-full font-display font-bold text-base md:text-xl transition-all pill-shadow transform hover:scale-105 text-center w-full sm:w-auto flex items-center justify-center gap-3"
               >
                 <ICONS.Menu size={20} className="rotate-90" />
-                Inscrições Abertas
+                {t.registrations.title}
               </motion.a>
             </div>
           </motion.div>
 
-          {/* Right Content - Mascot */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, x: 50 }}
-            whileInView={{ opacity: 1, scale: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.4 }} // Delayed for smooth entry
-            className="relative lg:mt-0 self-center md:self-end -mb-8 md:-mb-24 mt-8 md:mt-0 z-20"
-          >
-            <div className="relative z-10 w-[300px] sm:w-[600px] md:w-[1300px] lg:w-[1500px] drop-shadow-[0_50px_100px_rgba(0,0,0,0.8)] transform translate-y-[10px] md:translate-y-[10px] lg:translate-x-[-180px]">
-              <img 
-                src="assets/mascote.png" 
-                alt="FIEB Mascot" 
-                className="w-full h-auto filter drop-shadow-2xl group-hover:brightness-110 transition-all duration-300"
-              />
-              {/* Technological details around mascot on hover */}
-              <div className="absolute -inset-4 border-2 border-energy-orange/0 group-hover:border-energy-orange/30 rounded-full transition-all duration-500 scale-110 animate-spin-slow opacity-0 group-hover:opacity-100"></div>
-              <div className="absolute -inset-8 border border-white/0 group-hover:border-white/10 rounded-full transition-all duration-700 scale-125 animate-reverse-spin opacity-0 group-hover:opacity-100"></div>
-            </div>
-          </motion.div>
+
         </div>
       </section>
 
@@ -465,13 +499,13 @@ export default function App() {
             <div key={n} className="flex items-center gap-6 md:gap-12 mx-6">
               {/* Compact Vacancies Display */}
               <div className="flex items-center gap-3 px-4 py-1.5 bg-black rounded-xl border border-energy-orange/40 shadow-xl">
-                <span className="text-[10px] font-black text-white/90 uppercase tracking-[0.3em] leading-none">Restam</span>
+                <span className="text-[10px] font-black text-white/90 uppercase tracking-[0.3em] leading-none">{t.ticker.remaining}</span>
                 <div className="bg-[#111] px-4 py-1.5 rounded-lg border border-energy-orange/60 flex items-center justify-center min-w-[60px] md:min-w-[90px]">
                   <span className="text-energy-orange font-mono font-black text-xl md:text-3xl leading-none pt-0.5" style={{ textShadow: '0 0 10px rgba(211,105,62,1)' }}>
                     {vagas}
                   </span>
                 </div>
-                <span className="text-[10px] font-black text-white/90 uppercase tracking-[0.3em] leading-none">Vagas</span>
+                <span className="text-[10px] font-black text-white/90 uppercase tracking-[0.3em] leading-none">{t.ticker.vacancies}</span>
               </div>
               
               <span className="text-innovation-purple text-xl opacity-40">★</span>
@@ -480,8 +514,8 @@ export default function App() {
                 href="#inscricoes" 
                 className="flex items-center gap-3 group"
               >
-                <span className="text-sm md:text-xl font-display font-black text-white uppercase tracking-wider group-hover:text-energy-orange transition-colors">Inscrições Abertas</span>
-                <span className="px-3 py-1 bg-energy-orange text-white text-[10px] rounded-full font-black uppercase shadow-lg group-hover:bg-white group-hover:text-energy-orange transition-all">Inscreva-se</span>
+                <span className="text-sm md:text-xl font-display font-black text-[#FFD700] uppercase tracking-wider group-hover:text-energy-orange transition-colors">⏳ Lote 2 termina em 15/04/2026</span>
+                <span className="px-3 py-1 bg-energy-orange text-white text-[10px] rounded-full font-black uppercase shadow-lg group-hover:bg-white group-hover:text-energy-orange transition-all">{t.ticker.register}</span>
               </a>
 
               <span className="text-innovation-purple text-xl opacity-40">★</span>
@@ -490,24 +524,27 @@ export default function App() {
                 href="#programacao" 
                 className="flex items-center gap-3 group"
               >
-                <span className="text-sm md:text-xl font-display font-black text-white uppercase tracking-wider group-hover:text-innovation-purple transition-colors">Programação Completa</span>
-                <span className="px-3 py-1 bg-innovation-purple text-white text-[10px] rounded-full font-black uppercase shadow-lg group-hover:bg-white group-hover:text-innovation-purple transition-all">Ver agora</span>
+                <span className="text-sm md:text-xl font-display font-black text-white uppercase tracking-wider group-hover:text-innovation-purple transition-colors">{t.ticker.fullProgram}</span>
+                <span className="px-3 py-1 bg-innovation-purple text-white text-[10px] rounded-full font-black uppercase shadow-lg group-hover:bg-white group-hover:text-innovation-purple transition-all">{t.ticker.seeNow}</span>
               </a>
 
               <span className="text-innovation-purple text-xl opacity-40">★</span>
 
-              <div className="flex items-center gap-3 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
-                <span className="text-[#fdfbd4] font-black text-base tracking-normal uppercase">Lotes CO disponíveis</span>
-              </div>
+              <a
+                href="#visitas-tecnicas"
+                className="flex items-center gap-3 px-4 py-1.5 bg-amazon-green/20 border border-amazon-green/50 rounded-xl hover:bg-amazon-green/40 transition-all group"
+              >
+                <span className="text-sm md:text-base font-display font-black text-amazon-green uppercase tracking-wider group-hover:text-white transition-colors whitespace-nowrap">📍 Inscreva-se nas Visitas Técnicas</span>
+                <span className="px-3 py-1 bg-amazon-green text-white text-[10px] rounded-full font-black uppercase shadow-lg group-hover:bg-white group-hover:text-amazon-green transition-all">Ver</span>
+              </a>
 
-              <span className="text-innovation-purple text-xl opacity-40 ml-6">★</span>
 
               <a 
                 href="#trabalhos-aprovados" 
                 className="flex items-center gap-3 px-4 py-2 bg-energy-orange/10 rounded-xl border border-energy-orange/30 hover:bg-energy-orange/20 transition-colors group ml-6"
               >
-                <span className="text-[10px] font-black text-energy-orange uppercase tracking-widest whitespace-nowrap px-2 py-1 bg-energy-orange/20 rounded-md">Novidade</span>
-                <span className="text-sm md:text-lg font-display font-black text-white uppercase tracking-wider group-hover:text-energy-orange transition-colors">Divulgados os trabalhos aprovados</span>
+                <span className="text-[10px] font-black text-energy-orange uppercase tracking-widest whitespace-nowrap px-2 py-1 bg-energy-orange/20 rounded-md">{t.ticker.new}</span>
+                <span className="text-sm md:text-lg font-display font-black text-white uppercase tracking-wider group-hover:text-energy-orange transition-colors">{t.ticker.approvedWorks}</span>
               </a>
 
               <span className="text-white/20 text-3xl font-black mx-10">/</span>
@@ -517,17 +554,17 @@ export default function App() {
       </section>
 
       {/* Approved Works Section */}
-      <section id="trabalhos-aprovados" className="py-24 bg-white relative overflow-hidden">
+      <section id="trabalhos-aprovados" className="pt-24 pb-8 bg-white relative overflow-hidden">
         
         <div className="max-w-[1000px] mx-auto px-6 md:px-20 relative z-10">
-          <div className="text-center mb-16 md:mb-24">
+          <div className="text-center mb-0">
             <motion.h2 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               className="text-3xl md:text-5xl font-display font-bold text-innovation-purple mb-6 uppercase tracking-widest drop-shadow-sm"
             >
-              Trabalhos <span className="text-energy-orange">Aprovados</span>
+              {t.approved.title} <span className="text-energy-orange">{t.approved.titleHighlight}</span>
             </motion.h2>
             <motion.div 
               initial={{ opacity: 0, scale: 0 }}
@@ -543,76 +580,262 @@ export default function App() {
               transition={{ delay: 0.3 }}
               className="text-gray-900 max-w-3xl mx-auto text-sm md:text-base leading-relaxed font-semibold bg-gray-50 p-6 md:p-8 rounded-3xl shadow-sm border border-gray-100"
             >
-              O comitê científico torna pública a lista dos trabalhos aprovados no V FIEB - Manaus. 
-              Informamos que os autores serão comunicados pela plataforma acerca dos possíveis ajustes 
-              e que as alterações deverão ser realizadas no <strong className="text-energy-orange">prazo máximo de 08/04/2026</strong>. 
+              {t.approved.text}
             </motion.p>
           </div>
         </div>
       </section>
 
-      {/* Scrolling Cards Section (Dark Background) */}
-      <section className="py-24 bg-black relative overflow-hidden">
-        {/* Background Decorative Elements for Dark Mode */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-innovation-purple/10 rounded-full blur-[100px] -mr-48 -mt-48 pointer-events-none"></div>
+      {/* Scrolling Cards Section (Dark Background) — grouped by Eixo Temático */}
+      <section className="pt-8 pb-24 bg-gray-50 border-t border-gray-200 relative overflow-hidden">
+        {/* Background Decorative Elements for Light Mode */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-innovation-purple/5 rounded-full blur-[100px] -mr-48 -mt-48 pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-energy-orange/5 rounded-full blur-[100px] -ml-48 -mb-48 pointer-events-none"></div>
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
 
         <div className="max-w-[1000px] mx-auto px-6 md:px-20 relative z-10">
-          <div className="space-y-8 md:space-y-12">
-            {[
-              {
-                title: "INTRAEMPREENDEDORISMO NA CRIAÇÃO DA PLATAFORMA LUMENS CS: DA IDEIA AO SAAS",
-                authors: [
-                  { name: "Ana Caroline Remor Corrêa", affiliation: "Clarivate" },
-                  { name: "Jorge Luiz Cativo Alauzo", affiliation: "INPA" }
-                ]
-              },
-              {
-                title: "MODELOS DE NEGÓCIO APLICADOS A SERVIÇOS INFORMACIONAIS",
-                authors: [
-                  { name: "Daniela Spudeit", affiliation: "Universidade do Estado de Santa Catarina" },
-                  { name: "Genilson Geraldo", affiliation: "Universidade Federal do Paraná" }
-                ]
-              },
-              {
-                title: "PROPRIEDADE INTELECTUAL E INTELIGÊNCIA ARTIFICIAL: A BIBLIOTECA ESCOLAR COMO HUB DE INOVAÇÃO E INTEGRIDADE NO ENSINO MÉDIO TÉCNICO",
-                authors: [
-                  { name: "Edinara Sobrinho da Silva", affiliation: "IFAM" },
-                  { name: "Raynara Sobrinho da Silva", affiliation: "IFAM" }
-                ]
-              },
-              {
-                title: "ENTRE NORMAS E PRAZOS: A ATUAÇÃO DA BIBLIOTECÁRIA EMPREENDEDORA NA NORMALIZAÇÃO DE TRABALHOS ACADÊMICOS EM CONTEXTOS DE URGÊNCIA: UM RELATO DE EXPERIÊNCIA",
-                authors: [
-                  { name: "Juliany Ferreira Lisboa da Silva", affiliation: "Universidade Federal do Rio de Janeiro (UFRJ)" }
-                ]
-              },
-              {
-                title: "INTEGRAÇÃO ENTRE CIÊNCIA DA INFORMAÇÃO E INOVAÇÃO TECNOLÓGICA: CONTRIBUIÇÕES INFORMACIONAIS PARA PROCESSOS DE EMPREENDEDORISMO E TRANSFERÊNCIA DE CONHECIMENTO EM AMBIENTE UNIVERSITÁRIO",
-                authors: [
-                  { name: "Ana Paula Puhl Sehn", affiliation: "Universidade do Estado de Santa Catarina" },
-                  { name: "Elaine Zeni Vieira", affiliation: "Universidade do Estado de Santa Catarina" },
-                  { name: "Lucas George Wendt", affiliation: "Universidade Federal do Rio Grande do Sul" }
-                ]
-              },
-              {
-                title: "DO ARQUIVO DIGITAL À EXPERIÊNCIA SENSORIAL: INOVAÇÃO E CURADORIA NA EXPOSIÇÃO “POESIAS HISTÓRICAS DO AMAZONAS (1861-1984)”",
-                authors: [
-                  { name: "Samuel Souza da Silva", affiliation: "Secretaria de Estado de Cultura e Economia Criativa" },
-                  { name: "Ana Estela dos Santos Ferreira", affiliation: "Secretaria de Estado de Cultura e Economia Criativa" },
-                  { name: "Adaísa de Alencar Almeida", affiliation: "Secretaria de Estado de Cultura e Economia Criativa" }
-                ]
-              },
-              {
-                title: "NEM ENCADERNADO NEM AUTODEPÓSITO: UM NOVO SERVIÇO DE DEPÓSITO LEGAL TOTALMENTE DIGITAL",
-                authors: [
-                  { name: "Katia Abreu", affiliation: "Unioeste" }
-                ]
-              }
-            ].map((work, idx) => (
-              <ScrollableWorkCard key={idx} work={work} idx={idx} />
-            ))}
+
+          {/* ── Eixo 1 ── */}
+          <div className="mb-20">
+            <div className="flex items-center justify-center gap-4 mb-12 md:mb-16">
+              <div className="flex-1 h-px bg-gradient-to-l from-[#f59e0b]/40 to-transparent hidden md:block"></div>
+              <div className="flex flex-row items-center justify-center py-3 md:px-8 md:py-5 rounded-full bg-[#f59e0b]/10 border border-[#f59e0b]/40 shadow-xl hover:shadow-[0_10px_30px_rgba(245,158,11,0.2)] transition-shadow text-center w-full mx-auto">
+                <h3 className="text-[#d97706] font-bold text-[3.2vw] md:text-xl lg:text-2xl uppercase whitespace-nowrap">
+                  <span className="font-black tracking-widest">EIXO 1</span>
+                  <span className="mx-1 md:mx-4 opacity-40">|</span>
+                  Empreendedorismo na Biblioteconomia
+                </h3>
+              </div>
+              <div className="flex-1 h-px bg-gradient-to-r from-[#f59e0b]/40 to-transparent hidden md:block"></div>
+            </div>
+            <div className="space-y-8 md:space-y-12">
+              {[
+                {
+                  title: "MODELOS DE NEGÓCIO APLICADOS A SERVIÇOS INFORMACIONAIS",
+                  category: "Pesquisa Concluída",
+                  axis: "Eixo 1: Empreendedorismo na Biblioteconomia",
+                  axisNumber: 1,
+                  authors: [
+                    { name: "Daniela Spudeit", affiliation: "Universidade do Estado de Santa Catarina" },
+                    { name: "Genilson Geraldo", affiliation: "Universidade Federal do Paraná" }
+                  ]
+                },
+                {
+                  title: "ENTRE NORMAS E PRAZOS: A ATUAÇÃO DA BIBLIOTECÁRIA EMPREENDEDORA NA NORMALIZAÇÃO DE TRABALHOS ACADÊMICOS EM CONTEXTOS DE URGÊNCIA: UM RELATO DE EXPERIÊNCIA",
+                  category: "Relato de Experiência",
+                  axis: "Eixo 1: Empreendedorismo na Biblioteconomia",
+                  axisNumber: 1,
+                  authors: [
+                    { name: "Juliany Ferreira Lisboa da Silva", affiliation: "Universidade Federal do Rio de Janeiro (UFRJ)" }
+                  ]
+                }
+              ].map((work, idx) => (
+                <ScrollableWorkCard key={idx} work={work} idx={idx} />
+              ))}
+            </div>
+          </div>
+
+          {/* ── Eixo 2 ── */}
+          <div>
+            <div className="flex items-center justify-center gap-4 mb-12 md:mb-16">
+              <div className="flex-1 h-px bg-gradient-to-l from-innovation-purple/40 to-transparent hidden md:block"></div>
+              <div className="flex flex-row items-center justify-center py-3 md:px-8 md:py-5 rounded-full bg-innovation-purple/10 border border-innovation-purple/40 shadow-xl hover:shadow-[0_10px_30px_rgba(102,51,153,0.3)] transition-shadow text-center w-full mx-auto">
+                <h3 className="text-innovation-purple font-bold text-[2.5vw] md:text-lg lg:text-xl uppercase whitespace-nowrap">
+                  <span className="font-black tracking-widest">EIXO 2</span>
+                  <span className="opacity-40 mx-0.5 md:mx-3">|</span>Inovação na Biblioteconomia e na Gestão da Informação
+                </h3>
+              </div>
+              <div className="flex-1 h-px bg-gradient-to-r from-innovation-purple/40 to-transparent hidden md:block"></div>
+            </div>
+            <div className="space-y-8 md:space-y-12">
+              {[
+                {
+                  title: "INTRAEMPREENDEDORISMO NA CRIAÇÃO DA PLATAFORMA LUMENS CS: DA IDEIA AO SAAS",
+                  category: "Pesquisa Concluída",
+                  axis: "Eixo 2: Inovação na Biblioteconomia e na Gestão da Informação",
+                  axisNumber: 2,
+                  authors: [
+                    { name: "Ana Caroline Remor Corrêa", affiliation: "Clarivate" },
+                    { name: "Jorge Luiz Cativo Alauzo", affiliation: "INPA" }
+                  ]
+                },
+                {
+                  title: "PROPRIEDADE INTELECTUAL E INTELIGÊNCIA ARTIFICIAL: A BIBLIOTECA ESCOLAR COMO HUB DE INOVAÇÃO E INTEGRIDADE NO ENSINO MÉDIO TÉCNICO",
+                  category: "Pesquisa Concluída",
+                  axis: "Eixo 2: Inovação na Biblioteconomia e na Gestão da Informação",
+                  axisNumber: 2,
+                  authors: [
+                    { name: "Edinara Sobrinho da Silva", affiliation: "IFAM - Campus Iranduba" },
+                    { name: "Raynara Sobrinho da Silva", affiliation: "UFAM" }
+                  ]
+                },
+                {
+                  title: "INTEGRAÇÃO ENTRE CIÊNCIA DA INFORMAÇÃO E INOVAÇÃO TECNOLÓGICA: CONTRIBUIÇÕES INFORMACIONAIS PARA PROCESSOS DE EMPREENDEDORISMO E TRANSFERÊNCIA DE CONHECIMENTO EM AMBIENTE UNIVERSITÁRIO",
+                  category: "Projeto em Andamento",
+                  axis: "Eixo 2: Inovação na Biblioteconomia e na Gestão da Informação",
+                  axisNumber: 2,
+                  authors: [
+                    { name: "Ana Paula Puhl Sehn", affiliation: "Universidade do Estado de Santa Catarina" },
+                    { name: "Elaine Zeni Vieira", affiliation: "Universidade do Estado de Santa Catarina" },
+                    { name: "Lucas George Wendt", affiliation: "Universidade Federal do Rio Grande do Sul" }
+                  ]
+                },
+                {
+                  title: "DO ARQUIVO DIGITAL À EXPERIÊNCIA SENSORIAL: INOVAÇÃO E CURADORIA NA EXPOSIÇÃO “POESIAS HISTÓRICAS DO AMAZONAS (1861-1984)”",
+                  category: "Relato de Experiência",
+                  axis: "Eixo 2: Inovação na Biblioteconomia e na Gestão da Informação",
+                  axisNumber: 2,
+                  authors: [
+                    { name: "Samuel Souza da Silva", affiliation: "Secretaria de Estado de Cultura e Economia Criativa" },
+                    { name: "Ana Estela dos Santos Ferreira", affiliation: "Secretaria de Estado de Cultura e Economia Criativa" },
+                    { name: "Adaísa de Alencar Almeida", affiliation: "Secretaria de Estado de Cultura e Economia Criativa" }
+                  ]
+                },
+                {
+                  title: "NEM ENCADERNADO NEM AUTODEPÓSITO: UM NOVO SERVIÇO DE DEPÓSITO LEGAL TOTALMENTE DIGITAL",
+                  category: "Relato de Experiência",
+                  axis: "Eixo 2: Inovação na Biblioteconomia e na Gestão da Informação",
+                  axisNumber: 2,
+                  authors: [
+                    { name: "Katia Abreu", affiliation: "Unioeste" }
+                  ]
+                }
+              ].map((work, idx) => (
+                <ScrollableWorkCard key={idx} work={work} idx={idx} />
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* Footnote — Orientações para Apresentação dos Trabalhos */}
+      <section className="py-20 bg-lavender-light border-y border-innovation-purple/10 relative overflow-hidden">
+        {/* Decorative Light Elements */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-energy-orange/5 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-innovation-purple/5 rounded-full blur-3xl -ml-32 -mb-32 pointer-events-none"></div>
+
+        <div className="max-w-[900px] mx-auto px-6 md:px-20 relative z-10">
+          <div className="flex flex-col items-center text-center gap-4 mb-8">
+            <div className="w-16 h-1 bg-energy-orange rounded-full flex-shrink-0"></div>
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="flex items-center gap-4 justify-center flex-wrap"
+            >
+              <AlertTriangle className="w-8 h-8 md:w-10 md:h-10 text-energy-orange animate-[pulse_2s_ease-in-out_infinite]" />
+              <h4 className="text-innovation-purple font-display font-bold text-2xl md:text-4xl uppercase tracking-wider">
+                Apresentação dos Trabalhos
+              </h4>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Digital Ticker Effect */}
+        <div className="w-full mb-12 overflow-hidden bg-[#0c0a1a] border-y-2 border-energy-orange/40 py-4 md:py-6 relative flex items-center shadow-[0_0_30px_rgba(245,158,11,0.2)] z-10">
+           <div className="w-3 h-3 md:w-5 md:h-5 rounded-full bg-energy-orange animate-pulse ml-6 md:ml-12 mr-6 shadow-[0_0_15px_#f59e0b] shrink-0"></div>
+           <div className="flex-1 overflow-hidden relative" style={{ maskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)", WebkitMaskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)" }}>
+             <motion.div 
+               animate={{ x: ["0%", "-50%"] }}
+               transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
+               className="flex whitespace-nowrap text-energy-orange font-mono font-bold text-base md:text-2xl lg:text-3xl uppercase tracking-[0.2em] gap-12"
+             >
+               <span>[ATENÇÃO] ORIENTAÇÕES OBRIGATÓRIAS PARA A APRESENTAÇÃO</span>
+               <span className="text-white/30">|</span>
+               <span>PREPARE-SE COM ANTECEDÊNCIA</span>
+               <span className="text-white/30">|</span>
+               <span>ESTEJA ATENTO AOS FORMATOS</span>
+               <span className="text-white/30">|</span>
+               <span>[ATENÇÃO] ORIENTAÇÕES OBRIGATÓRIAS PARA A APRESENTAÇÃO</span>
+               <span className="text-white/30">|</span>
+               <span>PREPARE-SE COM ANTECEDÊNCIA</span>
+               <span className="text-white/30">|</span>
+               <span>ESTEJA ATENTO AOS FORMATOS</span>
+               <span className="text-white/30">|</span>
+             </motion.div>
+           </div>
+        </div>
+
+        <div className="max-w-[900px] mx-auto px-6 md:px-20 relative z-10">
+          <div className="space-y-8">
+            {/* Categorias 1 e 2 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="p-8 md:p-10 rounded-3xl bg-white shadow-xl border border-gray-100 hover:border-innovation-purple/30 transition-all duration-300 transform hover:-translate-y-1"
+            >
+              <div className="flex flex-wrap gap-3 mb-6">
+                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs md:text-sm font-black uppercase tracking-widest border bg-amazon-green/10 text-amazon-green border-amazon-green/30">
+                  <span className="w-2 h-2 rounded-full bg-current"></span>
+                  Pesquisa Concluída
+                </span>
+                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs md:text-sm font-black uppercase tracking-widest border bg-innovation-purple/10 text-innovation-purple border-innovation-purple/30">
+                  <span className="w-2 h-2 rounded-full bg-current"></span>
+                  Projeto em Andamento
+                </span>
+              </div>
+              <p className="text-gray-700 text-base md:text-lg leading-relaxed font-medium">
+                Os trabalhos aprovados nas categorias <strong className="text-gray-900 font-bold">Pesquisa Concluída</strong> e <strong className="text-gray-900 font-bold">Projeto em Andamento</strong> serão apresentados presencialmente em <strong className="text-innovation-purple font-bold">Mesa Colaborativa</strong> no dia 15 de maio conforme programação oficial. Para a apresentação não há necessidade de utilização de slides ou recurso audiovisual.
+              </p>
+            </motion.div>
+
+            {/* Categoria 3 */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="p-8 md:p-10 rounded-3xl bg-white shadow-xl border border-gray-100 hover:border-energy-orange/30 transition-all duration-300 transform hover:-translate-y-1"
+            >
+              <div className="flex flex-wrap gap-3 mb-6">
+                <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs md:text-sm font-black uppercase tracking-widest border bg-energy-orange/10 text-energy-orange border-energy-orange/30">
+                  <span className="w-2 h-2 rounded-full bg-current"></span>
+                  Relato de Experiência
+                </span>
+              </div>
+              <p className="text-gray-700 text-base md:text-lg leading-relaxed font-medium mb-8">
+                Os autores dos trabalhos da categoria 3 — <strong className="text-gray-900 font-bold">Relatos de Experiência</strong> deverão enviar os links dos vídeos gravados em formato <strong className="text-energy-orange font-bold">Pitch</strong> (duração mínima de 3 e máxima de 5 minutos) para exibição durante o evento e no <strong className="text-gray-900 font-bold">canal do YouTube do FIEB</strong>, com estreias programadas <strong className="text-innovation-purple font-bold">9h30 do dia 15 de maio de 2026</strong>.
+              </p>
+
+              <div className="bg-gray-50 rounded-2xl p-6 md:p-8 border border-gray-100">
+                <p className="text-energy-orange font-black text-sm md:text-base uppercase tracking-widest mb-6 flex items-center gap-3">
+                  <ICONS.Video size={20} />
+                  Orientações para produção do vídeo:
+                </p>
+                <ul className="space-y-4 text-gray-700 text-base leading-relaxed font-medium">
+                  <li className="flex items-start gap-4">
+                    <span className="w-6 h-6 rounded-full bg-energy-orange text-white flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs shadow-md">1</span>
+                    Tempo mínimo de 3 e máximo de 5 minutos.
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <span className="w-6 h-6 rounded-full bg-energy-orange text-white flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs shadow-md">2</span>
+                    A apresentação é um depoimento livre — pode ser em formato de entrevista ou apresentação — desde que apresente de forma sucinta a sua ideia ou negócio, com linguagem direta e acessível.
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <span className="w-6 h-6 rounded-full bg-energy-orange text-white flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs shadow-md">3</span>
+                    <span>A orientação deve ser <strong className="text-gray-900">horizontal (paisagem / landscape)</strong>, resolução mínima de <strong className="text-gray-900">1024 × 768 px (HD)</strong>, proporção 16:9.</span>
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <span className="w-6 h-6 rounded-full bg-energy-orange text-white flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs shadow-md">4</span>
+                    Evite gravar em locais com ruídos externos (vento, máquinas, eco, etc.).
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <span className="w-6 h-6 rounded-full bg-energy-orange text-white flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs shadow-md">5</span>
+                    <span>Após produzir o vídeo, carregue-o no YouTube® com privacidade <strong className="text-gray-900">"Não listado"</strong> e compartilhe com <a href="mailto:marketing.fieb@gmail.com" className="text-energy-orange hover:text-innovation-purple underline underline-offset-4 transition-colors font-bold">marketing.fieb@gmail.com</a>.</span>
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <span className="w-6 h-6 rounded-full bg-energy-orange text-white flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs shadow-md">6</span>
+                    <span>Garanta que a opção <strong className="text-gray-900">"Permitir incorporação do vídeo"</strong> esteja ativada antes do envio.</span>
+                  </li>
+                  <li className="flex items-start gap-4">
+                    <span className="w-6 h-6 rounded-full bg-energy-orange text-white flex items-center justify-center shrink-0 mt-0.5 font-bold text-xs shadow-md">7</span>
+                    Não serão aceitos vídeos com materiais protegidos por direitos autorais (músicas de fundo, imagens de terceiros sem autorização), conteúdo ofensivo ou comercial.
+                  </li>
+                </ul>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -631,10 +854,10 @@ export default function App() {
             
             <h3 className="text-lg md:text-2xl font-display font-black text-innovation-purple uppercase tracking-widest mb-4 flex flex-col md:flex-row items-center justify-center gap-4 relative z-10">
               <ICONS.FileText size={32} className="text-energy-orange mb-2 md:mb-0" />
-              Lembramos que a inscrição é obrigatória
+              {t.approved.mandatory}
             </h3>
             <p className="text-gray-700 font-medium text-base md:text-lg relative z-10 mb-8">
-              para participação no evento e para apresentação de trabalhos científicos.
+              {t.approved.mandatorySub}
             </p>
             
             <div className="flex justify-center relative z-10">
@@ -700,7 +923,7 @@ export default function App() {
                   <span className="text-lg font-display font-bold text-white px-8 uppercase tracking-wider flex items-center gap-4">
                     {cat.name} 
                     <span className="bg-amazon-green text-white font-bold px-4 py-1.5 rounded-xl border border-white/10 shadow-lg">
-                      {cat.prices ? cat.prices[0] : cat.special}
+                      {cat.prices ? cat.prices[1] : cat.special}
                     </span>
                   </span>
                   <span className="text-white/20 text-2xl">★</span>
@@ -746,12 +969,12 @@ export default function App() {
           >
             {/* Table Header */}
             <div className="grid grid-cols-1 md:grid-cols-4 bg-innovation-purple text-white p-6 md:p-8 hidden md:grid">
-              <div className="font-display font-bold text-xl uppercase tracking-wider">{t.registrations.table.category}</div>
-              <div className="text-center">
+              <div className="font-display font-bold text-xl uppercase tracking-wider opacity-40">{t.registrations.table.category}</div>
+              <div className="text-center opacity-40">
                 <div className="font-display font-bold text-lg uppercase">{t.registrations.table.lot1}</div>
                 <div className="text-[13px] opacity-80 font-bold tracking-widest mt-1">{t.registrations.table.dates1}</div>
               </div>
-              <div className="text-center opacity-60">
+              <div className="text-center">
                 <div className="font-display font-bold text-lg uppercase">{t.registrations.table.lot2}</div>
                 <div className="text-[13px] opacity-80 font-bold tracking-widest mt-1">{t.registrations.table.dates2}</div>
               </div>
@@ -775,11 +998,11 @@ export default function App() {
                   ) : (
                     <>
                       {cat.prices.map((price, pIdx) => (
-                        <div key={pIdx} className={`text-center flex md:block justify-between items-center mb-2 md:mb-0 ${pIdx === 0 ? 'bg-energy-orange/5 md:bg-transparent p-3 md:p-0 rounded-xl border border-energy-orange/10 md:border-none' : 'opacity-40'}`}>
+                        <div key={pIdx} className={`text-center flex md:block justify-between items-center mb-2 md:mb-0 ${pIdx === 1 ? 'bg-energy-orange/5 md:bg-transparent p-3 md:p-0 rounded-xl border border-energy-orange/10 md:border-none' : 'opacity-40'}`}>
                           <span className="md:hidden text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                             {pIdx === 0 ? t.registrations.table.lot1 : pIdx === 1 ? t.registrations.table.lot2 : t.registrations.table.lot3}
                           </span>
-                          <span className={`font-display font-bold text-xl ${pIdx === 0 ? 'text-energy-orange' : 'text-gray-400'}`}>
+                          <span className={`font-display font-bold text-xl ${pIdx === 1 ? 'text-energy-orange' : 'text-gray-400'}`}>
                             {price}
                           </span>
                         </div>
@@ -857,6 +1080,181 @@ export default function App() {
                 </motion.a>
               </div>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Oficinas Section */}
+      <section id="oficinas" className="py-24 bg-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-energy-orange/5 rounded-full blur-[100px] -mr-48 -mt-48 pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-innovation-purple/5 rounded-full blur-[100px] -ml-48 -mb-48 pointer-events-none"></div>
+        
+        <div className="max-w-[1200px] mx-auto px-6 md:px-20 relative z-10">
+          <div className="text-center mb-16">
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-4xl md:text-6xl font-display font-bold text-innovation-purple mb-4 uppercase tracking-widest"
+            >
+              OFICINAS <span className="text-energy-orange text-3xl md:text-5xl block md:inline md:ml-4">FIEB 2026</span>
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-lg text-gray-600 font-semibold max-w-2xl mx-auto"
+            >
+              Inscreva-se nos lotes escolhendo uma das oficinas do evento!
+            </motion.p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-stretch">
+            {WORKSHOPS_DATA.map((workshop) => (
+              <motion.div
+                key={workshop.id}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="bg-white rounded-[40px] shadow-2xl border border-innovation-purple/5 flex flex-col overflow-hidden group hover:shadow-[0_30px_60px_rgba(102,51,153,0.15)] transition-all duration-500 h-full"
+              >
+                {/* Header with Image and Speaker Info */}
+                <div className="relative h-72 md:h-80 overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
+                  <img 
+                    src={workshop.image} 
+                    alt={workshop.speaker} 
+                    className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${getSpeakerObjectPosition(workshop.speaker)}`}
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute bottom-6 left-8 z-20 flex flex-col gap-3">
+                    <div className="flex gap-2 mb-1">
+                      {workshop.instagram && (
+                        <a href={workshop.instagram} target="_blank" rel="noopener noreferrer" className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-[#E1306C] transition-all border border-white/40 shadow-lg">
+                          <ICONS.Instagram size={14} />
+                        </a>
+                      )}
+                      {workshop.lattes && (
+                        <a href={workshop.lattes} target="_blank" rel="noopener noreferrer" className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-innovation-purple transition-all border border-white/40 shadow-lg">
+                          <ICONS.GraduationCap size={14} />
+                        </a>
+                      )}
+                      {workshop.youtube && (
+                        <a href={workshop.youtube} target="_blank" rel="noopener noreferrer" className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-red-600 transition-all border border-white/40 shadow-lg">
+                          <ICONS.Youtube size={14} />
+                        </a>
+                      )}
+                    </div>
+                    <div>
+                      <div className="text-[10px] font-black text-white/90 bg-innovation-purple/60 backdrop-blur-sm px-3 py-1 rounded-md uppercase tracking-[0.3em] mb-1 border border-white/10 w-fit">{workshop.role}</div>
+                      <div className="text-2xl md:text-3xl font-display font-bold text-white drop-shadow-xl">{workshop.speaker}</div>
+                    </div>
+                  </div>
+                  <div className="absolute top-6 right-8 z-20">
+                    <motion.div 
+                      whileHover={{ scale: 1.1, rotate: 0 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="group cursor-pointer relative"
+                    >
+                      {/* Normal Plate */}
+                      <motion.div 
+                        animate={{ scale: [1, 1.05, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                        className="px-5 py-2.5 bg-energy-orange text-white rounded-2xl border-2 border-white shadow-[0_15px_30px_rgba(211,105,62,0.5)] text-[11px] font-black uppercase tracking-[0.2em] transform -rotate-2 group-hover:opacity-0 transition-all duration-300"
+                      >
+                        Vagas Limitadas
+                      </motion.div>
+                      
+                      {/* Hover/Active Plate (Inverted Style) */}
+                      <div className="absolute inset-0 px-5 py-2.5 bg-innovation-purple text-white rounded-2xl border-2 border-white shadow-[0_15px_30px_rgba(102,51,153,0.5)] text-[11px] font-bold uppercase tracking-tight flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform -rotate-2 group-hover:rotate-0">
+                         {workshop.spots} Vagas Restantes
+                      </div>
+                    </motion.div>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-8 md:p-10 flex-grow flex flex-col">
+                  <h3 className="text-xl md:text-2xl font-display font-bold text-innovation-purple mb-4 leading-tight group-hover:text-energy-orange transition-colors">
+                    {workshop.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-8 font-medium italic">
+                    "{workshop.description}"
+                  </p>
+
+                  {/* Syllabus / Ementa */}
+                  <div className="space-y-6 mb-10 flex-grow">
+                    <h4 className="text-xs font-black text-innovation-purple uppercase tracking-[0.3em] flex items-center gap-2">
+                       <ICONS.FileText size={14} className="text-energy-orange" />
+                       Conteúdo Programático
+                    </h4>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      {workshop.syllabus.map((section, sIdx) => (
+                        <div key={sIdx} className="group/syllabus [perspective:1000px] h-48">
+                          <motion.div 
+                            whileHover={{ rotateY: 180 }}
+                            transition={{ duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
+                            className="relative w-full h-full [transform-style:preserve-3d] cursor-pointer"
+                          >
+                            {/* Front Side */}
+                            <div className="absolute inset-0 backface-hidden p-6 bg-lavender-light rounded-2xl border border-innovation-purple/5 flex flex-col items-center justify-center text-center shadow-md">
+                              <ICONS.BookOpen size={24} className="text-energy-orange mb-3" />
+                              <p className="text-base font-bold text-innovation-purple uppercase tracking-tight leading-tight">
+                                {section.title}
+                              </p>
+                              <div className="mt-3 text-[10px] font-bold text-innovation-purple/40 uppercase tracking-[0.2em]">VER CONTEÚDO</div>
+                            </div>
+                            
+                            {/* Back Side */}
+                            <div className="absolute inset-0 [transform:rotateY(180deg)] backface-hidden p-6 bg-innovation-purple rounded-2xl border border-white/20 flex flex-col shadow-xl">
+                              <p className="text-xs font-black text-white mb-3 uppercase tracking-widest border-b border-white/20 pb-2">
+                                {section.title}
+                              </p>
+                              <ul className="space-y-2">
+                                {section.topics.map((topic, tIdx) => (
+                                  <li key={tIdx} className="text-[11px] font-medium text-white/90 flex items-start gap-2 leading-snug">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-energy-orange mt-1 shrink-0 shadow-[0_0_8px_rgba(211,105,62,0.8)]"></div>
+                                    {topic}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </motion.div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Footer info */}
+                  <div className="pt-8 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-6">
+                    <div className="space-y-2 text-center sm:text-left">
+                      <div className="flex items-center justify-center sm:justify-start gap-2 text-sm font-bold text-gray-800">
+                        <ICONS.Calendar size={16} className="text-energy-orange" />
+                        {workshop.date} • {workshop.time}
+                      </div>
+                      <div className="flex items-center justify-center sm:justify-start gap-2 text-xs font-bold text-gray-500 uppercase tracking-tighter">
+                        <ICONS.MapPin size={16} className="text-energy-orange" />
+                        {workshop.location}
+                      </div>
+                    </div>
+
+                    <motion.a 
+                      href={workshop.registrationUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      whileHover={{ scale: 1.05, boxShadow: "0 10px 30px rgba(102,51,153,0.6)" }}
+                      whileTap={{ scale: 0.95 }}
+                      className="px-6 py-3 bg-energy-orange hover:bg-innovation-purple text-white rounded-xl font-display font-bold text-xs uppercase tracking-widest shadow-[0_10px_20px_rgba(102,51,153,0.4)] transition-all flex items-center gap-2"
+                    >
+                      Inscreva-se
+                      <ICONS.ChevronRight size={16} />
+                    </motion.a>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -1296,7 +1694,7 @@ export default function App() {
               </div>
               <div className="p-6 bg-lavender-light/30 border-t border-innovation-purple/5 flex flex-col sm:flex-row justify-between items-center gap-4">
                 <a 
-                  href="https://tally.so/r/LZGy81"
+                  href="https://tally.so/r/5BGYjQ"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full sm:w-auto px-8 py-3 bg-menu-green text-white rounded-xl font-bold uppercase text-sm shadow-lg hover:bg-innovation-purple transition-all flex items-center justify-center gap-2"
@@ -1445,7 +1843,452 @@ export default function App() {
         </div>
       </section>
 
+      {/* Visitas Técnicas Section */}
+      <section id="visitas-tecnicas" className="py-24 bg-lavender-light relative overflow-hidden">
+        <div className="max-w-[1240px] mx-auto px-6 md:px-20 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-display font-bold text-innovation-purple mb-4 uppercase tracking-widest">
+              Visitas Técnicas
+            </h2>
+            <div className="h-1.5 w-32 bg-amazon-green mx-auto rounded-full mb-6"></div>
+            <p className="text-lg text-gray-600 font-semibold max-w-3xl mx-auto uppercase">
+              Da Memória Histórica à Indústria 4.0: INSCREVA-SE NAS VISITAS TÉCNICAS QUE PREPARAMOS NO V FIEB
+            </p>
+          </div>
 
+          <div className="grid lg:grid-cols-2 gap-12 mb-16">
+            {/* Casarão Cassina */}
+            <motion.div 
+              whileHover={{ y: -5 }}
+              className="bg-white rounded-3xl overflow-hidden shadow-2xl border-t-4 border-energy-orange flex flex-col"
+            >
+              <div className="h-64 overflow-hidden relative shrink-0 bg-black cursor-pointer group/carousel">
+                <motion.div 
+                  className="flex h-full whitespace-nowrap"
+                  animate={{ x: [0, -3300] }}
+                  transition={{ 
+                    duration: 35, 
+                    repeat: Infinity, 
+                    ease: "linear"
+                  }}
+                >
+                  {[...CASSINA_IMAGES, ...CASSINA_IMAGES].map((img, idx) => (
+                    <img 
+                      key={idx}
+                      src={img} 
+                      alt="Casarão Cassina"
+                      className="w-[300px] h-full object-cover shrink-0 hover:brightness-110 transition-all border-r-2 border-white/20"
+                      onClick={() => setEnlargedImage(img)}
+                    />
+                  ))}
+                </motion.div>
+                <div className="absolute top-4 right-4 bg-energy-orange text-white px-4 py-1 rounded-full text-xs font-bold uppercase shadow-lg pointer-events-none">
+                  Centro Histórico
+                </div>
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-sm text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-opacity pointer-events-none">
+                  Clique para ampliar
+                </div>
+              </div>
+              <div className="p-8 flex-1 flex flex-col">
+                <div className="flex justify-between items-start mb-4 gap-4">
+                  <h3 className="text-2xl font-display font-bold text-innovation-purple">
+                    Casarão de Inovação Cassina
+                  </h3>
+                  <a href="https://www.instagram.com/casaraodainovacaocassina/" target="_blank" rel="noopener noreferrer" className="text-innovation-purple hover:text-[#E1306C] transition-all shrink-0 mt-1">
+                    <ICONS.Instagram size={28} />
+                  </a>
+                </div>
+                <p className="text-gray-600 mb-6 text-sm leading-relaxed text-justify">
+                  Ao visitar o Casarão da Inovação Cassina, no Centro Histórico de Manaus, você encontrará um contraste impressionante entre o passado áureo da borracha e a tecnologia moderna voltada ao empreendedorismo. O prédio, construído em 1899, passou por um projeto de restauro premiado internacionalmente que manteve suas ruínas históricas na fachada e ergueu uma estrutura envidraçada e altamente tecnológica em seu interior.
+                </p>
+                
+                <h4 className="font-bold text-amazon-green mb-3 uppercase tracking-wider text-sm mt-auto">O que esperar:</h4>
+                <ul className="space-y-3 text-sm text-gray-600">
+                  <li><strong className="text-innovation-purple">Arquitetura Premiada:</strong> O projeto preservou as paredes originais criando um visual industrial e biofílico único.</li>
+                  <li><strong className="text-innovation-purple">Coworking Público:</strong> Polo de apoio a startups com infraestrutura completa e internet de alta velocidade.</li>
+                  <li><strong className="text-innovation-purple">Reuniões e Eventos:</strong> Estrutura voltada ao ecossistema de tecnologia da Amazônia.</li>
+                </ul>
+              </div>
+            </motion.div>
+
+            {/* FPF Tech */}
+            <motion.div 
+              whileHover={{ y: -5 }}
+              className="bg-white rounded-3xl overflow-hidden shadow-2xl border-t-4 border-amazon-green flex flex-col"
+            >
+              <div className="h-64 overflow-hidden relative shrink-0">
+                <img 
+                  src="https://amazonasatual.com.br/wp-content/uploads/2020/05/Fundacao-paulo-feitoza.jpg" 
+                  alt="Fundação Paulo Feitosa Tech" 
+                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                />
+                <div className="absolute top-4 right-4 bg-amazon-green text-white px-4 py-1 rounded-full text-xs font-bold uppercase shadow-lg">
+                  Distrito Industrial
+                </div>
+              </div>
+              <div className="p-8 flex-1 flex flex-col">
+                <div className="flex justify-between items-start mb-4 gap-4">
+                  <h3 className="text-2xl font-display font-bold text-innovation-purple">
+                    Fundação Paulo Feitosa Tech
+                  </h3>
+                  <a href="https://www.instagram.com/fpf.tech/" target="_blank" rel="noopener noreferrer" className="text-innovation-purple hover:text-[#E1306C] transition-all shrink-0 mt-1">
+                    <ICONS.Instagram size={28} />
+                  </a>
+                </div>
+                <p className="text-gray-600 mb-6 text-sm leading-relaxed text-justify">
+                  A FPFtech, localizada no Distrito Industrial I, é uma instituição privada de Pesquisa, Desenvolvimento e Inovação (P&D). Por ser um centro tecnológico de alta segurança focado em projetos para o Polo Industrial de Manaus (PIM), a visitação costuma ser de caráter institucional, acadêmico ou técnico.
+                </p>
+                
+                <h4 className="font-bold text-energy-orange mb-3 uppercase tracking-wider text-sm mt-auto">O que esperar:</h4>
+                <ul className="space-y-3 text-sm text-gray-600">
+                  <li><strong className="text-innovation-purple">Complexo de Ponta:</strong> Parque tecnológico e educacional voltado para a Indústria 4.0.</li>
+                  <li><strong className="text-innovation-purple">Laboratórios Especializados:</strong> Robótica, Automação, IA, Internet das Coisas (IoT) e Software.</li>
+                  <li><strong className="text-innovation-purple">Inovação Aplicada:</strong> Soluções reais inseridas diretamente nas linhas de produção da indústria.</li>
+                </ul>
+              </div>
+            </motion.div>
+          </div>
+
+          <div className="bg-innovation-purple rounded-3xl p-8 md:p-12 text-center shadow-2xl relative overflow-hidden group border border-white/10">
+            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/circuit-board.png')] opacity-20"></div>
+            <div className="relative z-10 max-w-4xl mx-auto">
+              <h3 className="text-2xl md:text-3xl font-display font-black text-[#FFD700] mb-6 uppercase tracking-wider drop-shadow-lg">
+                Aviso às Pessoas Já Inscritas no FIEB
+              </h3>
+              <p className="text-white text-lg font-medium mb-8 leading-relaxed drop-shadow-md">
+                Vocês estão convidadas para uma imersão exclusiva nestes dois polos de inovação da Amazônia. Mais do que meras visitas técnicas, as visitas foram pensadas pela comissão organizadora para que profissionais percebam a informação como o ativo mais valioso da atualidade.
+              </p>
+              
+              <div className="grid md:grid-cols-2 gap-6 text-left mb-10">
+                <div className="bg-black/40 p-6 rounded-2xl border border-white/20 backdrop-blur-md shadow-xl">
+                  <h4 className="text-[#FFD700] font-black mb-2 text-lg uppercase tracking-wider">No Casarão Cassina</h4>
+                  <p className="text-white font-medium text-sm leading-relaxed">Descubra como a curadoria de dados, a gestão do conhecimento e a arquitetura da informação são vitais para dar suporte a startups. Como desenhar serviços de referência dinâmicos?</p>
+                </div>
+                <div className="bg-black/40 p-6 rounded-2xl border border-white/20 backdrop-blur-md shadow-xl">
+                  <h4 className="text-[#FFD700] font-black mb-2 text-lg uppercase tracking-wider">Na FPFtech</h4>
+                  <p className="text-white font-medium text-sm leading-relaxed">Veja de perto a Ciência da Informação aplicada à Inteligência Artificial e à Indústria 4.0. Entenda nosso papel estratégico na gestão de Big Data e segurança da informação.</p>
+                </div>
+              </div>
+              
+              <p className="text-white font-bold text-lg mb-8 drop-shadow-md">
+                Venha descobrir novos nichos de atuação. O futuro dos serviços de informação passa por aqui.
+              </p>
+              
+              <div className="bg-energy-orange/20 border border-energy-orange/50 p-4 rounded-xl mb-10 max-w-3xl mx-auto backdrop-blur-sm">
+                <div className="flex items-center justify-center gap-3">
+                  <ICONS.Presentation size={24} className="text-energy-orange hidden sm:block" />
+                  <p className="text-white text-xs md:text-sm font-bold uppercase tracking-widest leading-relaxed">
+                    As inscrições são <span className="text-[#FFD700] font-black">gratuitas</span> para qualquer palestrante, painelista, tutores de oficinas, participantes com inscrições realizadas e servidores do SISTEBIB.
+                  </p>
+                </div>
+              </div>
+
+              <a 
+                href="https://tally.so/r/5BGYjQ" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-energy-orange hover:bg-white hover:text-innovation-purple text-white font-bold text-lg px-8 py-4 rounded-full transition-all duration-300 transform hover:scale-105 shadow-[0_0_20px_rgba(211,105,62,0.6)]"
+              >
+                Garantir minha vaga! <ICONS.ChevronRight size={20} />
+              </a>
+            </div>
+          </div>
+
+          {/* ========== Mini Roteiro das Visitas ========== */}
+          <div className="mt-16 pb-4">
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center gap-2 bg-innovation-purple/10 border border-innovation-purple/20 text-innovation-purple text-xs font-bold uppercase tracking-widest px-5 py-2.5 rounded-full mb-5">
+                <span>🚌</span> Roteiro Oficial das Visitas
+              </div>
+              <h3 className="text-3xl md:text-4xl font-display font-black text-innovation-purple uppercase tracking-wider mb-3">
+                Mini Roteiro do Trajeto
+              </h3>
+              <p className="text-gray-600 font-medium text-sm md:text-base">
+                15 de Maio · Saída às 13h30 — Estacionamento do Setor Sul, Auditório Samaúma, UFAM
+              </p>
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-8 items-start">
+
+              {/* LEFT: Timeline Cards */}
+              <div className="space-y-2">
+
+                {/* PARADA A: Saída UFAM */}
+                <a
+                  href="https://maps.app.goo.gl/5hGFGKrhfS1CCPpu6"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex gap-4 bg-white hover:bg-innovation-purple rounded-2xl p-5 border-2 border-innovation-purple/20 hover:border-innovation-purple shadow-md transition-all duration-300 cursor-pointer"
+                >
+                  <div className="shrink-0">
+                    <div className="w-12 h-12 bg-innovation-purple group-hover:bg-white rounded-2xl flex items-center justify-center font-black text-lg transition-all text-white group-hover:text-innovation-purple">
+                      A
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <p className="font-black text-innovation-purple group-hover:text-white text-sm uppercase tracking-wide transition-colors">Saída do Ônibus</p>
+                      <span className="shrink-0 bg-innovation-purple/10 group-hover:bg-white/20 text-innovation-purple group-hover:text-white text-xs font-black px-3 py-1 rounded-full transition-all">~13h30</span>
+                    </div>
+                    <p className="font-semibold text-gray-700 group-hover:text-white/90 transition-colors text-sm">Estacionamento do Setor Sul — Auditório Samaúma</p>
+                    <p className="text-gray-400 group-hover:text-white/70 text-xs mt-1 transition-colors">Av. Gal. Rodrigo Octavio — FCA 01, UFAM, Manaus</p>
+                    <p className="text-energy-orange group-hover:text-[#FFD700] text-xs font-bold mt-2 flex items-center gap-1 transition-colors">
+                      <ICONS.MapPin size={11} /> Ver no Google Maps
+                    </p>
+                  </div>
+                </a>
+
+                {/* Connector A → 1 */}
+                <div className="flex items-center gap-3 ml-5 py-1">
+                  <div className="w-0.5 h-8 bg-gradient-to-b from-innovation-purple/40 to-energy-orange/40 ml-1"></div>
+                  <div className="flex items-center gap-2 bg-white/70 border border-gray-200 text-gray-500 text-xs px-4 py-2 rounded-full shadow-sm">
+                    <span>🚌</span>
+                    <span className="font-semibold">~30 min de traslado até o Centro</span>
+                  </div>
+                </div>
+
+                {/* PARADA 1: Casarão Cassina */}
+                <a
+                  href="https://maps.app.goo.gl/8zw5My4EQBwhBnAL8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex gap-4 bg-white hover:bg-energy-orange rounded-2xl p-5 border-2 border-energy-orange/20 hover:border-energy-orange shadow-md transition-all duration-300 cursor-pointer"
+                >
+                  <div className="shrink-0">
+                    <div className="w-12 h-12 bg-energy-orange group-hover:bg-white rounded-2xl flex items-center justify-center font-black text-xl transition-all text-white group-hover:text-energy-orange">
+                      1
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <p className="font-black text-energy-orange group-hover:text-white text-sm uppercase tracking-wide transition-colors">Casarão da Inovação Cassina</p>
+                      <span className="shrink-0 bg-energy-orange/10 group-hover:bg-white/20 text-energy-orange group-hover:text-white text-xs font-black px-3 py-1 rounded-full transition-all">14h – 15h</span>
+                    </div>
+                    <p className="font-semibold text-gray-700 group-hover:text-white/90 transition-colors text-sm">Centro Histórico — Manaus</p>
+                    <p className="text-gray-400 group-hover:text-white/70 text-xs mt-1 transition-colors">Rua Bernardo Ramos, 290 — Centro, Manaus - AM, 69005-310</p>
+                    <p className="text-energy-orange group-hover:text-[#FFD700] text-xs font-bold mt-2 flex items-center gap-1 transition-colors">
+                      <ICONS.MapPin size={11} /> Ver no Google Maps
+                    </p>
+                  </div>
+                </a>
+
+                {/* Connector 1 → 2 */}
+                <div className="flex items-center gap-3 ml-5 py-1">
+                  <div className="w-0.5 h-8 bg-gradient-to-b from-energy-orange/40 to-amazon-green/40 ml-1"></div>
+                  <div className="flex items-center gap-2 bg-white/70 border border-gray-200 text-gray-500 text-xs px-4 py-2 rounded-full shadow-sm">
+                    <span>🚌</span>
+                    <span className="font-semibold">Traslado ao Distrito Industrial — 15h às 15h30</span>
+                  </div>
+                </div>
+
+                {/* PARADA 2: FPFTech */}
+                <a
+                  href="https://maps.app.goo.gl/vGtGo6ziZGNdGCFb7"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex gap-4 bg-white hover:bg-amazon-green rounded-2xl p-5 border-2 border-amazon-green/20 hover:border-amazon-green shadow-md transition-all duration-300 cursor-pointer"
+                >
+                  <div className="shrink-0">
+                    <div className="w-12 h-12 bg-amazon-green group-hover:bg-white rounded-2xl flex items-center justify-center font-black text-xl transition-all text-white group-hover:text-amazon-green">
+                      2
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <p className="font-black text-amazon-green group-hover:text-white text-sm uppercase tracking-wide transition-colors">FPFTech</p>
+                      <span className="shrink-0 bg-amazon-green/10 group-hover:bg-white/20 text-amazon-green group-hover:text-white text-xs font-black px-3 py-1 rounded-full transition-all">15h40 – 17h</span>
+                    </div>
+                    <p className="font-semibold text-gray-700 group-hover:text-white/90 transition-colors text-sm">Fundação Paulo Feitosa Tech — Distrito Industrial I</p>
+                    <p className="text-gray-400 group-hover:text-white/70 text-xs mt-1 transition-colors">Av. Gov. Danilo de Matos Areosa, 1170 — Dist. Industrial I, Manaus - AM, 69075-351</p>
+                    <div className="mt-2 bg-amazon-green/10 group-hover:bg-white/10 rounded-xl px-3 py-2 transition-colors">
+                      <p className="text-amazon-green group-hover:text-white text-xs font-bold transition-colors">🍪 A FPF oferecerá café, água e biscoitos aos participantes inscritos</p>
+                    </div>
+                    <p className="text-energy-orange group-hover:text-[#FFD700] text-xs font-bold mt-2 flex items-center gap-1 transition-colors">
+                      <ICONS.MapPin size={11} /> Ver no Google Maps
+                    </p>
+                  </div>
+                </a>
+
+                {/* Connector 2 → Retorno */}
+                <div className="flex items-center gap-3 ml-5 py-1">
+                  <div className="w-0.5 h-8 bg-gradient-to-b from-amazon-green/40 to-innovation-purple/40 ml-1"></div>
+                  <div className="flex items-center gap-2 bg-white/70 border border-gray-200 text-gray-500 text-xs px-4 py-2 rounded-full shadow-sm">
+                    <span>🔙</span>
+                    <span className="font-semibold">Retorno à UFAM — 17h10 às 18h (~50 min)</span>
+                  </div>
+                </div>
+
+                {/* PARADA B: Retorno UFAM */}
+                <a
+                  href="https://maps.app.goo.gl/5hGFGKrhfS1CCPpu6"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex gap-4 bg-white hover:bg-innovation-purple rounded-2xl p-5 border-2 border-innovation-purple/20 hover:border-innovation-purple shadow-md transition-all duration-300 cursor-pointer"
+                >
+                  <div className="shrink-0">
+                    <div className="w-12 h-12 bg-innovation-purple group-hover:bg-white rounded-2xl flex items-center justify-center text-white group-hover:text-innovation-purple text-2xl transition-all">
+                      🏁
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <p className="font-black text-innovation-purple group-hover:text-white text-sm uppercase tracking-wide transition-colors">Retorno — UFAM</p>
+                      <span className="shrink-0 bg-innovation-purple/10 group-hover:bg-white/20 text-innovation-purple group-hover:text-white text-xs font-black px-3 py-1 rounded-full transition-all">~18h</span>
+                    </div>
+                    <p className="font-semibold text-gray-700 group-hover:text-white/90 transition-colors text-sm">Estacionamento do Setor Sul — Auditório Samaúma</p>
+                    <p className="text-gray-400 group-hover:text-white/70 text-xs mt-1 transition-colors">Av. Gal. Rodrigo Octavio — FCA 01, UFAM, Manaus</p>
+                    <p className="text-energy-orange group-hover:text-[#FFD700] text-xs font-bold mt-2 flex items-center gap-1 transition-colors">
+                      <ICONS.MapPin size={11} /> Ver no Google Maps
+                    </p>
+                  </div>
+                </a>
+
+              </div>
+
+              {/* RIGHT: SVG Mini Route Map */}
+              <div className="lg:sticky lg:top-8">
+                <div className="bg-deep-purple rounded-3xl overflow-hidden shadow-2xl">
+
+                  {/* Map Header */}
+                  <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between">
+                    <div>
+                      <p className="text-white font-black text-sm uppercase tracking-widest">🗺️ Mapa do Trajeto</p>
+                      <p className="text-white/50 text-xs mt-0.5">Manaus · 15 de Maio</p>
+                    </div>
+                    <div className="flex flex-col items-end gap-1.5 text-[10px]">
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-5 h-1 rounded-full bg-energy-orange"></div>
+                        <span className="text-white/60">Saída / Ida</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-5 h-1 rounded-full bg-amazon-green"></div>
+                        <span className="text-white/60">Entre visitas</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-5 h-1.5 rounded-full bg-[#a78bfa]"></div>
+                        <span className="text-white/60">Retorno</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* SVG Animated Route Map */}
+                  <div className="p-4 bg-[#0b1929]">
+                    <svg viewBox="0 0 360 280" xmlns="http://www.w3.org/2000/svg" className="w-full rounded-xl">
+                      <rect width="360" height="280" fill="#0b1929" />
+
+                      {/* Street grid - very subtle */}
+                      <g opacity="0.06" stroke="#8899aa" strokeWidth="0.8">
+                        <line x1="0" y1="55" x2="360" y2="55" />
+                        <line x1="0" y1="105" x2="360" y2="105" />
+                        <line x1="0" y1="155" x2="360" y2="155" />
+                        <line x1="0" y1="205" x2="360" y2="205" />
+                        <line x1="0" y1="255" x2="360" y2="255" />
+                        <line x1="60" y1="0" x2="60" y2="280" />
+                        <line x1="120" y1="0" x2="120" y2="280" />
+                        <line x1="180" y1="0" x2="180" y2="280" />
+                        <line x1="240" y1="0" x2="240" y2="280" />
+                        <line x1="300" y1="0" x2="300" y2="280" />
+                      </g>
+
+                      {/* Major avenues */}
+                      <g opacity="0.18" stroke="#6ba3cc" strokeWidth="1.5">
+                        <line x1="0" y1="110" x2="360" y2="110" />
+                        <line x1="178" y1="0" x2="178" y2="280" />
+                        <line x1="0" y1="172" x2="310" y2="265" />
+                      </g>
+
+                      {/* Rio Negro (north) */}
+                      <path d="M 0 20 Q 90 10 180 17 Q 262 23 360 13" fill="none" stroke="#1560a0" strokeWidth="14" opacity="0.38" strokeLinecap="round"/>
+                      <text x="68" y="37" fill="#5ba3e0" fontSize="6.5" opacity="0.7" fontFamily="sans-serif" fontStyle="italic">Rio Negro</text>
+
+                      {/* Neighborhood labels */}
+                      <text x="18" y="148" fill="#4a7090" fontSize="7" opacity="0.55" fontFamily="sans-serif" fontWeight="bold">CENTRO</text>
+                      <text x="272" y="208" fill="#4a7090" fontSize="6.5" opacity="0.55" fontFamily="sans-serif" fontWeight="bold">DIST. IND.</text>
+                      <text x="148" y="74" fill="#6a80aa" fontSize="7" opacity="0.65" fontFamily="sans-serif" fontWeight="bold">UFAM</text>
+
+                      {/* Route: UFAM → Cassina (orange) */}
+                      <motion.path
+                        d="M 178 62 C 145 92 88 128 35 165"
+                        fill="none"
+                        stroke="#D3693E"
+                        strokeWidth="2.5"
+                        strokeDasharray="7 4"
+                        animate={{ strokeDashoffset: [0, -110] }}
+                        transition={{ repeat: Infinity, duration: 4, ease: 'linear' }}
+                      />
+
+                      {/* Route: Cassina → FPFTech (green) */}
+                      <motion.path
+                        d="M 35 165 C 110 178 202 198 295 220"
+                        fill="none"
+                        stroke="#16a34a"
+                        strokeWidth="2.5"
+                        strokeDasharray="7 4"
+                        animate={{ strokeDashoffset: [0, -110] }}
+                        transition={{ repeat: Infinity, duration: 5, ease: 'linear', delay: 1 }}
+                      />
+
+                      {/* Route: FPFTech → UFAM (lavender, return) */}
+                      <motion.path
+                        d="M 295 220 C 258 168 218 112 178 62"
+                        fill="none"
+                        stroke="#a78bfa"
+                        strokeWidth="2"
+                        strokeDasharray="5 6"
+                        animate={{ strokeDashoffset: [0, -110] }}
+                        transition={{ repeat: Infinity, duration: 5.5, ease: 'linear', delay: 2 }}
+                      />
+
+                      {/* STOP A: UFAM */}
+                      <circle cx="178" cy="62" r="20" fill="#4f46e5" opacity="0.15" />
+                      <circle cx="178" cy="62" r="13" fill="#4f46e5" stroke="white" strokeWidth="2.5" />
+                      <text x="178" y="67" textAnchor="middle" fill="white" fontSize="10" fontWeight="bold" fontFamily="sans-serif">A</text>
+                      <rect x="142" y="78" width="72" height="17" rx="8.5" fill="#4f46e5" opacity="0.9" />
+                      <text x="178" y="90" textAnchor="middle" fill="white" fontSize="7.5" fontWeight="bold" fontFamily="sans-serif">UFAM · ~13h30</text>
+
+                      {/* STOP 1: Cassina */}
+                      <circle cx="35" cy="165" r="20" fill="#D3693E" opacity="0.15" />
+                      <circle cx="35" cy="165" r="13" fill="#D3693E" stroke="white" strokeWidth="2.5" />
+                      <text x="35" y="170" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold" fontFamily="sans-serif">1</text>
+                      <rect x="53" y="155" width="74" height="17" rx="8.5" fill="#D3693E" opacity="0.9" />
+                      <text x="90" y="167" textAnchor="middle" fill="white" fontSize="7" fontWeight="bold" fontFamily="sans-serif">Cassina · 14h–15h</text>
+
+                      {/* STOP 2: FPFTech */}
+                      <circle cx="295" cy="220" r="20" fill="#16a34a" opacity="0.15" />
+                      <circle cx="295" cy="220" r="13" fill="#16a34a" stroke="white" strokeWidth="2.5" />
+                      <text x="295" y="225" textAnchor="middle" fill="white" fontSize="11" fontWeight="bold" fontFamily="sans-serif">2</text>
+                      <rect x="218" y="236" width="83" height="17" rx="8.5" fill="#16a34a" opacity="0.9" />
+                      <text x="260" y="248" textAnchor="middle" fill="white" fontSize="7" fontWeight="bold" fontFamily="sans-serif">FPFTech · 15h40–17h</text>
+                    </svg>
+                  </div>
+
+                  {/* Open Full Route in Google Maps */}
+                  <a
+                    href="https://www.google.com/maps/dir/UFAM+FCA+01+Setor+Sul+Manaus+-+AM/Rua+Bernardo+Ramos,+290+-+Centro,+Manaus+-+AM/Av.+Gov.+Danilo+de+Matos+Areosa,+1170+-+Distrito+Industrial,+Manaus+-+AM/UFAM+FCA+01+Setor+Sul+Manaus+-+AM"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 bg-energy-orange hover:bg-innovation-purple text-white py-4 font-bold text-sm uppercase tracking-widest transition-all duration-300"
+                  >
+                    <ICONS.MapPin size={15} />
+                    Ver Rota Completa no Google Maps
+                    <ICONS.ChevronRight size={15} />
+                  </a>
+
+                  <div className="px-6 py-4 bg-white/5 text-center border-t border-white/10">
+                    <p className="text-white/60 text-xs font-medium leading-relaxed">
+                      🎟️ <strong className="text-white/80">Transporte gratuito</strong> para todos os inscritos nas visitas técnicas
+                    </p>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+          {/* ========== /Mini Roteiro das Visitas ========== */}
+
+        </div>
+      </section>
 
       {/* Support Section */}
       <section id="apoio" className="py-24 bg-white">
@@ -1611,7 +2454,7 @@ export default function App() {
                     <ICONS.MapPin size={32} />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-display font-bold text-white mb-2">Endereço</h3>
+                    <h3 className="text-2xl font-display font-bold text-white mb-2">{t.locationSec.addressLabel}</h3>
                     <p className="text-2xl text-white font-semibold leading-relaxed">
                       {t.location.address}
                     </p>
@@ -1631,12 +2474,12 @@ export default function App() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-black/90 backdrop-blur-xl p-8 rounded-3xl border border-white/20 text-center shadow-2xl transition-all duration-300 hover:border-energy-orange/50">
                   <ICONS.Clock className="text-energy-orange mx-auto mb-4" size={32} />
-                  <h4 className="text-white font-bold text-lg mb-1">Credenciamento</h4>
+                  <h4 className="text-white font-bold text-lg mb-1">{t.locationSec.accreditation}</h4>
                   <p className="text-energy-orange font-bold text-xl">8h às 9h</p>
                 </div>
                 <div className="bg-black/90 backdrop-blur-xl p-8 rounded-3xl border border-white/20 text-center shadow-2xl transition-all duration-300 hover:border-energy-orange/50">
                   <ICONS.Users className="text-energy-orange mx-auto mb-4" size={32} />
-                  <h4 className="text-white font-bold text-lg mb-1">Inscrições disponíveis</h4>
+                  <h4 className="text-white font-bold text-lg mb-1">{t.locationSec.availableSpots}</h4>
                   <p className="text-energy-orange font-bold text-xl uppercase">150</p>
                 </div>
               </div>
@@ -1653,7 +2496,7 @@ export default function App() {
           <div className="mb-20">
             <div className="text-center mb-10">
               <h2 className="text-3xl md:text-5xl font-display font-bold text-innovation-purple mb-4 uppercase tracking-widest">
-                Realização
+                {t.partnersSec.realization}
               </h2>
               <div className="h-1.5 w-32 bg-energy-orange mx-auto rounded-full"></div>
             </div>
@@ -1684,7 +2527,7 @@ export default function App() {
 
           <div className="text-center">
             <h2 className="text-3xl md:text-4xl font-display font-bold text-innovation-purple mb-4 uppercase tracking-widest">
-              Nossos Parceiros e Apoiadores
+              {t.partnersSec.title}
             </h2>
             <div className="h-1.5 w-24 bg-energy-orange mx-auto rounded-full"></div>
           </div>
@@ -1740,7 +2583,7 @@ export default function App() {
         <div className="max-w-[1240px] mx-auto px-6 md:px-20 mt-20">
           <div className="text-center mb-10">
             <h2 className="text-2xl md:text-4xl font-display font-bold text-innovation-purple mb-4 uppercase tracking-widest">
-              Financiamento
+              {t.partnersSec.funding}
             </h2>
             <div className="h-1.5 w-24 bg-blue-600 mx-auto rounded-full"></div>
           </div>
@@ -1777,7 +2620,7 @@ export default function App() {
                 <img src={LOGO_URL} alt="FIEB Logo" className="h-20 w-20 object-cover object-left" referrerPolicy="no-referrer" />
               </div>
               <p className="text-lavender-light/60 max-w-md leading-relaxed">
-                Palestras, paineis temáticos, oficinas e visitas técnicas chegando na quinta edição do evento na UFAM em Manaus.
+                {t.footer.description}
               </p>
             </div>
 
@@ -1816,12 +2659,12 @@ export default function App() {
             <p>© 2026 V FIEB. {t.footer.rights}.</p>
             <div className="flex items-center gap-3">
               <div className="px-4 py-1.5 bg-white/5 rounded-full border border-white/10 text-white/30">
-                Última Atualização em: 25.03.2026
+                {t.updates.lastUpdate} 25.03.2026
               </div>
               <button 
                 onClick={() => setShowUpdates(!showUpdates)}
                 className="w-8 h-8 rounded-full bg-energy-orange text-white flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-lg shadow-energy-orange/20"
-                title="Ver atualizações"
+                title={t.updates.viewUpdates}
               >
                 <ICONS.FileText size={14} />
               </button>
@@ -1838,24 +2681,22 @@ export default function App() {
                 >
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-energy-orange to-innovation-purple"></div>
                   <div className="flex justify-between items-center mb-4">
-                    <h5 className="text-innovation-purple text-xs font-black tracking-widest uppercase">Novidades</h5>
+                    <h5 className="text-innovation-purple text-xs font-black tracking-widest uppercase">{t.updates.title}</h5>
                     <button onClick={() => setShowUpdates(false)} className="text-gray-400 hover:text-innovation-purple">
                       <ICONS.X size={14} />
                     </button>
                   </div>
                   <ul className="space-y-3 normal-case tracking-normal">
-                    <li className="flex items-start gap-3">
-                      <div className="w-1.5 h-1.5 rounded-full bg-energy-orange mt-1.5 shrink-0"></div>
-                      <p className="text-gray-600 text-xs font-bold leading-relaxed">Ementa das 2 Oficinas</p>
+                    {t.updates.items.map((item, i) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <div className={`w-1.5 h-1.5 rounded-full ${i % 2 === 0 ? 'bg-energy-orange' : 'bg-innovation-purple'} mt-1.5 shrink-0`}></div>
+                      <p className="text-gray-600 text-xs font-bold leading-relaxed">{item}</p>
                     </li>
-                    <li className="flex items-start gap-3">
-                      <div className="w-1.5 h-1.5 rounded-full bg-innovation-purple mt-1.5 shrink-0"></div>
-                      <p className="text-gray-600 text-xs font-bold leading-relaxed">Lote de Inscrições para SISTEBIB</p>
-                    </li>
+                    ))}
                   </ul>
                   <div className="mt-4 pt-4 border-t border-gray-100 flex items-center gap-2 text-[8px] text-gray-400 font-bold italic">
                     <ICONS.Calendar size={10} />
-                    <span>Publicado hoje</span>
+                    <span>{t.updates.publishedToday}</span>
                   </div>
                 </motion.div>
               )}
@@ -1863,6 +2704,39 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* Enlarged Image Lightbox */}
+      <AnimatePresence>
+        {enlargedImage && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setEnlargedImage(null)}
+              className="absolute inset-0 bg-black/90 backdrop-blur-md cursor-pointer"
+            />
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative max-w-6xl w-full max-h-[90vh] z-10 flex flex-col items-center justify-center pointer-events-none"
+            >
+              <img 
+                src={enlargedImage} 
+                className="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl pointer-events-auto border-2 border-white/10"
+                alt="Enlarged"
+              />
+              <button 
+                onClick={() => setEnlargedImage(null)}
+                className="absolute -top-5 -right-5 md:-top-6 md:-right-6 w-12 h-12 bg-energy-orange text-white rounded-full flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition-all pointer-events-auto border-4 border-black/90"
+              >
+                <ICONS.X size={24} />
+              </button>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

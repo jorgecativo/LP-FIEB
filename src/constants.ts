@@ -22,7 +22,8 @@ import {
   Network,
   Youtube,
   Mail,
-  GraduationCap
+  GraduationCap,
+  BookOpen
 } from 'lucide-react';
 
 export const ICONS = {
@@ -49,7 +50,8 @@ export const ICONS = {
   Network,
   Youtube,
   Mail,
-  GraduationCap
+  GraduationCap,
+  BookOpen
 };
 
 export const SOCIAL_LINKS = [
@@ -181,15 +183,34 @@ export const TRANSLATIONS = {
       contact: 'Contato',
       social: 'Redes Sociais',
       rights: 'Todos os direitos reservados',
+      description: 'Palestras, painéis temáticos, oficinas e visitas técnicas chegando na quinta edição do evento na UFAM em Manaus.'
     },
     location: {
       title: 'LOCAL DO EVENTO',
       address: 'Av. Jauary Marinho, Via de Acesso ao Setor Sul - UFAM - Coroado, Manaus - AM',
       cta: 'Ver no Google Maps'
     },
+    ticker: {
+      remaining: 'Restam apenas',
+      vacancies: 'Vagas',
+      open: 'Inscrições Abertas',
+      register: 'Inscreva-se',
+      fullProgram: 'Programação Completa',
+      seeNow: 'Ver agora',
+      availSlots: 'Lotes CO disponíveis',
+      new: 'Novidade',
+      approvedWorks: 'Divulgados os trabalhos aprovados'
+    },
+    approved: {
+      title: 'Trabalhos',
+      titleHighlight: 'Aprovados',
+      text: 'O comitê científico torna pública a lista final de trabalhos aprovados no V FIEB - Manaus. Informamos que os autores serão comunicados por e-mail e pela plataforma acerca dos possíveis ajustes e que as alterações poderão ser realizadas até o dia 23/04/2026. Todos os trabalhos já podem ser identificados e deverão estar no template oficial do evento.',
+      mandatory: 'Lembramos que a inscrição é obrigatória',
+      mandatorySub: 'para participação no evento e para apresentação de trabalhos científicos.'
+    },
     registrations: {
       title: 'INSCRIÇÕES ABERTAS',
-      subtitle: 'Primeiro lote disponível com opção apenas para o evento ou evento + 1 Oficina',
+      subtitle: 'Segundo lote disponível com opção apenas para o evento ou evento + 1 Oficina',
       table: {
         category: 'CATEGORIA',
         lot1: 'Lote 1',
@@ -202,9 +223,7 @@ export const TRANSLATIONS = {
           { name: 'FIEB - Estudante graduação e pós-graduação*', prices: ['R$ 15,00', 'R$ 30,00', 'R$ 45,00'] },
           { name: 'FIEB + 1 OFICINA - Estudante graduação e pós-graduação*', prices: ['R$ 25,00', 'R$ 40,00', 'R$ 55,00'] },
           { name: 'FIEB - Profissionais', prices: ['R$ 40,00', 'R$ 55,00', 'R$ 70,00'] },
-          { name: 'FIEB + 1 OFICINA - Profissionais', prices: ['R$ 50,00', 'R$ 65,00', 'R$ 75,00'] },
-          { name: 'Servidores SISTEBIB', special: 'Mediante Voucher até 31/03/2026' },
-          { name: 'Comissão Organizadora', special: 'Mediante Voucher até 31/03/2026' }
+          { name: 'FIEB + 1 OFICINA - Profissionais', prices: ['R$ 50,00', 'R$ 65,00', 'R$ 80,00'] },
         ]
       },
       info: [
@@ -217,6 +236,26 @@ export const TRANSLATIONS = {
         'Certificados digitais serão emitidos conforme a categoria de inscrição, considerando o credenciamento obrigatório nos dois dias do evento.'
       ],
       cta: 'Quero me inscrever'
+    },
+    partnersSec: {
+      realization: 'Realização',
+      title: 'Nossos Parceiros e Apoiadores',
+      funding: 'Financiamento'
+    },
+    updates: {
+      title: 'Novidades',
+      lastUpdate: 'Última Atualização em:',
+      viewUpdates: 'Ver atualizações',
+      publishedToday: 'Publicado hoje',
+      items: [
+        'Ementa das 2 Oficinas',
+        'Lote de Inscrições para SISTEBIB'
+      ]
+    },
+    locationSec: {
+      addressLabel: 'Endereço',
+      accreditation: 'Credenciamento',
+      availableSpots: 'Restam apenas'
     }
   },
   en: {
@@ -326,11 +365,30 @@ export const TRANSLATIONS = {
       contact: 'Contact',
       social: 'Social Media',
       rights: 'All rights reserved',
+      description: 'Lectures, thematic panels, workshops and technical visits arriving in the fifth edition of the event at UFAM in Manaus.'
     },
     location: {
       title: 'EVENT LOCATION',
       address: 'Av. Jauary Marinho, Via de Acesso ao St. Sul - Coroado, Manaus - AM',
       cta: 'View on Google Maps'
+    },
+    ticker: {
+      remaining: 'Only',
+      vacancies: 'Spots',
+      open: 'Registration Open',
+      register: 'Register',
+      fullProgram: 'Full Program',
+      seeNow: 'View now',
+      availSlots: 'OC Lots available',
+      new: 'New',
+      approvedWorks: 'Approved works published'
+    },
+    approved: {
+      title: 'Approved',
+      titleHighlight: 'Works',
+      text: 'The scientific committee releases the list of approved works for V FIEB - Manaus. Authors will be notified via the platform regarding potential adjustments, which must be completed by 04/08/2026.',
+      mandatory: 'Registration is mandatory',
+      mandatorySub: 'for event participation and scientific paper presentation.'
     },
     registrations: {
       title: 'REGISTRATION OPEN',
@@ -348,8 +406,6 @@ export const TRANSLATIONS = {
           { name: 'FIEB + 1 WORKSHOP - Undergrad & Graduate Students*', prices: ['$ 5.00', '$ 8.00', '$ 11.00'] },
           { name: 'FIEB - Professionals', prices: ['$ 8.00', '$ 11.00', '$ 14.00'] },
           { name: 'FIEB + 1 WORKSHOP - Professionals', prices: ['$ 10.00', '$ 13.00', '$ 15.00'] },
-          { name: 'FIEB - SISTEBIB Professionals', special: 'By Voucher until 03/31/2026' },
-          { name: 'Organizing Committee', special: 'By Voucher until 03/31/2026' }
         ]
       },
       info: [
@@ -362,6 +418,26 @@ export const TRANSLATIONS = {
         'Digital certificates will be issued according to the category, requiring mandatory check-in on both days.'
       ],
       cta: 'Register now'
+    },
+    partnersSec: {
+      realization: 'Realization',
+      title: 'Our Partners and Supporters',
+      funding: 'Funding'
+    },
+    updates: {
+      title: 'News',
+      lastUpdate: 'Last updated on:',
+      viewUpdates: 'View updates',
+      publishedToday: 'Published today',
+      items: [
+        'Syllabus of the 2 Workshops',
+        'Registration Lot for SISTEBIB'
+      ]
+    },
+    locationSec: {
+      addressLabel: 'Address',
+      accreditation: 'Accreditation',
+      availableSpots: 'Only'
     }
   },
   es: {
@@ -471,11 +547,30 @@ export const TRANSLATIONS = {
       contact: 'Contacto',
       social: 'Redes Sociales',
       rights: 'Todos los derechos reservados',
+      description: 'Conferencias, paneles temáticos, talleres y visitas técnicas que llegan en la quinta edición del evento en la UFAM en Manaus.'
     },
     location: {
       title: 'UBICACIÓN DEL EVENTO',
       address: 'Av. Jauary Marinho, Via de Acesso ao St. Sul - Coroado, Manaus - AM',
       cta: 'Ver en Google Maps'
+    },
+    ticker: {
+      remaining: 'Restan solo',
+      vacancies: 'Plazas',
+      open: 'Inscripciones Abiertas',
+      register: 'Inscríbete',
+      fullProgram: 'Programa Completo',
+      seeNow: 'Ver ahora',
+      availSlots: 'Lotes CO disponibles',
+      new: 'Novedad',
+      approvedWorks: 'Trabajos aprobados publicados'
+    },
+    approved: {
+      title: 'Trabajos',
+      titleHighlight: 'Aprobados',
+      text: 'El comité científico hace pública la lista de los trabajos aprobados en el V FIEB - Manaus. Los autores serán notificados a través de la plataforma sobre posibles ajustes, que deberán realizarse antes del 08/04/2026.',
+      mandatory: 'Recordamos que la inscripción es obligatoria',
+      mandatorySub: 'para la participación en el evento y para la presentación de trabajos científicos.'
     },
     registrations: {
       title: 'INSCRIPCIONES ABIERTAS',
@@ -493,8 +588,6 @@ export const TRANSLATIONS = {
           { name: 'FIEB + 1 TALLER - Estudiantes de grado y posgrado*', prices: ['$ 5.00', '$ 8.00', '$ 11.00'] },
           { name: 'FIEB - Profesionales', prices: ['$ 8.00', '$ 11.00', '$ 14.00'] },
           { name: 'FIEB + 1 TALLER - Profesionales', prices: ['$ 10.00', '$ 13.00', '$ 15.00'] },
-          { name: 'FIEB - Profesionales del SISTEBIB', special: 'Mediante Voucher hasta 31/03/2026' },
-          { name: 'Comisión Organizadora', special: 'Mediante Voucher hasta 31/03/2026' }
         ]
       },
       info: [
@@ -507,9 +600,100 @@ export const TRANSLATIONS = {
         'Los certificados digitales se emitirán según la categoría de inscripción.'
       ],
       cta: 'Regístrate ahora'
+    },
+    partnersSec: {
+      realization: 'Realización',
+      title: 'Nuestros Socios y Colaboradores',
+      funding: 'Financiación'
+    },
+    updates: {
+      title: 'Novedades',
+      lastUpdate: 'Última actualización el:',
+      viewUpdates: 'Ver actualizaciones',
+      publishedToday: 'Publicado hoy',
+      items: [
+        'Ementa de los 2 Talleres',
+        'Lote de Inscripciones para SISTEBIB'
+      ]
+    },
+    locationSec: {
+      addressLabel: 'Dirección',
+      accreditation: 'Acreditación',
+      availableSpots: 'Solo quedan'
     }
   }
 };
+
+export const WORKSHOPS_DATA = [
+  {
+    id: 'oficina-cativo',
+    title: 'Inteligência Artificial na gestão de redes sociais para empreendedores',
+    speaker: 'Jorge Cativo',
+    image: 'assets/cativo.png',
+    date: '15 de maio',
+    time: '08:00 - 10:00',
+    location: 'Laboratório LIFT II - FT - UFAM',
+    registrationUrl: 'https://tally.so/r/5BGYjQ',
+    role: 'Facilitador',
+    spots: 7,
+    lattes: 'https://lattes.cnpq.br/0614227155680254',
+    instagram: 'https://www.instagram.com/biblioteconomiadigital/',
+    youtube: 'https://www.youtube.com/@JorgeCativo',
+    description: 'Aprenda a aplicar Inteligência Artificial para construir a presença digital de seu negócio. A oficina é focada no uso estratégico de ferramentas de IA desde planejamento editorial, passando pela criação de conteúdos e busca por engajamento nas redes sociais.',
+    syllabus: [
+      { 
+        title: 'Estratégia e Posicionamento', 
+        topics: ['Diferença entre postar conteúdo e construir presença digital', 'IA para mapear dores e desejos do público alvo'] 
+      },
+      { 
+        title: 'Planejamento com IA', 
+        topics: ['Criação de calendários editoriais automatizados', 'Benchmarking inteligente com apoio de IA'] 
+      },
+      { 
+        title: 'Produção Prática', 
+        topics: ['Estrutura de conteúdos que geram engajamento', 'Criação de roteiros e legendas hipnóticas'] 
+      },
+      { 
+        title: 'Automação Final', 
+        topics: ['Fluxo prático: da ideia ao post pronto com IA', 'Uso de ferramentas de design e vídeo automatizado'] 
+      }
+    ]
+  },
+  {
+    id: 'oficina-suzane',
+    title: 'Empreendedorismo digital para profissionais da informação',
+    speaker: 'Suzane Lima',
+    image: 'assets/suzane.png',
+    date: '15 de maio',
+    time: '08:00 - 10:00',
+    location: 'Laboratório LIFT III - FT - UFAM',
+    registrationUrl: 'https://tally.so/r/5BGYjQ',
+    role: 'Facilitadora',
+    spots: 5,
+    lattes: 'https://lattes.cnpq.br/8812674350684147',
+    instagram: 'https://www.instagram.com/suzanelimaprof/',
+    youtube: 'https://www.youtube.com/channel/UCQxW7p7-3OVvS0opaeacAVg',
+    description: 'Um passo a passo prático para bibliotecários e profissionais da informação que desejam começar no mercado digital. Da construção do blog à venda de infoprodutos e consultorias especializadas.',
+    syllabus: [
+      { 
+        title: 'Mentalidade Empreendedora', 
+        topics: ['Primeiros passos para montar seu negócio na Biblioteconomia', 'Identificação de nichos e oportunidades de mercado'] 
+      },
+      { 
+        title: 'Plataformização e Marca', 
+        topics: ['Como construir sua marca pessoal no digital', 'Criação de blogs, sites e plataformas de cursos'] 
+      },
+      { 
+        title: 'Marketing e Captação', 
+        topics: ['Estratégias em redes sociais e grupos de mensagens', 'Captando e fidelizando clientes de forma orgânica'] 
+      },
+      { 
+        title: 'Infoprodutos e Serviços', 
+        topics: ['Criando e vendendo cursos, e-books e consultorias', 'Sendo autônomo: gestão, precificação e escala'] 
+      }
+    ]
+  }
+];
 
 export const PROGRAM_DATA = {
   day1: [
@@ -644,6 +828,22 @@ export const PROGRAM_DATA = {
       lattes: 'https://lattes.cnpq.br/1687285959561295'
     },
     {
+      id: 12,
+      type: 'PAINEL 1',
+      name: 'Mayara Cabral',
+      role: 'Painelista',
+      activity: 'Gestão Estratégica e Liderança Feminina',
+      description: 'Discussão sobre os desafios e estratégias para a liderança feminina eficaz, focando em como desenvolver equipes produtivas, gerir talentos e fomentar um ambiente organizacional inovador e inclusivo. Reflexão sobre competências e habilidades fundamentais para lideranças femininas em negócios digitais.',
+      date: '14 de maio',
+      time: '14:00 - 14:50',
+      location: 'AUDITÓRIO SAMAÚMA',
+      institution: 'UFRJ | Biblio MKT',
+      color: 'black',
+      image: 'assets/mayara_new.png',
+      lattes: 'http://lattes.cnpq.br/8711318699764093',
+      instagram: 'https://www.instagram.com/biblio.mkt'
+    },
+    {
       id: 116,
       type: 'DEBATE',
       activity: 'Debate aberto ao público',
@@ -759,7 +959,7 @@ export const PROGRAM_DATA = {
       activity: 'Inteligência Artificial na gestão de redes sociais para empreendedores',
       date: '15 de maio',
       time: '08:00 - 10:00',
-      location: 'Laboratório LIFT II',
+      location: 'Laboratório LIFT II - Faculdade de Tecnologia - UFAM',
       locationUrl: 'https://moovitapp.com/tripplan/manaus-1743/poi/LIFT%20II%20%28FT~2FUFAM%29,%20Manaus/Auditorio%20Samauma-FCA%2001-%20UFAM,%20Manaus/pt-br?customerId=4908&ref=1&af_sub8=%2Findex%2Fpt-br%2Ftransporte_p%25C3%25BAblico-LIFT_II_FT_UFAM-Manaus-site_20246732-1743&af_sub9=Search%20bar%20button&poiType=efsite&fll=-3.099982_-59.975965&tll=-3.088408_-59.963989&metroSeoName=Manaus',
       institution: 'INPA | Biblioteconomia Digital',
       color: 'energy-orange',
@@ -768,7 +968,7 @@ export const PROGRAM_DATA = {
       instagram: 'https://www.instagram.com/biblioteconomiadigital/',
       website: 'https://biblioteconomiadigital.com.br/',
       youtube: 'https://www.youtube.com/@JorgeCativo',
-      registrationUrl: 'https://tally.so/r/LZGy81',
+      registrationUrl: 'https://tally.so/r/5BGYjQ',
       upcomingRegistration: true
     },
     {
@@ -776,10 +976,10 @@ export const PROGRAM_DATA = {
       type: 'OFICINA',
       name: 'Suzane Lima',
       activity: 'Empreendedorismo digital para profissionais da informação',
-      description: 'Primeiros passos para montar o seu próprio negócio na Biblioteconomia - Ela compartilharia da experiência dela desde a criação do blog que ela fez até o processo de construção do curso e da plataforma dela. Um passo a passo mesmo: criar conteúdo, plataformizar, captação e fidelização de clientes, marketing nas redes sociais e nos grupos de mensagens, construção da marca, etc. Consultoria profissional, Criando e vendendo infoprodutos, Ser autônomo.',
+      description: 'Primeiros passos para montar o seu próprio negócio na Biblioteconomia - Ela compartilharia da experiência dela desde a criação do blog que ela fez até o processo de construção do curso e da plataforma dela. Um passo a passo mesmo: criar conteúdo, plataformizar, captação e fidelização de clientes, marketing nas redes sociais e nos grupos de mensagens, construção da marca, etc. Consultoria profissional, Criando e vendendo infoprodutos, Ser autônomo. (Local: Faculdade de Tecnologia - UFAM - Também no laboratório LIFT II da outra oficina)',
       date: '15 de maio',
       time: '08:00 - 10:00',
-      location: 'Laboratório LIFT I',
+      location: 'Laboratório LIFT III - Faculdade de Tecnologia - UFAM',
       locationUrl: 'https://moovitapp.com/tripplan/manaus-1743/poi/UFAM%20-%20Lab%20de%20Inform%C3%A1tica%20%28LIFT%201%29/Auditorio%20Samauma-FCA%2001-%20UFAM,%20Manaus/pt-br?customerId=4908&ref=1&af_sub8=%2Findex%2Fpt-br%2Ftransporte_p%25C3%25BAblico-LIFT_II_FT_UFAM-Manaus-site_20246732-1743&af_sub9=Search%20bar%20button&poiType=efsite&fll=-3.099982_-59.975965&tll=-3.088778_-59.963408&metroSeoName=Manaus',
       institution: 'IBGE | Biblioconcurseiros',
       color: 'energy-orange',
@@ -789,7 +989,7 @@ export const PROGRAM_DATA = {
       instagram: 'https://www.instagram.com/suzanelimaprof/',
       website: 'https://biblioconcurseiros.com.br/',
       youtube: 'https://www.youtube.com/channel/UCQxW7p7-3OVvS0opaeacAVg',
-      registrationUrl: 'https://tally.so/r/LZGy81',
+      registrationUrl: 'https://tally.so/r/5BGYjQ',
       upcomingRegistration: true
     },
     {
@@ -868,7 +1068,7 @@ export const PROGRAM_DATA = {
       color: 'amazon-green',
       image: 'https://i.pinimg.com/736x/84/f4/89/84f489d21f34f37d5b7d44b118c6ff8f.jpg',
       isGeneral: true,
-      upcomingRegistration: true
+      registrationUrl: 'https://tally.so/r/5BGYjQ'
     }
   ]
 };

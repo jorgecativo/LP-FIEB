@@ -1,0 +1,39 @@
+# React SPA - redireciona tudo para index.html
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /fieb2026/
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /fieb2026/index.html [L]
+</IfModule>
+
+# MIME Types para vídeo (essencial para MP4 funcionar no cPanel)
+<IfModule mod_mime.c>
+  AddType video/mp4        .mp4
+  AddType video/webm       .webm
+  AddType video/ogg        .ogv
+  AddType application/javascript .js
+  AddType text/css         .css
+</IfModule>
+
+# Suporte a Range Requests (necessário para vídeos - permite seek e autoplay)
+<IfModule mod_headers.c>
+  Header set Accept-Ranges bytes
+</IfModule>
+
+# Cache para assets estáticos
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType video/mp4              "access plus 1 month"
+  ExpiresByType image/png              "access plus 1 month"
+  ExpiresByType image/jpeg             "access plus 1 month"
+  ExpiresByType image/webp             "access plus 1 month"
+  ExpiresByType text/css               "access plus 1 week"
+  ExpiresByType application/javascript "access plus 1 week"
+</IfModule>
+
+# Compressão (não aplicar em vídeos)
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript
+</IfModule>
